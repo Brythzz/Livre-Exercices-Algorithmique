@@ -1,0 +1,20 @@
+\section{Jeu d'échecs}
+
+Sur un échiquier, on représentera chaque case par ses coordonnées $(i, j)$, la case en bas à gauche étant de coordonnées $(0, 0)$. Sur un tel échiquier, en un coup, un cavalier peut se déplacer de la case $(i, j)$ vers celles d'entre les 8 positions suivantes qui correspondent effectivement à une case de l'échiquier (abscisse et ordonnée comprises entre 0 et 7) : $(i-2, j+1)$, $(i-1, j+2)$, $(i+1, j+2)$, $(i+2, j+1)$, $(i+2, j -1)$, $(i+1, j-2)$, $(i-1, j-2)$ et $(i-2,j-1)$.
+
+\Q
+Écrire une fonction OCaml qui donne toutes les cases accessibles en $p$ coups au plus à partir d'une case $(i_0, j_0)$.
+
+\Q
+Écrire une fonction OCaml qui indique si toutes les cases sont accessibles à partir d'une case $(i_0, j_0)$ donnée, et si oui, quel est le plus petit nombre de coups permettant d'atteindre à partir de cette case n'importe quelle autre case de l'échiquier.
+
+\Corrige
+
+\Q
+Choisissions déjà la structure de données. Définissions un type\\
+
+\texttt{type case = array[1..2] of integer}
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit
+
+\Fin

@@ -1,0 +1,85 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{microtype}
+
+\usepackage{lmodern}
+\fontfamily{lmr}\selectfont
+
+\usepackage{geometry}
+\geometry{
+  headsep=4mm,
+  papersize={17.5cm,24cm},
+  top=18mm,
+  bottom=18mm,
+  left=26mm,
+  right=18mm
+}
+
+\setlength{\parindent}{0pt}
+
+
+%%% Style d'en-tête %%%
+
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{\baselineskip}
+% \renewcommand{\headrulewidth}{.6cm}
+
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername~\thechapter~:~#1}{}}
+
+\fancyhead[OL]{\it\nouppercase\rightmark}
+\fancyhead[OR]{\it\thepage}
+
+\fancyhead[EL]{\it\thepage}
+\fancyhead[ER]{\it\nouppercase\leftmark}
+
+
+%%% Style des titres %%%
+
+\usepackage{titlesec}
+
+\newlength\chapnumb
+\setlength\chapnumb{3cm}
+
+% Chapitres
+\titleformat{\chapter}{}{}{0pt} {
+  \raggedleft
+  \fontsize{3.8cm}{0pt}\selectfont\thechapter\\
+  \vspace*{3cm}
+  \fontsize{25pt}{0pt}\sl\bfseries\selectfont
+}
+\titlespacing*{\chapter}{0pt}{0pt}{1cm}
+
+% Parties
+\titleformat{\section}{\sl\LARGE\bfseries}{\thesection}{\fontdimen2\font}{}
+
+
+%%% Définitions de macros %%%
+
+\newcounter{question}[section] % Remis à 0 à chaque nouvelle section
+\newcommand{\Q}{
+  \stepcounter{question}
+  \vspace*{.4cm}
+  {\sffamily Question \arabic{question}}
+  \vspace*{.4cm}\\
+}
+
+\newcommand{\Corrige}{
+  \setcounter{question}{0}
+  \vspace*{1cm}
+  \centerline{\sffamily \rule[0.6ex]{2cm}{.1mm} CORRIGÉ \rule[0.6ex]{2cm}{.1mm}}
+  \vspace*{-.4cm}
+}
+
+\newcommand{\Epigraph}[1]{
+  \og{\it#1}\fg
+}
+
+\newcommand{\Fin}{
+  \centerline{$\star\star\star\star\star\star\star\star$}
+}
