@@ -3,6 +3,9 @@
 \usepackage[french]{babel}
 \usepackage{microtype}
 
+\usepackage{minted}
+
+\usepackage{amsfonts}
 \usepackage{lmodern}
 \fontfamily{lmr}\selectfont
 
@@ -57,6 +60,14 @@
 
 % Parties
 \titleformat{\section}{\sl\LARGE\bfseries}{\thesection}{\fontdimen2\font}{}
+
+
+%%% Style des listes %%%
+
+\frenchsetup{StandardItemLabels=true}
+
+\usepackage{enumitem}
+\setlist[itemize]{left=0pt..8mm}
 
 
 %%% Définitions de macros %%%

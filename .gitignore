@@ -20,3 +20,4 @@
 *.snm
 
 .DS_Store
+_minted*
