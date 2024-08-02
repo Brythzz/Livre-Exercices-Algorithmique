@@ -84,22 +84,24 @@
   % frame=single
 }
 
+\newcommand{\SourceFile}{}
+
 
 %%% Définitions de macros %%%
 
 \newcounter{question}[section] % Remis à 0 à chaque nouvelle section
 \newcommand{\Q}{
   \stepcounter{question}
-  \vspace*{.4cm}
+  \vspace{.4cm}
   {\sffamily Question \arabic{question}}
-  \vspace*{.4cm}\\
+  \vspace{.4cm}\\
 }
 
 \newcommand{\Corrige}{
   \setcounter{question}{0}
-  \vspace*{1cm}
+  \vspace{1cm}
   \centerline{\sffamily \rule[0.6ex]{2cm}{.1mm} CORRIGÉ \rule[0.6ex]{2cm}{.1mm}}
-  \vspace*{-.4cm}
+  \vspace{-.4cm}
 }
 
 \newcommand{\Epigraph}[1]{

@@ -1,0 +1,46 @@
+\renewcommand{\SourceFile}{1-parcours-de-tableaux/src/1-3.ml}
+
+\vspace{16pt}
+\section{Travail sur des tableaux}
+
+On se donne un tableau $T$ d'entiers de taille $N$.
+
+\Q
+On se donne un entier $p<N$ et un entier $s$, et on recherche dans le tableau $T$ les indices $k$ tels que $\sum^{p+k}_{i=k}T[i]\geq s$. Écrire une fonction OCaml qui effectue cette recherche. Donner en fonction de $N$ et $p$ un ordre de grandeur du nombre de tests et d'opérations arithmétiques effectuées lors de l'exécution de votre fonction. Pouvez-vous l'améliorer ?
+
+\Q
+On suppose maintenant que $T[0] < T[1] < T[2] < ... < T[N-1]$. Pouvez-vous tenir compte de cette information pour obtenir une fonction plus rapide ?
+
+\Q
+Proposer une fonction qui affiche les triplets d'entiers $i,j,k$ avec $j<i<N$ tels que $i^2+j^2=k^2$. Pouvez-vous l'améliorer ?
+
+\Corrige
+
+\Q
+Première idée : une fonction intuitive, mais quelque peu idiote
+
+\lstinputlisting[linerange={1-10}]{\SourceFile}
+
+Si on réalise que lorsque l'on passe de l'étape $k$ à l'étape $k+1$ dans l'algorithme précédent, deux termes seulement de la somme changent, on obtient la fonction suivante, plus rapide si $p$ est plus grand que 2.
+
+\lstinputlisting[linerange={12-24}]{\SourceFile}
+
+\Q
+L'idée est bien sûr de procéder par dichotomie pour savoir à partir de quel rang on a $\sum^{p+k}_{i=k}T[i]\geq s$. On peut procéder comme suit :
+
+\lstinputlisting[linerange={33-43}]{\SourceFile}
+
+Plusieurs variantes permettant de faire moins d'additions en utilisant le \og truc \fg{} de la question 1 sont possibles.
+
+\newpage
+
+\Q
+La première idée (idiote!) est de faire une boucle sur $i$, $j$ et $k$ en utilisant le fait que $k^2=i^2+j^2<2i^2$ donc $k<\sqrt{2}i<1,5i$ :
+
+\lstinputlisting[linerange={45-55}]{\SourceFile}
+
+on peut ensuite se dire que le seul $k$ qui a une chance de convenir est $\sqrt{i^2+j^2}$ (si c'est un entier !), ce qui donne :
+
+\lstinputlisting[firstline=57]{\SourceFile}
+
+\Fin

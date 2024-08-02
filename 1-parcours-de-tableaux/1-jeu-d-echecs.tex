@@ -1,4 +1,5 @@
-\newcommand{\SourceFile}{1-parcours-de-tableaux/src/1-1.ml}
+\renewcommand{\SourceFile}{1-parcours-de-tableaux/src/1-1.ml}
+
 \section{Jeu d'échecs}
 
 Sur un échiquier, on représentera chaque case par ses coordonnées $(i, j)$, la case en bas à gauche étant de coordonnées $(0, 0)$. Sur un tel échiquier, en un coup, un cavalier peut se déplacer de la case $(i, j)$ vers celles d'entre les 8 positions suivantes qui correspondent effectivement à une case de l'échiquier (abscisse et ordonnée comprises entre 0 et 7) : $(i-2, j+1)$, $(i-1, j+2)$, $(i+1, j+2)$, $(i+2, j+1)$, $(i+2, j -1)$, $(i+1, j-2)$, $(i-1, j-2)$ et $(i-2,j-1)$.
@@ -18,13 +19,13 @@ Choisissions déjà la structure de données. Définissions un type
 
 et donnons-nous une fonction \texttt{est\_valide (c : case) : bool} qui renvoie \texttt{true} si $c$ est bien une case de l'échiquier (i.e $0\leq \texttt{fst c}$, $\texttt{snd c} \leq 7$), et \texttt{false} sinon. Réalisons tout de suite que quel que soit le nombre de coups, on ne pourra jamais atteindre plus de 64 cases et définissons des tableaux
 
-\lstinputlisting[linerange={5-6}]{\SourceFile}
+\lstinputlisting[linerange={3-5}]{\SourceFile}
 
 tel que \texttt{coups[i,j]} désigne la $j$ème des cases atteignables en exactement $i$ coups et \texttt{ncases[i]} le nombre de cases atteignables en exactement $i$ coups - et non atteignables en moins de coups. La seule difficulté de la fonction et de penser à \og faire le ménage \fg en vérifiant, à chaque fois qu'on ajoute une case, si elle n'a pas déjà été atteinte. Il est à noter qu'il suffit de vérifier ceci pour des valeurs de $i$ (numéros des coups) de même parité que le numéro courant : si on part d'une case blanche, en un nombre par de coups, on sera forcément sur une case blanche, et en un nombre impair sur une case noire.
 
-\lstinputlisting[firstline=8]{\SourceFile}
+\lstinputlisting[firstline=10]{\SourceFile}
 
 \Q
-Il n'y a pas grand chose à modifier : il suffit de remarquer qu'on a forcément atteint toutes les cases atteignables dès que l'ajout d'un nouveau coup n'aporte rien. Il suffit de modifier très légèrement la procédure précédente pour remplacer la boucle \og for \fg sur la variable \texttt{pcourant} par une boucle \og while \fg où l'on s'arrête dès que \texttt{ncases[pcourant]} vaut zéro. Il est alors facile de voir si toutes les cases sont atteintes (il faut simplement additionner les valeurs des \texttt{ncases[i]} pour voir si on trouve 64, surtout ne pas tester pour toute case si elle est dans le tableau \texttt{coups}, ceci serait trop long). Le lecteur pourra essayer d'évaluer le coût de ces fonctions. Sans réfléchir, on trouve quelque chose d'exponentiel en le nombre de coups, sauf si on se souvient que l'échiquier n'a que 64 cases !
+Il n'y a pas grand chose à modifier : il suffit de remarquer qu'on a forcément atteint toutes les cases atteignables dès que l'ajout d'un nouveau coup n'aporte rien. Il suffit de modifier très légèrement la procédure précédente pour remplacer la boucle \og for \fg{} sur la variable \texttt{p\_courant} par une boucle \og while \fg{} où l'on s'arrête dès que \texttt{ncases[p\_courant]} vaut zéro. Il est alors facile de voir si toutes les cases sont atteintes (il faut simplement additionner les valeurs des \texttt{ncases[i]} pour voir si on trouve 64, surtout ne pas tester pour toute case si elle est dans le tableau \texttt{coups}, ceci serait trop long). Le lecteur pourra essayer d'évaluer le coût de ces fonctions. Sans réfléchir, on trouve quelque chose d'exponentiel en le nombre de coups, sauf si on se souvient que l'échiquier n'a que 64 cases !
 
 \Fin

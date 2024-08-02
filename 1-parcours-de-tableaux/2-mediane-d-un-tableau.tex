@@ -1,21 +1,24 @@
+\renewcommand{\SourceFile}{1-parcours-de-tableaux/src/1-2.ml}
+
+\vspace{16pt}
 \section{Médiane d'un tableau}
 
 On dispose d'un tableau $A$ de $n$ entiers distincts.
 
 \Q
-Écrire une fonction OCaml \texttt{echange (A:int array) (i:int) (j:int) : unit} qui échange les éléments d'indices $i$ et $j$ du tableau $A$.
+Écrire une fonction OCaml \texttt{echange (a:int array) (i:int) (j:int) : unit} qui échange les éléments d'indices $i$ et $j$ du tableau $A$.
 
 \Q
 Soient $g$ et $d$ deux entiers, $1\leq g\leq d \leq n$. Posons $\alpha=A[g]$. On désire effectuer une permutation des éléments de $A$ d'indice compris entre $g$ et $d$, qui soit telle qu'après la permutation il existe un entier $pivot$, $(g\leq pivot \leq d)$ vérifiant :
 
 \begin{itemize}
     \item $A[\textit{pivot}]=\alpha$,
-    \item pour tout $i$ conmpris entre $g$ et \textit{pivot}, $A[i]\leq\alpha$,
-    \item pour tout $i$ conmpris entre $\textit{pivot}+1$ et $d$, $A[i]>\alpha$,
+    \item pour tout $i$ compris entre $g$ et \textit{pivot}, $A[i]\leq\alpha$,
+    \item pour tout $i$ compris entre $\textit{pivot}+1$ et $d$, $A[i]>\alpha$,
     \item les éléments de $A$ d'indice strictement inférieur à $g$ ou strictement supérieur à $d$ restent inchangés.
 \end{itemize}
 
-Par exemple, si $n=6$, si les éléments de $A$ sont 5, 8, 7, 3, 9, 15, si $g=2$ et $d=5$, les éléments de $A$ après la permutation seront 5, 3, 7, 8, 9, 15 ou 5, 7, 3, 8, 15, 9, ou... (il n'y a pas unicité des permutations possibles), et \textit{pivot} sera égal à 4. Écrire une fonction OCaml qui effectue la permutation et donne la valeur de \textit{pivot} sans utiliser un autre tableau que $A$. Combien d'affectations (c'est à dire d'instructions \og \texttt{<-} \fg) et de tests nécessite-t-elle?
+Par exemple, si $n=6$, si les éléments de $A$ sont 5, 8, 7, 3, 9, 15, si $g=1$ et $d=5$, les éléments de $A$ après la permutation seront 5, 3, 7, 8, 9, 15 ou 5, 7, 3, 8, 15, 9, ou... (il n'y a pas unicité des permutations possibles), et \textit{pivot} sera égal à 3. Écrire une fonction OCaml qui effectue la permutation et donne la valeur de \textit{pivot} sans utiliser un autre tableau que $A$. Combien d'affectations (c'est à dire d'instructions \og \texttt{<-} \fg) et de tests nécessite-t-elle?
 
 \Q
 On appelle \textit{médiane} de $A$ un couple $(i,\alpha)$ tel que $1\leq i\leq n$, $A[i]=\alpha$, et $E(n/2)$ éléments de $A$ sont inférieurs strictement à $\alpha$ ($E(x)$ est la partie entière de $x$). Proposer une fonction de calcul de la médiane de $A$ utilisant la fonction de la question 2.
@@ -26,3 +29,14 @@ La question 1 est élémentaire.
 
 \Q
 Pour la fonction donnant la permutation (c'est une fonction dite de \textit{partition}), on maintient deux indices $i$ et $j$ tels qu'à tout moment les éléments d'indice compris entre $g$ et $i$ sont tous inférieurs ou égaux à $\alpha$, tandis que les éléments d'indice compris entre $j$ et $d$ sont tous supérieurs ou égaux à $\alpha$.
+
+\lstinputlisting[linerange={6-20}]{\SourceFile}
+
+\newpage
+
+\Q
+Partitionnons le tableau $A$ complet à l'aide de la fonction précédente. Si $\textit{pivot}<n/2$, c'est-à-dire s'il y a plus d'éléments de $A$ supérieurs au pivot que d'éléments inférieurs au pivot, alors la médiane est à droite du pivot, il faut poursuivre la recherche à droite. Dans le cas contraire, il faut poursuivre la recherche à gauche du pivot.
+
+\lstinputlisting[firstline=22]{\SourceFile}
+
+\Fin
