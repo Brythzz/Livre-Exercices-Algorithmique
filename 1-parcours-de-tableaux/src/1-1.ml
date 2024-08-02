@@ -1,24 +1,20 @@
 type case = int * int
 
-let nombremax = 256 in
+let nombremax = 256
 
-let coups = Array.make_matrix nombremax 64 (0,0) in
-let ncases = Array.make nombremax 0 in
+let coups = Array.make_matrix nombremax 64 (0,0)
+let ncases = Array.make nombremax 0
 
-(* Calcule la k-ième case atteignable à partir de la case c
+(* Retourne la k-ième case atteignable à partir de la case c
   selon l'ordre arbitraire de l'énoncé *)
 let case_suivante (c:case) (k:int) : case =
+  assert (1 <= k && k <= 8);
   let i, j = c in
-  match k with
-    | 1 -> i-2, j+1
-    | 2 -> i-1, j+2
-    | 3 -> i+1, j+2
-    | 4 -> i+2, j+1
-    | 5 -> i+2, j-1
-    | 6 -> i+1, j-2
-    | 7 -> i-1, j-2
-    | 8 -> i-2, j-1
-    | _ -> failwith "k invalide"
+  let positions = [|
+    (i-2, j+1); (i-1, j+2); (i+1, j+2); (i+2, j+1);
+    (i+2, j-1); (i+1, j-2); (i-1, j-2); (i-2, j-1)
+  |] in
+  positions.(k-1)
 
 (* Vérifie si la case c a déjà été atteinte, On est à
    l'étape pcour, et on cherche c parmi les cases

@@ -1,3 +1,4 @@
+\newcommand{\SourceFile}{1-parcours-de-tableaux/src/1-1.ml}
 \section{Jeu d'échecs}
 
 Sur un échiquier, on représentera chaque case par ses coordonnées $(i, j)$, la case en bas à gauche étant de coordonnées $(0, 0)$. Sur un tel échiquier, en un coup, un cavalier peut se déplacer de la case $(i, j)$ vers celles d'entre les 8 positions suivantes qui correspondent effectivement à une case de l'échiquier (abscisse et ordonnée comprises entre 0 et 7) : $(i-2, j+1)$, $(i-1, j+2)$, $(i+1, j+2)$, $(i+2, j+1)$, $(i+2, j -1)$, $(i+1, j-2)$, $(i-1, j-2)$ et $(i-2,j-1)$.
@@ -13,16 +14,11 @@ Sur un échiquier, on représentera chaque case par ses coordonnées $(i, j)$, l
 \Q
 Choisissions déjà la structure de données. Définissions un type
 
-\begin{minted}{text}
-type case = int * int
-\end{minted}
+\lstinputlisting[linerange={1}]{\SourceFile}
 
 et donnons-nous une fonction \texttt{est\_valide (c : case) : bool} qui renvoie \texttt{true} si $c$ est bien une case de l'échiquier (i.e $0\leq \texttt{fst c}$, $\texttt{snd c} \leq 7$), et \texttt{false} sinon. Réalisons tout de suite que quel que soit le nombre de coups, on ne pourra jamais atteindre plus de 64 cases et définissons des tableaux
 
-\begin{minted}{text}
-let coups = Array.make_matrix nombremax 64 (0,0) in
-let ncases = Array.make nombremax 0
-\end{minted}
+\lstinputlisting[linerange={5-6}]{\SourceFile}
 
 tel que \texttt{coups[i,j]} désigne la $j$ème des cases atteignables en exactement $i$ coups et \texttt{ncases[i]} le nombre de cases atteignables en exactement $i$ coups - et non atteignables en moins de coups. La seule difficulté de la fonction et de penser à \og faire le ménage \fg en vérifiant, à chaque fois qu'on ajoute une case, si elle n'a pas déjà été atteinte. Il est à noter qu'il suffit de vérifier ceci pour des valeurs de $i$ (numéros des coups) de même parité que le numéro courant : si on part d'une case blanche, en un nombre par de coups, on sera forcément sur une case blanche, et en un nombre impair sur une case noire.
 

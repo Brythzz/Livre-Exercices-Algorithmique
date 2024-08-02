@@ -3,8 +3,6 @@
 \usepackage[french]{babel}
 \usepackage{microtype}
 
-\usepackage{minted}
-
 \usepackage{amsfonts}
 \usepackage{lmodern}
 \fontfamily{lmr}\selectfont
@@ -68,6 +66,20 @@
 
 \usepackage{enumitem}
 \setlist[itemize]{left=0pt..8mm}
+
+
+%%% Style des blocs de code %%%
+
+\usepackage{listingsutf8}
+
+\lstalias{text}{}
+% \newcommand{\ColorLang}{caml}
+\newcommand{\ColorLang}{text}
+
+\lstset{
+  basicstyle=\ttfamily,
+  language=\ColorLang
+}
 
 
 %%% Définitions de macros %%%
