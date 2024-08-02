@@ -35,7 +35,7 @@ Plusieurs variantes permettant de faire moins d'additions en utilisant le \og tr
 \newpage
 
 \Q
-La première idée (idiote!) est de faire une boucle sur $i$, $j$ et $k$ en utilisant le fait que $k^2=i^2+j^2<2i^2$ donc $k<\sqrt{2}i<1,5i$ :
+La première idée (idiote!) est de faire une boucle sur $i$, $j$ et $k$ en utilisant le fait que $i^2 < k^2=i^2+j^2 < 2\times i^2$ donc $i < k < \sqrt{2}\times i < 1,5\times i$ d'où $i+1 \leq k \leq \lfloor 1,5\times i \rfloor$ :
 
 \lstinputlisting[linerange={45-55}]{\SourceFile}
 

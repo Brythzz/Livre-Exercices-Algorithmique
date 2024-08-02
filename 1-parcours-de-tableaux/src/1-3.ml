@@ -60,6 +60,6 @@ let triplets (n:int) =
       let r = float_of_int (i*i + j*j) in
       let k = Float.round (sqrt r) in
       if k*.k = r then
-        Printf.printf "%d %d %f\n" i j k
+        Printf.printf "%d %d %d\n" i j (int_of_float k)
     done
   done
