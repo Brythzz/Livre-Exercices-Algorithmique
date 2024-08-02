@@ -5,8 +5,8 @@ let nombremax = 256
 let coups = Array.make_matrix nombremax 64 (0,0)
 let ncases = Array.make nombremax 0
 
-(* Retourne la k-ième case atteignable à partir de la case c
-  selon l'ordre arbitraire de l'énoncé *)
+(* Retourne la k-ième case atteignable a partir de
+  la case c selon l'ordre arbitraire de l'énoncé *)
 let case_suivante (c:case) (k:int) : case =
   assert (1 <= k && k <= 8);
   let i, j = c in
