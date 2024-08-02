@@ -30,7 +30,7 @@ Très facile avec 3 éléments : on met le plus petit élément en position 1 en
 
 \lstinputlisting[linerange={8-11}]{\SourceFile}
 
-Pour 4 éléments : on classe les paires en position (1, 2) et (3, 4), puis on met les deux plus petits en position 1 et le plus grand des deux plus grands en position 4. Enfin, reste à classer les éléments en positions 2 et 3 :
+Pour 4 éléments : on classe les paires en position (0, 1) et (2, 3), puis on met les deux plus petits en position 0 et le plus grand des deux plus grands en position 3. Enfin, reste à classer les éléments en positions 1 et 2 :
 
 \lstinputlisting[linerange={13-18}]{\SourceFile}
 
@@ -40,7 +40,7 @@ Une autre solution est de trier les 3 premiers éléments (3 comparaisons) puis 
 Avec 5 éléments : trier les 4 premiers éléments puis insérer le cinquième par dichotomie est ici trop coûteux : il faut 3 comparaisons pour insérer un élément dans une liste de taille 4. Cette solution nous coûterait $5+3=8$ comparaisons.
 \medskip
 
-Voici une solution en 7 comparaisons : on prend les 4 premiers éléments, on classe les paires (1, 2) et (3, 4) et on compare les deux plus grands. La situation se résume à l'aide du diagramme :
+Voici une solution en 7 comparaisons : on prend les 4 premiers éléments, on classe les paires (0, 1) et (2, 3) et on compare les deux plus grands éléments. La situation se résume à l'aide du diagramme (où $\texttt{a}\geq\texttt{b}\geq\texttt{c}$ et $\texttt{a}\geq\texttt{d}$) :
 
 \begin{center}
     \begin{tikzpicture}[
@@ -65,15 +65,20 @@ Voici une solution en 7 comparaisons : on prend les 4 premiers éléments, on cl
 \end{center}
 
 On insère alors le cinquième élément $e$ dans la chaîne $a,b,c$ de longueur 3, ce qui coûte 2 comparaisons. Enfin, on insère le quatrième élément $d$ parmi les éléments inférieurs à $a$ dans l'ensemble $a,b,c,e$ ordonné, ce qui coûte deux comparaisons.
+\medskip
 
-\textbf{TODO: Algorithme}
+On commence par définir une fonction utilitaire :
+
+\lstinputlisting[firstline={20}]{\SourceFile}
+
+La fonction est volumineuse mais ne pose pas de difficulté particulière.
 
 \Q
 Pour l'algorithme 1, le décompte est facile : on utilise deux fois la fonction \texttt{tri\_5}, ce qui conduit à 14 comparaisons. Reste à fusionner deux listes triées de 5 éléments. Or la fusion de deux listes triées de tailles respectives $m$ et $n$ requiert $m+n-1$ comparaisons, soit ici 9 comparaisons. On obtient un total de 23 comparaisons.
 \medskip
 
 Pour l'algorithme 2, après les 5 premières comparaisons et la fonction \texttt{tri\_5} appliquée aux 5 plus grands, on a la situation suivante :
-\bigskip
+\vspace{1.5cm}
 
 \begin{center}
     \begin{tikzpicture}[
@@ -110,9 +115,11 @@ Pour l'algorithme 2, après les 5 premières comparaisons et la fonction \texttt
 
     \end{tikzpicture}
 \end{center}
-\bigskip
+
+\newpage
 
 Reste à insérer les 4 éléments $x$, $y$, $z$ et $t$ dans la chaîne ordonnée de longueur 6 $f,e,d,c,b,a$. On commence par insérer $z$ dans $d,e,f$ (2 comparaisons) puis on insère $t$ dans la liste qui comprend $f$, $e$ et éventuellement $z$ (encore deux comparaisons). On a :
+\bigskip
 
 \begin{center}
     \begin{tikzpicture}[
