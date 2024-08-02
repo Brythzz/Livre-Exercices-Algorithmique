@@ -1,0 +1,68 @@
+\renewcommand{\SourceFile}{1-parcours-de-tableaux/src/1-6.ml}
+
+\section{Représentation de permutations}
+
+On dit qu'une permutation $p$ des entiers 0, 1, ..., $n$ est représentée sous forme normale si elle est stockée dans un tableau \texttt{p} tel que \texttt{p.(i)} contienne l'image de \texttt{i} par la permutation.
+
+\Q
+Écrire une fonction qui prend comme entrée une permutation $p$ sous forme normale et calcule le nombre de points fixes de $p$.
+
+\Q
+Écrire une fonction qui prend comme entrée une permutation $p$ sous forme normale et calcule le nombre de cycles de $p$.
+
+\Q
+On dit qu'une permutation est stockée sous forme de cycles si elle est stockée dans un tableau \texttt{c} construit comme suit : on stocke la permutation cycle par cycle, on regarde le plus petit élément de chaque cycle, on ordonne les cycles par ordre décroissant de leur plus petit élément. Par exemple, la permutation :
+
+\begin{center}
+    \begin{tabular}{ |c|c|c|c|c|c|c|c|c| }
+        \hline
+        i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+        \hline
+        p[i] & 6 & 1 & 0 & 7 & 3 & 4 & 2 & 5 \\
+        \hline
+       \end{tabular}
+\end{center}
+
+a trois cycles, l'un réduit à 1, qui est un point fixe, l'autre de longueur 3, avec 0 qui a pour image 6 qui a pour image 2 qui a pour image 0, et le troisième de longueur 4, avec 4 qui a pour image 3 qui a pour image 7 qui a pour image 5 qui a pour image 4. Les plus petits éléments de ces cycles sont respectivement 1, 0 et 3. En écrivant d'abord le cycle qui contient 3, puis celui qui contient 1, puis celui qui contient 0, on obtient le tableau \texttt{c} :
+
+\begin{center}
+    \begin{tabular}{ |c|c|c|c|c|c|c|c|c| }
+        \hline
+        i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+        \hline
+        c[i] & 3 & 7 & 5 & 4 & 1 & 0 & 6 & 2 \\
+        \hline
+       \end{tabular}
+\end{center}
+
+Écrire une fonction qui construit \texttt{c} à partir de \texttt{p}.
+
+\Q
+Montrer que l'application qui a un tableau \texttt{p} associe le tableau \texttt{c} est bijective. Proposer un algorithme qui prend comme entrée une permutation sous forme de cycles et donne en sortie la même permutation représentée sous forme normale. Écrire la fonction correspondante.
+
+\Corrige
+
+\Q
+Fonction élémentaire.
+
+\lstinputlisting[linerange={1-4}]{\SourceFile}
+
+\Q
+On peut par exemple parcourir les cycles un à un, en marquant les nombres comme \og vus \fg{} au fur et à mesure ; on repère qu'un cycle se termine lorsqu'on retombe sur le premier élément du cycle courant. Pour trouver le cycle suivant, on cherche simplement un nombre qui n'a pas encore été vu. La fonction requiert de manipuler deux boucles imbriquées, la boucle intérieure parcourant le cycle et la boucle extérieure allant de cycle en cycle.
+
+\lstinputlisting[linerange={6-22}]{\SourceFile}
+
+\Q
+Un algorithme possible est de parcourir les cycles comme dans la question 2, en remplissant en même temps un tableau \og min \fg{} tel que \texttt{min[j]} contienne le plus petit élément du j-ième cycle. Puis on fait un deuxième parcours des cycles pour remplir le tableau de sortie : le premier cycle à parcourir sera celui tel que \texttt{min[j]} soit maximal, et ainsi de suite jusqu'à avoir écrit tous les cycles.
+
+\lstinputlisting[linerange={24-64}]{\SourceFile}
+
+\Q
+La seule question pour savoir si la transformation de la question 3 est réversible est de décider comment séparer le tableau en cycles : ensuite, chaque cycle est écrit dans l'ordre ($i$, $p(i)$, $p(p(i))$, etc.), donc il est facile de reconstruire $p$. Pour faire la séparation des cycles, il suffit de remarquer que l'ordre dans lequel on a écrit les cycles, chaque cycle commençant par son plus petit élément et les cycles étant écrits dans l'ordre décroissant, assure que dans un tableau \texttt{c} donnant une permutation sous forme de cycles, $j=c(i)$ est le début d'un nouveau cycle si et seulement si $j$ est minimal parmi $c(0)$, $c(1)$, ..., $c(i)$. Donc l'application est bien inversible.
+\medskip
+
+La fonction de passage à une forme normale est en fait nettement plus simple que celle de la question 3. Il suffit de parcourir \texttt{c} en gardant en mémoire le minimum des valeurs vues jusqu'à présent, et en remarquant que $p(c(i))=c(i+1)$ sauf en bout de cycle.
+
+\lstinputlisting[firstline=66]{\SourceFile}
+
+\Fin
