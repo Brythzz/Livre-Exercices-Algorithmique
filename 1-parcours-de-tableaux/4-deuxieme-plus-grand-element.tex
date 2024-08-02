@@ -1,0 +1,42 @@
+\renewcommand{\SourceFile}{1-parcours-de-tableaux/src/1-4.ml}
+
+\vspace{16pt}
+\section{Deuxième plus grand élément}
+
+Soit $T$ un tableau unidimensionnel d'entiers de taille $n\geq 1$. On cherche à déterminer l'indice du deuxième plus grand élément de $T$ (celui qui viendrait en deuxième position si on rangeait les éléments de $T$ par ordre décroissant).
+
+\Q
+Écrire une fonction OCaml qui calcule l'indice du deuxième plus grand élément de $T$ en parcourant une fois le tableau $T$.\\
+QUel nombre de comparaisons entre éléments du tableau effectue votre fonction ?
+
+\Q
+Pour imaginer une meilleure solution, penser à un tournoi de tennis. Le deuxième meilleur joueur n'est pas forcément le finaliste mais figure parmi les adversaires du gagnant. Pourquoi ?\\
+Donner un algorithme qui utilise cette analogie, et déterminer le nombre de comparaisons entre élémentts du tableau qu'il effectue.\\
+Écrire alors la fonction OCaml correspondante.
+
+\Corrige
+
+\Q
+Première solution évidente :
+
+\lstinputlisting[linerange={1-11}]{\SourceFile}
+
+Les $n-2$ comparaisons \texttt{t.(i) > !max\_1} sont toujours effectuées. Les $n-2$ comparaisons \texttt{t.(i) > !max\_2} le sont aussi dans le pire cas d'un tableau décroissant. Avec les comparaisons implicites de \texttt{min} et \texttt{max} (une seule suffirait mais serait moins lisible), on arrive à $2n-3$, ce qui est intuitif : il faut $n-1$ comparaisons pour trouver le plus grand parmi $n$ (chacun sauf le plus grand doit avoir été comparé à plus grand que lui) et $n-2$ pour trouver le plus grand parmi les $n-1$ éléments restants (même argument).
+
+\Q
+C'est clair : tout autre joueur que le gagnant et ses adversaires malheureux est de classement $\geq 3$ puisqu'on connaît deux meilleurs joueurs que lui.
+\medskip
+
+Pour l'algorithme, on simule un tournoi de tennis. On transforme les éléments du tableau en feuilles puis on les fusionne en mettant l'indice du plus grand élément des deux à la racine. En itérant jusqu'à n'obtenir qu'un seul arbre, on crée effectivement un arbre de tournoi dont l'indice du vainqueur est la racine.
+\medskip
+
+On effectuera $n-1$ comparaisons pour trouver le gagnant (maximum) car chaque match élimine un joueur. On cherche alors le maximum parmi les $\lceil \log_2 n \rceil$ joueurs battus par le gagnant.
+\medskip
+
+On commence par définir un type d'arbre et une fonction utilitaire :
+
+\lstinputlisting[linerange={13-16}]{\SourceFile}
+
+\lstinputlisting[firstline=18]{\SourceFile}
+
+\Fin
