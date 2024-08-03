@@ -69,9 +69,43 @@ Donner un algorithme de construction de $w_n$ à partir de $w_{n-1}$. Écrire un
 Écrire une fonction qui prend pour entrée un entier $n$ et renvoie une liste contenant la représentation binaire de $n$, poids fort en tête.
 
 \Q
-Les mots de la suite de pliage étant préfixes les uns des autres, on peut considérer le mot infini $w$ dont ils sont tous préfixes. Proposer un algorithme qui prend pour entrée la représentation binaire de $n$ et donne en sortie le $n$-ième bit de $w$.
+Les mots de la suite de pliage étant préfixes les uns des autres, on peut considérer le mot infini $w$ dont ils sont tous préfixes. Proposer un algorithme qui prend pour entrée un entier $n$ et renvoie le $n$-ième bit de $w$.
 
 \Corrige
 
 \Q
-Si on considère
+Si on considère les intervalles entre les plis (y compris les côtés de la feuille), on a 1 intervalle, puis 2, puis 4, etc. ; à chaque étape, chaque intervalle est coupé en deux et le nombre d'intervalles double. Après $n$ étapes, il y a donc $2^n$ intervalles, et le nombre de plis est $2^n-1$.
+
+\Q
+Déchirons le papier le long du pli de la première étape et débarrassons-nous de la moitié de droite : la $k$-ième étape de pliage du papier initial est comme la $(k-1)$-ième étape de pliage du demi-papier, et donc $w_{k-1}$ forme la moitié gauche de $w_k$.
+
+\Q
+Le pli du milieu est un creux et donc donne un 0 au milieu de $w_n$. Le demi-papier droit est plié, après la première étape, comme le demi-papier gauche, sauf qu'il est tourné dans l'autre sens. Soit $\textrm{r}(w)$ le mot obtenu à partir d'un mot $w$ en lisant les chiffres de droite à gauche, et $\textrm{c(w)}$ le mot obtenu à partir de $w$ en remplaçant chaque 0 par un 1 et chaque 1 par un 0 : on a la relation de récurrence
+\[
+    w_n = w_{n-1}\,0\,\textrm{c}(\textrm{r}(w_{n-1}))
+\]
+De cette relation, se déduit facilement la fonction permettant de construire $w_n$.
+
+\lstinputlisting[linerange={1-5}]{\SourceFile}
+
+\Q
+Question classique et accessible à tous.
+
+\lstinputlisting[linerange={7-12}]{\SourceFile}
+
+\Q
+On peut trouver un autre point de vue pour construire $w_k$ par récurrence à partir de $w_{k-1}$ : on intercale un nouveau pli entre chaque paire de plis consécutifs de $w_{k-1}$, et ce pli est alternativement 0 ou 1, le premier étant 0. Ainsi : $w_k=0x1x0x...x1$, si $w_{k-1}=xxx...xx$. Donc le $n$-ième bit de $w$ est facile à trouver si $n$ est impair : c'est 0 si $n$ est congru à 1 modulo 4 et c'est 1 si $n$ est congru à 3 modulo 4. Si $n$ est pair, on divise $n$ par deux et on remarque que le $n$-ième bit de $w_k$ est le $(n/2)$-ième bit de $w_{k-1}$, donc si $n/2$ est impair, il suffit encore une fois de tester si $n/2$ est congru à 1 ou à 3 modulo 4. Si $n/2$ est est pair, on redivise par deux, et ainsi de suite. Lorsque $n$ est écrit en binaire, on regarde son bit le plus à droite (celui de poids le plus faible), puis le bit immédiatement à sa gauche, et ainsi de suite jusqu'à trouver un bit égal à 1. Soit $x$ le $n$-ième bit de $w$. On a :\\
+Si $n=1~0~0~...~0$, alors $x=0$.\\
+Si $n=*~*~...~*~0~1~0~0~...~0$, alors $x=0$.\\
+Si $n=*~*~...~*~1~1~0~0~...~0$, alors $x=1$.\\
+Ceci donne un programme extrêmement simple.
+
+TODO: Vérifier cet algorithme
+\lstinputlisting[firstline=14]{\SourceFile}
+\medskip
+
+Des études du genre de celle faite dans cet exercice peuvent servir à montrer des propriétés d'algébricité ou de transcendance du nombre étudié. C'est actuellement un domaine actif de recherche en France. On obtient une suite de courbes $(C_n)$ approximant une courbe de Peano (c'est-à-dire une courbe qui remplit le plan), définie à partir de $(w_n)$, en dessinant un segment de longueur $1/2^{n/2}$ pour chaque bit lu, et en tournant à droite (d $+\pi/2$) ou à gauche (de $-\pi/2$) à chaque pas, selon que le bit lu est 0 ou 1. Le premier segment est dessiné dans la direction $\pi/4$. La figure suivante illustre les premiers pas :
+
+TODO: Figures des courbes
+
+\Fin
