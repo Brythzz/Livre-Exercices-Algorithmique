@@ -1,0 +1,75 @@
+\renewcommand{\SourceFile}{1-parcours-de-tableaux/src/1-7.ml}
+
+\section{Permutations}
+
+On considère un ensemble $E=\{0,...,N-1\}$. On représente une permutation $p$ de $E$ par un tableau \texttt{p} de taille $N$ tel que l'image d'un élément $i$ de $E$ est \texttt{p.(i)}.
+
+\Q
+Écrire un algorithme qui, étant donné un tableau \texttt{p}, vérifie que \texttt{p} représente effectivement une permutation de $E$.
+
+\Q
+Écrire un algorithme qui décompose une permutation en cycles.
+
+\Q
+On ordonne les permutations par ordre lexicographique (l'ordre du dictionnaire). Par exemple, si $N=4$, $0123<0213<1230<2013$. Écrire un algorithme qui associe à chaque permutation \texttt{p} la permutation suivante dans l'ordre lexicographique (quand elle existe). On pourra utiliser le plus grand entier $i$ tel que $p(i)<p(i+1)$.
+
+\Q
+Écrire un algorithme qui énumère toutes les permutations de $E$.
+
+\Corrige
+
+\Q
+Il serait particulièrement maladroit de tester successivement si tous les nombres de 0 à $N-1$ sont dans \texttt{p}. Une solution simple consiste à marquer les images rencontrées.
+
+\lstinputlisting[linerange={1-6}]{\SourceFile}
+
+\Q
+Comme d'habitude, la bonne idée est de procéder comme on le ferait \og à la main \fg{}. On part de 0 et on regarde ses images successives par la permutation en marquant tous les entiers rencontrés. On s'arrête lorsque l'on retombre sur 0. Puis on recommence avec le premier entier non marqué.
+\medskip
+
+Exemple : Soit la permutation $\begin{pmatrix}
+    0 & 1 & 2 & 3 & 4 & 5 \\
+    4 & 1 & 0 & 5 & 2 & 3
+\end{pmatrix}$.
+On trouve un premier cycle (0~4~2). Le premier élément non marqué est 1, on trouve un second cycle (1). Le premier élément non marqué est 3, on trouve le troisième et dernier cycle (3~5).
+
+\lstinputlisting[linerange={7-23}]{\SourceFile}
+
+\Q
+La difficulté est de comprendre comment on calcule le suivant d'une permutation dans l'orde lexicographique.
+\medskip
+
+\begin{tabular}{ l l }
+    Exemple : & le suivant de 0 1 3 2 est 0 2 1 3 \\
+     & le suivant de 0 2 1 3 est 0 2 3 1 \\
+     & le suivant de 1 2 3 0 est 1 3 0 2
+\end{tabular}
+\medskip
+
+Il faut donc chercher le plus grand entier $i$ tel que $p(i)$, ..., $p(N-1)$ contienne un élément plus grand que $p(i)$. Il est très facile de voir que cela revient à chercher, comme indiqué dans l'énoncé, le plus grand entier $i$ tel que $p(i)<p(i+1)$. Le suivant est alors obtenu en remplaçant $p(i)$ par le plus petit élément qui lui soit supérieur parmi $p.(i+1)$, ..., $p.(N-1)$. On complète la permutation en triant par ordre croissant les éléments restants.
+\medskip
+
+Exemple : Pour $p = 0~1~3~2$, le plus grand élément tel que $p(i)<p(i+1)$ est 1. On remplace 1 par le plus petit élément plus grand que 1 parmi 3 et 2, soit 2. On trie les nombres restants (2 et 3) par ordre croissant. On obtient ainsi 0 2 1 3.
+\medskip
+
+Pour éviter d'avoir une fonction de tri à écrire, on peut également marquer les éléments recontrés dans la recherche du plus grand i tel que $p(i)<p(i+1)$.
+\medskip
+
+Le programme de calcul de la permutation $q$ suivant dans l'ordre lexicographique une permutation $p$ fixée va suivre la méthode décrite ci-dessus. La fonction \texttt{max\_croit} renvoie le plus grand entier $i$ tel que $p(i)<p(i+1)$ si un tel entier existe, $-1$ sinon.
+
+\lstinputlisting[linerange={25-31}]{\SourceFile}
+
+La fonction \texttt{inf} renvoie le plus petit entier parmi \texttt{p.(k+1)}, ..., \texttt{p.(N-1)} qui est plus grand que \texttt{p.(k)}.
+
+\lstinputlisting[linerange={33-40}]{\SourceFile}
+
+On a finalement la fonction calculant la permutation suivant \texttt{p} :
+
+\lstinputlisting[linerange={42-72}]{\SourceFile}
+
+\Q
+Il suffit d'appliquer l'algorithme de la question précédente de manière itérative à partir de la permutation identité.
+
+\lstinputlisting[firstline=74]{\SourceFile}
+
+\Fin
