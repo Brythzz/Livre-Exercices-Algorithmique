@@ -1,0 +1,103 @@
+\renewcommand{\SourceFile}{2-jouer-avec-les-mots/src/2-1.ml}
+
+\section{Réécriture de mots}
+
+On considère les mots écrits sur l'alphabet \{a, b, A, B\}, tel que $w=$abbaBabAA par exemple. Soit $\varepsilon$ le mot vide. On dit que deux mots $u$ et $v$ sont en relation si on peut réécrire des parties de $u$ de façon à obtenir $v$ après une suite de transformations effectuées en suivant les règles suivantes :
+
+\begin{center}
+    \begin{tabular}{ r c l }
+        aA & $\rightarrow$ & $\varepsilon$ \\
+        Aa & $\rightarrow$ & $\varepsilon$ \\
+        $\varepsilon$ & $\rightarrow$ & aA \\
+        $\varepsilon$ & $\rightarrow$ & Aa \\
+        bB & $\rightarrow$ & $\varepsilon$ \\
+        Bb & $\rightarrow$ & $\varepsilon$ \\
+        $\varepsilon$ & $\rightarrow$ & bB \\
+        $\varepsilon$ & $\rightarrow$ & Bb \\
+        aab & $\rightarrow$ & baa \\
+        baa & $\rightarrow$ & aab \\
+        bba & $\rightarrow$ & abb \\
+        abb & $\rightarrow$ & bba \\
+    \end{tabular}
+\end{center}
+
+Par exemple :
+\begin{center}
+    \begin{tabular}{ r l }
+         & aababaabAAABBB \\
+        $\rightarrow$ & aababbaaAAABBBB \\
+        $\rightarrow$ & aababbABBB \\
+        $\rightarrow$ & aababbABBB \\
+        $\rightarrow$ & aabbbaABBB \\
+        $\rightarrow$ & aa \\
+    \end{tabular}
+\end{center}
+
+\Q
+Montrer que cette relation est une relation d'équivalence. Montrer que aa et AA commutent avec toutes les lettres.
+
+\Q
+Montrer que tout mot $w$ est équivalent à un mot $xyz$ (formé de trois mots $x$, $y$ et $z$ mis bout à bout), où : $x$ est de la forme aa...aa ou AA...AA et de longueur paire, $y$ est de la forme bb...bb ou BB...BB et de longueur paire, $z$ de la forme ababa...bab, ou ba...bab, ou ab...aba, ou ba...ba, c'est-à-dire alterne les lettres a et b, commençant par a ou b et finissant par a ou b. Un mot de la forme $xyz$ est dit canonique.
+
+\Q
+Proposer un codage des mots canoniques sous forme de triplets d'entiers.
+
+\Q
+Écrire une fonction \texttt{forme3 (w:string) : bool} qui prend en entrée un mot $w$ et teste si $w$ est un mot alternant les lettres a et b, c'est-à-dire de la forme de $z$.
+
+\Q
+Écrire une fonction \texttt{ajouter\_a (iu, ju, ku: int * int * int) : (int * int * int)} qui prend en entrée un mot canonique $u$, codé par un triplet \texttt{(iu, ju, ku)}, et donne en sortie le codage \texttt{(iv, jv, kv)} du mot $v=u$a.
+
+\Q
+Écrire une fonction \texttt{representant\_canonique (w:string) : (int * int * int)} qui prend pour entrée un mot quelconque $w$ et donne en sortie un triplet \texttt{(i, j, k)} codant un mot canonique équivalent à $w$.
+
+\Corrige
+
+\Q
+Réflexivité : il suffit de prendre une suite de transformations réduite à l'ensemble vide.\\
+Symétrie : pour chaque règle, la transformation inverse est dans l'ensemble des règles donc toute suite de transformations peut être inversée.\\
+Transitivité : évidente.\\
+On a donc une relation d'équivalence.
+\bigskip
+
+Commutation de aa avec toutes les lettres : aa commute évidemment avec a.\\
+aaA $\rightarrow$ a $\rightarrow$ Aaa, donc aa commute avec A.\\
+aab $\rightarrow$ baa est une règle, donc aa commute avec b.\\
+aaB $\rightarrow$ BbaaB $\rightarrow$ BaabB $\rightarrow$ Baa, donc aa commute avec B.
+\bigskip
+
+Commutation de AA avec toutes les lettres : AAa $\rightarrow$ A $\rightarrow$ aAA, donc AA commute avec a.\\
+AA commute évidemment avec A.\\
+AAb $\rightarrow$ AAbaaAA $\rightarrow$ AAaabAA $\rightarrow$ bAA, donc AA commute avec b.\\
+AAB $\rightarrow$ AABaaAA $\rightarrow$ AAaaBAA $\rightarrow$ BAA, donc AA commute avec B.
+\medskip
+
+Remarquons que, de façon symétrique, bb et BB commutent également avec toutes les lettres.
+
+\Q
+Pour transformer $w$, on commence par bouger toutes les suites de deux lettres consécutives identiques et les mettre au début du mot, les aa et AA précédant les bb et BB, et par simplifier toutes les occurrences de aA, Aa, bB ou Bb. On se retrouve avec un mot commençant par des aa et AA, continuant avec des bb et BB, et se terminant avec un mot qui alterne des a ou A avec des b ou B. On remplace alors chaque A par AAa et chaque B par BBb, puis on ramène les AA et les BB plus au début : on se retrouve avec une suite de aa et de AA, suivie d'une suite de bb et de BB, suivie d'un mot de la forme de $z$. En simplifiant les aaAA, les AAaa, les bbBB et les BBbb, on obtient mot $xyz$ de la forme requise. Notons qu'il n'est pas demandé ici de montrer l'unicité de cette écriture.
+
+\Q
+On peut coder $x$ par un entier $i$, positif si x contient des aa et négatif s'il contient des AA, et de valeur absolue égale au nombre de lettres de $x$. De même, $y$ peut être codé par un entier $j$. On peut coder $z$ par un entier $k$, positif si $z$ commence par un a et négatif si $z$ commence par un b, et de valeur absolue égale au nombre de lettres de $z$.
+
+\Q
+Supposons la longueur de $w$ supérieure ou égale à 1. On regarde la première lettre de $w$, puis on teste si les suivantes alternes, en s'arrêtant dès qu'on trouve une erreur ou qu'on a parcouru tout le mot.
+
+\lstinputlisting[linerange={1-11}]{\SourceFile}
+\newpage
+
+\Q
+La fonction n'est pas difficicle mais demande un peu d'attention pour ne pas faire d'étourderie : il est particulièrement recommandé d'écrire d'abord l'algorithme en détail. Si $z$ est non vide et se termine par un b : \texttt{ku} strictement positif et pair ou strictement négatif et impair ; alors $z$ s'allonge d'une lettre : \texttt{ku} augmente de 1 dans le premier cas et diminue de 1 dans le deuxième cas. Si $z$ est non vide et se termine par un a : \texttt{ku} strictement positif et impair ou strictement négatif et pair ; alors $z$ raccourcit d'une lettre et $x$ change : \texttt{ku} diminue de 1 dans le premier cas et augmente de 1 dans le second cas, et \texttt{iu} augmente de 2 s'il était positif et diminue de 2 s'il était strictement négatif. Si $z$ est vide : $\texttt{ku}=0$ ; alors \texttt{ku} devient égal à 1. D'où la fonction suivante :
+
+\lstinputlisting[linerange={13-23}]{\SourceFile}
+
+\Q
+On peut supposer qu'on dispose des fonctions \texttt{ajouter\_b}, \texttt{ajouter\_A} et \texttt{ajouter\_B} similaires à celle de la question 5. Il est alors facile d'ajouter des lettres une par une pour construire un mot canonique pour chaque préfixe de $w$ et finalement pour $w$.
+
+\lstinputlisting[linerange={30-39}]{\SourceFile}
+\medskip
+
+La relation d'équivalence étudiée dans cet exercice correspond à un groupe donné par une permutation finie : les éléments sont les classes d'équivalence de la relation définie à la question 1, et on peut facilement vérifier que cette relation est compatible avec la concaténation. L'étude faite ici consiste en la construction d'une \og structure automatique \fg{} pour le groupe, permettant de calculer un représentant distingué de la classe du produit de deux éléments donnés. L'étude de groupes automatiques est un domaine de recherche récent et actif en mathématiques.
+\bigskip
+
+\Fin
