@@ -1,0 +1,33 @@
+\renewcommand{\SourceFile}{2-jouer-avec-les-mots/src/2-2.ml}
+
+\section{Pliage de papier}
+
+On prend une feuille de papier et on la plie $n$ fois dans le sens vertical, en repliant à chaque fois la moitié droite sur la gauche. Les plis de la feuille, une fois redépliée, sont une suite de creux et de bosses. Voir figure :
+
+
+\Q
+Combien y a-t-il de plis à la n-ième étape ?
+
+\Q
+On représente chaque étape du pliage par un mot. Un creu est codé par un 0 et une bosse par un 1. Ainsi : $w_0=\varepsilon$ (mot vide)\\
+$w_1=0$\\
+$w_2=001$\\
+$w_3=0010011$\\
+\dots
+\medskip
+
+Montrer que $w_i$ est toujours un préfixe de $w_{i+1}$, c'est à dire que le début de $w_{i+1}$ coïncide avec $w_i$.
+
+\Q
+Donner un algorithme de construction de $w_n$ à partir de $w_{n-1}$. Écrire une fonction de calcul de $w_n$. On prendra comme entrée $n$ et on renverra une liste \texttt{w} d'entiers remplie adéquatement.
+
+\Q
+Écrire une fonction qui prend pour entrée un entier $n$ et renvoie une liste contenant la représentation binaire de $n$, poids fort en tête.
+
+\Q
+Les mots de la suite de pliage étant préfixes les uns des autres, on peut considérer le mot infini $w$ dont ils sont tous préfixes. Proposer un algorithme qui prend pour entrée la représentation binaire de $n$ et donne en sortie le $n$-ième bit de $w$.
+
+\Corrige
+
+\Q
+Si on considère
