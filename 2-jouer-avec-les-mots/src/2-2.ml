@@ -11,10 +11,11 @@ let binaire (n:int) : (int list) =
   in
   if n = 0 then [0] else aux n []
 
-let bit (n:int) : int =
-  assert(n > 0);
-  let n = ref n in
-  while !n mod 2 = 0 do
-    n := Int.shift_right !n 1
-  done;
-  if !n mod 4 = 1 then 0 else 1
+let bit (nbin:int list) : int =
+  let rev = List.rev nbin in
+  let rec aux bin = match bin with
+    | 1::1::_ -> 1
+    | 1::0::_ | [1] -> 0
+    | 0::q -> aux q
+    | _ -> failwith "entrée invalide"
+  in aux rev

@@ -69,7 +69,7 @@ Donner un algorithme de construction de $w_n$ à partir de $w_{n-1}$. Écrire un
 Écrire une fonction qui prend pour entrée un entier $n$ et renvoie une liste contenant la représentation binaire de $n$, poids fort en tête.
 
 \Q
-Les mots de la suite de pliage étant préfixes les uns des autres, on peut considérer le mot infini $w$ dont ils sont tous préfixes. Proposer un algorithme qui prend pour entrée un entier $n$ et renvoie le $n$-ième bit de $w$.
+Les mots de la suite de pliage étant préfixes les uns des autres, on peut considérer le mot infini $w$ dont ils sont tous préfixes. Proposer un algorithme qui prend pour entrée la représentation binaire de $n$ et renvoie le $n$-ième bit de $w$.
 
 \Corrige
 
@@ -98,14 +98,49 @@ On peut trouver un autre point de vue pour construire $w_k$ par récurrence à p
 Si $n=1~0~0~...~0$, alors $x=0$.\\
 Si $n=*~*~...~*~0~1~0~0~...~0$, alors $x=0$.\\
 Si $n=*~*~...~*~1~1~0~0~...~0$, alors $x=1$.\\
+Car un nombre se terminant par 0~1 est congru à 1 modulo 4 et un nombre se terminant par 1~1 à 3 modulo 4.
 Ceci donne un programme extrêmement simple.
 
-TODO: Vérifier cet algorithme
 \lstinputlisting[firstline=14]{\SourceFile}
 \medskip
 
 Des études du genre de celle faite dans cet exercice peuvent servir à montrer des propriétés d'algébricité ou de transcendance du nombre étudié. C'est actuellement un domaine actif de recherche en France. On obtient une suite de courbes $(C_n)$ approximant une courbe de Peano (c'est-à-dire une courbe qui remplit le plan), définie à partir de $(w_n)$, en dessinant un segment de longueur $1/2^{n/2}$ pour chaque bit lu, et en tournant à droite (d $+\pi/2$) ou à gauche (de $-\pi/2$) à chaque pas, selon que le bit lu est 0 ou 1. Le premier segment est dessiné dans la direction $\pi/4$. La figure suivante illustre les premiers pas :
 
-TODO: Figures des courbes
+\begin{center}
+\begin{tikzpicture}[scale=.8]
+    \draw (0,0) -- (3,0);
+
+    \node[font=\ttfamily, above=.1cm of {1.2,0}] {C0};
+\end{tikzpicture}\hspace{2cm}
+\begin{tikzpicture}[rotate=45, scale=.8]
+    \draw (0,2.1) -- (2.1,2.1);
+    \draw (2.1,2.1) -- (2.1,0);
+
+    \node[font=\ttfamily, below=.1cm of {1.6,1.4}] {C1};
+\end{tikzpicture}
+\vspace{1cm}
+
+\begin{tikzpicture}[scale=.8]
+    \draw (0,0) -- (0,1.5);
+    \draw (0,1.5) -- (1.5,1.5);
+    \draw (1.5,1.5) -- (1.5,0);
+    \draw (1.5,0) -- (3,0);
+
+    \node[font=\ttfamily, above=.1cm of {1,0}] {C2};
+\end{tikzpicture}\hspace{2cm}
+\begin{tikzpicture}[rotate=45, scale=.8]
+    \draw (0,2.2) -- (0,3.3);
+    \draw (0,3.3) -- (1.1,3.3);
+    \draw (1.1,3.3) -- (1.1,2.2);
+    \draw (1.1,2.2) -- (2.2,2.2);
+    \draw (2.2,2.2) -- (2.2,1.1);
+    \draw (2.2,1.1) -- (1.1,1.1);
+    \draw (1.1,1.1) -- (1.1,0);
+    \draw (1.1,0) -- (2.2,0);
+
+    \node[font=\ttfamily, below=.1cm of {.9,2}] {C3};
+\end{tikzpicture}
+\end{center}
+\medskip
 
 \Fin
