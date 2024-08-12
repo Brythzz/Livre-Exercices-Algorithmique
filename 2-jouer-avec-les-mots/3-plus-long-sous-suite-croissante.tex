@@ -1,0 +1,37 @@
+\renewcommand{\SourceFile}{2-jouer-avec-les-mots/src/2-3.ml}
+
+\section{Plus longue sous-suite croissante}
+
+Une suite finie d'entiers $(a_i)_{1\leq i \leq n}$ est représentée par un tableau d'entiers \texttt{a} en OCaml.
+\medskip
+
+On cherche la longueur de la (ou les) plus longue(s) sous-suite(s) croissante(s) (au sens large) de la suite d'entiers. Par exemple, si $n=9$, et si les termes de la suite sont 1, 2, 6, 4, 5, 11, 9, 12, 9, la longueur cherchée est 6, et elle est atteinte par les sous-suites croissantes :
+\begin{itemize}
+    \item 1, 2, 4, 5, 11, 12
+    \item 1, 2, 4, 5, 9, 12
+    \item 1, 2, 4, 5, 9, 9
+\end{itemize}
+
+\Q
+Écrire une fonction donnant la longueur de la plus longue sous-suite croissante de la suite \texttt{a}. Estimer le nombre de comparaisons que demande votre fonction. Pourriez-vous l'améliorer ?
+
+\Q
+Modifiez votre fonction de manière à pouvoir afficher la plus longue (ou une des plus longues s'il y en a plusieurs de longueur maximale) sous-suites croissantes de \texttt{a}.
+
+\Corrige
+
+\Q
+Il suffit de procéder par étapes, en ajoutant les éléments de \texttt{a} au fur et à mesure. Définissons un tableau \texttt{l} tel que \texttt{l.(p)} est la longueur de la plus longue sous-suite se terminant par \texttt{a.(p)}. Une plus longue sous-suite croissante se terminant par \texttt{a.(p)} est soit formée uniquement de \texttt{a.(p)} si pour tout $i < p$, on a \texttt{a.(i) > a.(p)}, soit obtenue en ajoutant \texttt{a.(p)} à la plus longue des plus longues sous-suites se terminant par un \texttt{a.(i)} tel que $i < p$ et \texttt{a.(i) < a.(p)}. À la fin, il ne reste plus qu'à chercher le plus grand des \texttt{l.(i)}, $1 \leq i \leq n$. Ceci nous donne la fonction suivante :
+
+\lstinputlisting[linerange={1-19}]{\SourceFile}
+
+On fait 2 fois $1 + 2 + ... + (n-1)$, soit $n(n-1)$ tests plus les $n-1$ derniers tests de la dernière boucle \og for \fg{}. Ceci donne $(n+1)(n-1)$ tests. On peut gagner un peu de temps en classant \texttt{l} non par ordre croissant des valeurs de \texttt{p} mais par ordre croissant des valeurs de \texttt{a.(p)} et en simulant une structure dynamique pour insérer un nouvel élément sans devoir tout déplacer. Ce sera un peu lourd !
+
+\Q
+On peut dans un premier temps créer un matrice auxiliaire \texttt{s} telle que \texttt{s.(p).(i)} contient le $i$-ième élément d'une plus longue sous-suite croissante se terminant par \texttt{a.(p)} (note : pas besoin d'une \og marque de fin \fg{}, on sait que le dernier élément est \texttt{a.(p)} et on connait la longueur d'une telle sous-suite, c'est \texttt{l.(p)}). Il est plus malin de remarquer que si l'élément qui précède \texttt{a.(p)} dans une telle sous-suite est \texttt{a.(i)}, alors la sous-suite correspondante s'obtient en ajoutant \texttt{a.(p)} à la plus longue sous-suite qui se termine par \texttt{a.(i)}. Il suffit donc de mémoriser $i$. On obtient alors, en déclarant un tableau \texttt{precedent} :
+
+\lstinputlisting[firstline=21]{\SourceFile}
+
+Cette fonction affichera une plus longue sous-suite à l'envers. L'afficher à l'endroit n'est pas difficile.
+
+\Fin
