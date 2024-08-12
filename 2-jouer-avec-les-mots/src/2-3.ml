@@ -1,4 +1,4 @@
-let longueur_sous_suite a =
+let longueur_sous_suite (a:int array) : int =
   let n = Array.length a in
   let l = Array.make n 0 in
   l.(0) <- 1;
@@ -18,7 +18,7 @@ let longueur_sous_suite a =
   done;
   !longueur
 
-let afficher_sous_suite a =
+let afficher_sous_suite (a:int array) : unit =
   let n = Array.length a in
   let l = Array.make n 0 in
   let precedent = Array.make n 0 in
