@@ -44,9 +44,9 @@ Supposons que l'appel à \texttt{String.equal} renvoie false lors de la comparai
     \end{tabular}
 \end{center}
 
-On va donc ensuite comparer la chaîne de caractères $(u_{i+1}, u_{i+2}, ..., u_{i+j})$ à $v$. Pour que cet appel renvoie $true$, il faut en particulier que $v_1=v_2$, ..., $v_{j-2}=v_{j-1}$. Ces égalités signifient exactement que $Bord(v_1...v_{j-1})=v_1...v_{j-2}$. Ainsi, si $Bord(v_1...v_{j-1}) \neq v_1...v_{j-2}$, il est inutile d'appeler \texttt{String.equal} avec la chaîne de caractères $(u_{i+1}$, $u_{i+2}$, ..., $u_{i+j})$. De façon identique, on voit que si $Bord(v_1...v_{j-1}) \neq v_1...v_{j-3}$, l'appel à \texttt{String.equal} avec la chaîne de caractères $(u_{i+2}, u_{i+3}, ..., u_{i+j+1})$ est inutile. En répétant le raisonnement, il apparaît que le premier appel qui ne soit pas voué à l'échec est celui où $u_{i+j-1}$ est comparé à $v_{i+B(j-1)}$. Cette remarque conduit alors au nouvel algorithme suivant, où on suppose la fonction \texttt{b} correspondant à $B$ définie :
+On va donc ensuite comparer la chaîne de caractères $(u_{i+1}, u_{i+2}, ..., u_{i+j})$ à $v$. Pour que cet appel renvoie $true$, il faut en particulier que $v_1=v_2$, ..., $v_{j-2}=v_{j-1}$. Ces égalités signifient exactement que $Bord(v_1...v_{j-1})=v_1...v_{j-2}$. Ainsi, si $Bord(v_1...v_{j-1}) \neq v_1...v_{j-2}$, il est inutile d'appeler \texttt{String.equal} avec la chaîne de caractères $(u_{i+1}$, $u_{i+2}$, ..., $u_{i+j})$. De façon identique, on voit que si $Bord(v_1...v_{j-1}) \neq v_1...v_{j-3}$, l'appel à \texttt{String.equal} avec la chaîne de caractères $(u_{i+2}, u_{i+3}, ..., u_{i+j+1})$ est inutile. En répétant le raisonnement, il apparaît que le premier appel qui ne soit pas voué à l'échec est celui où $u_{i+j-1}$ est comparé à $v_{1+B(j-1)}$. Cette remarque conduit alors au nouvel algorithme suivant, où on suppose la fonction \texttt{b} correspondant à $B$ définie :
 
-\lstinputlisting[linerange={29-43}]{\SourceFile}
+\lstinputlisting[linerange={51-64}]{\SourceFile}
 
 Le nombre maximal de comparaisons peut être évalué comme suit. Appelons \og positif \fg{} un test $u_i=v_j$ évalué à $true$ et négatif un test $u_i=v_j$ évalué à $false$. Lors d'un test positif, $i$ augmente, il y a donc au plus $n$ tests positifs. Lors d'un test négatif, la quantité $i-j$ augmente : elle vaut 0 au commencement de l'algorithme et au plus $n$ lorsque l'algorithme se termine. Ainsi, il y a également au plus $n$ tests négatifs. En conclusion, ce second algorithme effectue donc au plus $2n$ comparaisons.
 
@@ -60,8 +60,7 @@ Supposons calculés $B(1)$, ..., $B(h-1)$. D'après l'indication donnée dans l'
 \]
 Il est clair que la longueur des mots $Bord^i(v_1...v_{h-1})v_h$ décroit (au sens large) lorsque $i$ croit. Ainsi, il faut d'abord tester si $Bord(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$, puis si ce n'est pas le cas, si $Bord^2(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$, etc. En remarquant que $Bord(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$ si et seulement si $v_h=v_{1+B(h-1)}$, on est amenés naturellement à l'algorithme suivant, renvoyant le tableau $[B(1), B(2), ..., B(k)]$ :
 
-TODO: Fix the indexes and use the function from Q3 to test the answer for Q2
-\lstinputlisting[firstline=45]{\SourceFile}
+\lstinputlisting[linerange=26-46]{\SourceFile}
 
 En considérant la quantité $h-j$, on obtient par un argument similaire à celui de la question 2 que le nombre de comparaisons effectuées est au plus $2k$.
 \bigskip
