@@ -1,0 +1,45 @@
+\renewcommand{\SourceFile}{2-jouer-avec-les-mots/src/2-5.ml}
+
+\section{Mots bien parenthésés}
+
+On considère une parenthèse ouvrante \og ( \fg{} et une parenthèse fermante \og ) \fg{}. Un mot parenthésé $u$ est une suite de parenthèses ouvrantes et fermantes. Le nombre de parenthèses utilisées est appelée la longueur du mot. La suite vide correspond au mot vide, noté $\varepsilon$. La concaténation de deux mots parenthésés $u$ et $v$, notée $uv$, est simplement le mot parenthésé obtenu en mettant $u$ et $v$ bout à bout. Ainsi, si $u=((()()$ et $v=))$, $uv=((()()))$. Un mot parenthésé $v$ est dit facteur gauche d'un mot parenthésé $u$ s'il existe un mot $w$ tel que $u=vw$. Un mot parenthésé $u$ est bien parenthésé s'il contient autant de parenthèses ouvrantes que de parenthèses fermantes et si tout facteur gauche $v$ de $u$ contient au moins autant de parenthèses ouvrantes que de parenthèses fermantes.
+
+\Q
+Modéliser la situation décrite et écrire un algorithme qui, étant donné un mot parenthésé, vérifie s'il est bien parenthésé ou non.
+
+\Q
+Montrer que, étant donné un mot bien parenthésé non vide $u$, il existe un unique couple $(v, w)$ de mots bien parenthésés tels que $u=(v)w$. Écrire un algorithme qui, étant donné le mot $u$, calcule les mots $v$ et $w$.
+
+\Q
+Soit $N\in\mathbb{N}$. Écrire un algorithme qui énumère tous les mots bien parenthésés de longueur au plus $N$.
+
+\Corrige
+
+\Q
+Une solution est de modéliser un mot parenthésé par une chaîne de caractères ne contenant que des parenthèses.
+\smallskip
+
+Pour tester si un mot $u$ est bien parenthésé, il suffit de vérifier que $u$ contient autant d'ouvrantes que de fermantes et que tout facteur gauche de $u$ contient plus de parenthèses ouvrantes que de fermantes. On peut pour cela gérer un compteur que l'on incrémente (resp. décrémente) lorsque l'on trouve une parenthèse ouvrante (resp. fermante). On suppose ici que $u$ est bien formé (i.e ne contient que des parenthèses).
+
+\lstinputlisting[linerange={1-12}]{\SourceFile}
+
+\Q
+Montrons tout d'abord l'unicité de la décomposition proposée. Supposons qu'un mot $u$ se décompose en $u=(v)w=(v')w$ avec $v \neq v'$. Il est clair que si $v$ et $v'$ sont de même longueur alors $v=v'$. Par symétrie, il suffit de traiter le cas où $v'$ est de longueur strictement plus grande que $v$. Ainsi $v'=v)v''$ où $v''$ est un mot parenthésé éventuellement vide. Comme $v$ est bien parenthésé, il contient autant d'ouvrantes que de fermantes. Ainsi, le préfixe $v)$ de $v'$ contient une fermante de plus que d'ouvrantes, ce qui est en contradiction avec le fait que $v'$ soit bien parenthésé. On a ainsi montré l'unicité de la décomposition.
+\medskip
+
+Soit $u$ un mot bien parenthésé. Pour montrer l'existence d'une décomposition, considérons le plus petit facteur gauche non vide $u'$ de $u$ qui contienne autant d'ouvrantes que de fermantes ($u'$ existe puisque $u$ a cette propriété). Dans la fonction de la question précédente, $u'$ correspond au plus petit facteur gauche non vide pour lequel la variable \texttt{cpt} prend la valeur 0. Ainsi, il est facile de voir que $u'$ commence par une ouvrante et finit par une fermante : $u'=(v)$. En utilisant le fait que $u$ est bien parenthésé, on vérifie aisément que $v$ et $w$, où $w$ est défini par $u=u'w$, sont bien parenthésés.
+\medskip
+
+Le calcul de $v$ et $w$ repose sur le remarque que $(v)$ est le plus petit facteur de $u$ qui contienne autant d'ouvrantes que de fermantes.
+
+\lstinputlisting[linerange={14-29}]{\SourceFile}
+
+\Q
+L'idée est bien entendu d'utiliser la question précédente. Si l'on connaît tous les mots bien parenthésés de longueur au plus $L$, où $L$ est une certaine constante, on obtient un mot bien parenthésé de longueur $L+2$ en prenant un mot bien parenthésé $u$ de longueur $k$, un mot bien parenthésé de longueur $L-k$ et en construisant le mot $(u)v$. Il est donc nécessaire de garder en mémoire tous les mots parenthésés déjà construits.
+\smallskip
+
+Par souci de simplicité, nous allons utiliser une matrice carrée dans laquelle la ligne $i$ contiendra les mots de longueur $2i$. Bien entendu, cette méthode a l'inconvénient majeur de réserver beaucoup de place inutilement. Il serait bien plus astucieux de stocker tous les mots bien parenthésés dans un unique tableau unidimensionnel et de garder en mémoire dans un autre tableau la position du premier mot de longueur $2k$, et ceci pour tous les $k$. L'écriture d'une telle fonction est laissée au lecteur.
+
+\lstinputlisting[firstline=31]{\SourceFile}
+
+Remarque : Le nombre de mots bien parenthésés de longueur $2n$ est égal à $\frac{1}{n+1}\binom{2n}{n}$, le $n$-ième nombre de Catalan.
