@@ -36,10 +36,13 @@ Le calcul de $v$ et $w$ repose sur le remarque que $(v)$ est le plus petit facte
 
 \Q
 L'idée est bien entendu d'utiliser la question précédente. Si l'on connaît tous les mots bien parenthésés de longueur au plus $L$, où $L$ est une certaine constante, on obtient un mot bien parenthésé de longueur $L+2$ en prenant un mot bien parenthésé $u$ de longueur $k$, un mot bien parenthésé de longueur $L-k$ et en construisant le mot $(u)v$. Il est donc nécessaire de garder en mémoire tous les mots parenthésés déjà construits.
-\smallskip
+\medskip
 
-Par souci de simplicité, nous allons utiliser une matrice carrée dans laquelle la ligne $i$ contiendra les mots de longueur $2i$. Bien entendu, cette méthode a l'inconvénient majeur de réserver beaucoup de place inutilement. Il serait bien plus astucieux de stocker tous les mots bien parenthésés dans un unique tableau unidimensionnel et de garder en mémoire dans un autre tableau la position du premier mot de longueur $2k$, et ceci pour tous les $k$. L'écriture d'une telle fonction est laissée au lecteur.
+Nous allons ici utiliser un tableau de listes tel que la liste à l'indice $i$ contient tous les mots bien parenthésés de longueur $2i$.
 
 \lstinputlisting[firstline=31]{\SourceFile}
 
 Remarque : Le nombre de mots bien parenthésés de longueur $2n$ est égal à $\frac{1}{n+1}\binom{2n}{n}$, le $n$-ième nombre de Catalan.
+\bigskip
+
+\Fin

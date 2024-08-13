@@ -28,5 +28,16 @@ let decompose (u:string) : (string * string) =
   let w = String.sub u (!idx+1) (n - !idx - 1) in
   (v, w)
 
-let enumere_mots (l:int) =
-  
+let enumere_mots (lmax:int) : string list array =
+  let mots = Array.make (lmax+1) [] in
+  mots.(0) <- [""];
+  for l=0 to lmax-1 do
+    for k=0 to l do
+      List.iter (fun u ->
+        List.iter (fun v ->
+          let mot = Printf.sprintf "(%s)%s" u v in
+          mots.(l+1) <- mot::mots.(l+1)
+        ) mots.(l-k)
+      ) mots.(k)
+    done
+  done; mots
