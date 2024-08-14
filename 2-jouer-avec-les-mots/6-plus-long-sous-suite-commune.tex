@@ -1,0 +1,103 @@
+\renewcommand{\SourceFile}{2-jouer-avec-les-mots/src/2-6.ml}
+
+\section{Plus longue sous-suite commune}
+
+Notation : Si $X$ est une chaîne de caractères, on désignera par $X_l$ le préfixe de $X$ de longueur $l$.
+\medskip
+
+Une sous-suite du mot $A=a_1a_2...a_n$ est un mot obtenu en supprimant certaines lettres. Par exemple, $bbcdd$ est une sous-suite de $aaabbbcccddd$. Une sous-suite commune à deux chaînes de caractères $A$ et $B$ et de longueur maximale est appelée \textit{PLSC} (Plus Longue Sous-suite Commune) de $A$ et $B$. Par exemple, si $A=abaab$ et $B=aabb$, on a deux \textit{PLSC}, $aab$ et $abb$.
+
+\Q
+Étant donné deux mots $A=a_1a_2...a_m$ et $B=b_1b_2...b_n$ de longueurs respectives $m$ et $n$, on demande de calculer la longueur d'une \textit{PLSC} de $A$ et $B$ :
+\medskip
+
+Justifier l'équation récurrente (à compléter) :
+\[
+    long(i, j) = \textrm{max}(long(i-1, j-1) + [a_i=b_j],\ long(i,j-1),\ long(i-1,j))
+\]
+où $[a_i=b_j]$ vaut 1 si $a_i=b_j$ et 0 sinon et où $long(i,j)$ désigne la longueur d'une \textit{PLSC} de $A_i$ et $B_j$.
+\medskip
+
+Écrire une fonction OCaml pour calculer la longueur d'une \textit{PLSC} de $A$ et $B$.
+
+\Q
+On s'intéresse maintenant au calcul effectif d'une \textit{PLSC} de $A$ et $B$. Écrire une fonction OCaml qui effectue ce calcul. Comment la modifier pour obtenir toutes les \textit{PLSC} de $A$ et $B$ ?
+
+\Corrige
+
+\Q
+Soit $A=a_1a_2...a_i$ et $B=b_1b_2...b_j$.
+Notons $Z=z_1...z_k$ une de leurs \textit{PLSC} :
+
+\begin{itemize}
+    \item Si $a_i=b_j$ alors $z_k=a_i=b_j$ et $Z_{k-1}$ est une \textit{PLSC} de $A_{i-1}$ et $B_{j-1}$ ;
+    \item Si $a_m \neq b_n$ alors : $(z_k \neq a_m) \implies$ $Z$ est une \textit{PLSC} de $A_{m-1}$ et $B$ ;
+    \item Si $a_m \neq b_n$ alors : $(z_k \neq b_n) \implies$ $Z$ est une \textit{PLSC} de $A$ et $B_{n-1}$.
+\end{itemize}
+
+d'où la relation complète :
+\[
+    long(i,j) = \begin{cases}
+        0 & \textrm{ si } i=0 \textrm{ ou } j=0\\
+        long(i-1, j-1) + 1 & \textrm{ si } i,j > 0 \textrm{ et } a_i=b_j\\
+        \textrm{max}(long(i, j-1),\ long(i-1, j)) & \textrm{ si } i,j > 0 \textrm{ et } a_i \neq b_j\end{cases}
+\]
+
+Pour écrire la fonction, il suffit de générer toutes les valeurs de $long(i,j)$ dans un ordre compatible avec la relation de récurrence. On écrit donc un algorithme de \textit{programmation dynamique} qui remplit un tableau ligne par ligne. On a $long(i,j)=\texttt{long.(i).(j)}$.
+
+\lstinputlisting[linerange={1-15}]{\SourceFile}
+
+La complexité est en $O(nm)$.
+
+\Q
+Il suffit de créer une matrice \texttt{chemin} que l'on modifie à chaque fois qu'on met à jour \texttt{long.(i).(j)}. Celle-ci permettra de déterminer \og d'où on vient \fg{} et donc de reconstruire une ou toutes les \textit{PLSC}. La fonction devient :
+
+\lstset{
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={↖}{{\footnotesize $\nwarrow$}}1 {↑}{{$\uparrow$}}1 {←}{{$\leftarrow$}}1
+}
+\lstinputlisting[linerange={16-38}]{\SourceFile}
+
+Grâce au tableau chemin, on peut donc retrouver une \textit{PLSC} de $A$ et $B$ :
+
+\lstinputlisting[firstline=40]{\SourceFile}
+\bigskip
+
+Comme le montre la figure ci-dessous représentant les matrices \texttt{longueur} et \texttt{chemin} pour $A=abcbdab$ et $B=bdcaba$, on suit les flèches (chemin grisé) et on note les lettres correspondant aux flèches obliques :
+
+\newcommand{\CC}{\cellcolor{lightgray}}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+     & j & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+    \hline
+    i & & $b_j$ & \CC$b$ & $d$ & \CC$c$ & $a$ & \CC$b$ & \CC$a$ \\
+    \hline
+    0 & $a_i$ & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    \hline
+    1 & $a$ & \CC0 & 0 $\uparrow$ & 0 $\uparrow$ & 0 $\uparrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ & 1 $\nwarrow$\\
+    \hline
+    2 & \CC$b$ & 0 & \CC1 $\nwarrow$ & \CC1 $\leftarrow$ & 1 $\leftarrow$ & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\leftarrow$\\
+    \hline
+    3 & \CC$c$ & 0 & 1 $\uparrow$ & 1 $\uparrow$ & \CC2 $\nwarrow$ & \CC2 $\leftarrow$ & 2 $\uparrow$ & 2 $\uparrow$\\
+    \hline
+    4 & \CC$b$ & 0 & 1 $\nwarrow$ & 1 $\uparrow$ & 2 $\uparrow$ & 2 $\uparrow$ & \CC3 $\nwarrow$ & 3 $\leftarrow$\\
+    \hline
+    5 & $d$ & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\uparrow$ & 2 $\uparrow$ & \CC3 $\uparrow$ & 3 $\uparrow$\\
+    \hline
+    6 & \CC$a$ & 0 & 1 $\uparrow$ & 2 $\uparrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & \CC4 $\nwarrow$\\
+    \hline
+    7 & $b$ & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 2 $\uparrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & \CC4 $\uparrow$\\
+    \hline
+   \end{tabular}
+\end{center}
+
+Cette fonction a une complexité en $O(n+m)$ car $i$ ou $j$ décroît à chaque itération.
+\medskip
+
+Pour afficher toutes les \textit{PLSC}, il faudrait traiter les cas où $long(i-1,j)=long(i,j-1)$, c'est-à-dire celui où le chemin montant et celui allant à gauche permettent tous les deux d'obtenir une \textit{PLSC} et afficher les deux chaînes correspondantes à chaque fois.
+\bigskip
+
+\Fin
