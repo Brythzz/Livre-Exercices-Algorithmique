@@ -19,7 +19,7 @@ Le passage du message $V$ au message encodé $C$ revient à un produit matrice-v
 Écrire une fonction OCaml qui, étant donnés un mot $V$ de $m$ chiffres binaires et une matrice $A$, renvoie le mot de code $C$ correspondant.
 
 \Q
-À la récéption du message encodé $C'$ ($C$ avec peut-être une erreur de transmission), nous désirons reconstituer le message $V$. Pour ceci, nous vérifions que le message $C'$ est un mot du code défini à la question précédente. Construire, pour $m=26$ et $n=31$, la matrice $(5 \times 31)$ de contrôle de parité $H$ telle que :
+À la réception du message encodé $C'$ ($C$ avec peut-être une erreur de transmission), nous désirons reconstituer le message $V$. Pour ceci, nous vérifions que le message $C'$ est un mot du code défini à la question précédente. Construire, pour $m=26$ et $n=31$, la matrice $(5 \times 31)$ de contrôle de parité $H$ telle que :
 \medskip
 
 $H \times C' = S$ où $S$ est un vecteur de dimension 5 tel que :
@@ -32,10 +32,10 @@ $H \times C' = S$ où $S$ est un vecteur de dimension 5 tel que :
 Écrire une fonction OCaml \texttt{cont\_mat} qui, étant donnés deux nombres $n$ et $r$ génère la matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$.
 
 \Q
-Écrire une foncition OCaml \texttt{syndrome} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie l'indice de l'élément erroné de $C'$ ou $-1$ si $C'$ est sans erreur.
+Écrire une fonction OCaml \texttt{syndrome} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie l'indice de l'élément erroné de $C'$ ou $-1$ si $C'$ est sans erreur.
 \medskip
 
-Écrire une fonction OCaml \texttt{decode} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie le message original $V$ à partir de $C'$ après avoir au besoin corrigé l'erreur detectée.
+Écrire une fonction OCaml \texttt{decode} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie le message original $V$ à partir de $C'$ après avoir au besoin corrigé l'erreur détectée.
 
 \Corrige
 

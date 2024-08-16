@@ -24,7 +24,7 @@ Soit $v=(v_1, v_2, ..., v_k)$ et $a$ une lettre. On admet que $Bord(va)$ est le 
 La modélisation suggérée consiste à représenter les mots par des chaînes de caractères.
 \medskip
 
-L'algorithme naïf, mais naturel, consiste à comparer $v$ avec les facteurs de $u$ de même longueur que $v$ en commençant en posotion 0, puis 1, 2... jusqu'au succès ou à la fin de $u$.
+L'algorithme naïf, mais naturel, consiste à comparer $v$ avec les facteurs de $u$ de même longueur que $v$ en commençant en position 0, puis 1, 2... jusqu'au succès ou à la fin de $u$.
 
 \lstinputlisting[linerange={1-12}]{\SourceFile}
 
@@ -58,7 +58,7 @@ Supposons calculés $B(1)$, ..., $B(h-1)$. D'après l'indication donnée dans l'
 \[
     \{\varepsilon, Bord(v_1...v_{h-1})v_h,Bord^2(v_1...v_{h-1})v_h, ...\}
 \]
-Il est clair que la longueur des mots $Bord^i(v_1...v_{h-1})v_h$ décroit (au sens large) lorsque $i$ croit. Ainsi, il faut d'abord tester si $Bord(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$, puis si ce n'est pas le cas, si $Bord^2(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$, etc. En remarquant que $Bord(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$ si et seulement si $v_h=v_{1+B(h-1)}$, on est amenés naturellement à l'algorithme suivant, renvoyant le tableau $[B(1), B(2), ..., B(k)]$ :
+Il est clair que la longueur des mots $Bord^i(v_1...v_{h-1})v_h$ décroît (au sens large) lorsque $i$ croit. Ainsi, il faut d'abord tester si $Bord(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$, puis si ce n'est pas le cas, si $Bord^2(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$, etc. En remarquant que $Bord(v_1...v_{h-1})v_h$ est un préfixe de $v_1...v_h$ si et seulement si $v_h=v_{1+B(h-1)}$, on est amenés naturellement à l'algorithme suivant, renvoyant le tableau $[B(1), B(2), ..., B(k)]$ :
 
 \lstinputlisting[linerange=26-46]{\SourceFile}
 

@@ -34,7 +34,7 @@ Pour 4 éléments : on classe les paires en position (0, 1) et (2, 3), puis on m
 
 \lstinputlisting[linerange={13-18}]{\SourceFile}
 
-Une autre solution est de trier les 3 premiers éléments (3 comparaisons) puis d'insérer le quatrième, ce qui coute 2 comparaisons supplémentaires en procédant par dichotomie, c'est-à-dire en commençant par l'élément du milieu.
+Une autre solution est de trier les 3 premiers éléments (3 comparaisons) puis d'insérer le quatrième, ce qui coûte 2 comparaisons supplémentaires en procédant par dichotomie, c'est-à-dire en commençant par l'élément du milieu.
 \medskip
 
 Avec 5 éléments : trier les 4 premiers éléments puis insérer le cinquième par dichotomie est ici trop coûteux : il faut 3 comparaisons pour insérer un élément dans une liste de taille 4. Cette solution nous coûterait $5+3=8$ comparaisons.
@@ -165,7 +165,7 @@ Insérer $x$ dans la chaîne de longueur 7 dont le plus grand élément est b re
 Le nombre final de comparaisons est donc $5+7+2+2+3+3=22=Comp(10)$.
 \medskip
 
-Il se trouve que l'algorithme 2 est optimal. Bien sûr, c'est difficile à prouver ! D'une manière générale, la fonction $Comp\_min(n)$ qui donne le nombre minimal de comparaisons nécessaires pour trier $n$ éléments est très mal connue : on ne connait pas d'expression exacte, juste un équivalent asymptotique en $O(n\log_2n)$.
+Il se trouve que l'algorithme 2 est optimal. Bien sûr, c'est difficile à prouver ! D'une manière générale, la fonction $Comp\_min(n)$ qui donne le nombre minimal de comparaisons nécessaires pour trier $n$ éléments est très mal connue : on ne connaît pas d'expression exacte, juste un équivalent asymptotique en $O(n\log_2n)$.
 \bigskip
 
 \Fin
