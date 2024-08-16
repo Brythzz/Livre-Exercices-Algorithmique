@@ -1,0 +1,39 @@
+\renewcommand{\SourceFile}{3-strategies-gloutonnes/src/3-1.ml}
+
+\section{Réservation SNCF}
+
+On suppose que $n$ personnes veulent prendre le train en un jour donné. La personne $i$ veut prendre le train \texttt{p.(i)} où \texttt{p} est un tableau d'entiers. Les trains sont numérotés de 0 à $k-1$, et partent dans l'ordre de leur numéro. Chaque train peut contenir au plus $c$ personnes.
+
+\Q
+Écrire une fonction qui teste si tout le monde peut prendre le train de son choix.
+
+\Q
+On suppose maintenant que, si le train \texttt{p.(i)} est trop plein pour que la personne $i$ puisse le prendre, elle est prête à prendre le train suivant, soit le \texttt{p.(i) + 1}, lorsqu'il existe (c'est-à-dire lorsque \texttt{p.(i) < k-1}). Existe-t-il toujours une façon de remplir les trains pour faire voyager tout le monde ? Proposer un algorithme pour répartir les gens dans les trains lorsque cela est possible. Écrire la fonction OCaml correspondante. On pourra par exemple renvoyer un tableau de taille $k$ tel que l'élément d'indice $i$ corresponde au train que prendra la personne $i$.
+
+\Q
+On suppose maintenant que la personne $i$, si elle ne peut prendre le train \texttt{p.(i)} parce qu'il est trop plein, souhaite prendre un train le plus tôt possible après \texttt{p.(i)} (s'il y en a un). Proposer un algorithme pour affecter chaque personne à un train lorsque c'est possible. Écrire la fonction OCaml correspondante.
+
+\Q
+Dans cette question, on suppose que les demandes de réservation se font l'une après l'autre et doivent être traitées immédiatement : il faut donner une réservation à la personne $i$ sans savoir ce que les clients $i+1$, $i+2$, ... vont demander et sans pouvoir changer les réservations données aux personnes 0, 1, 2, ..., $i-1$. L'entrée \texttt{p.(i)} dénote maintenant le train demandé à l'instant $i$ par la $i$-ième personne au guichet. Écrire une fonction qui lui donne une réservation dans le train \texttt{p.(i)} s'il n'est pas plein, et dans le premier train non plein après \texttt{p.(i)} sinon. Qu'en pensez-vous ?
+
+\Corrige
+
+\Q
+Il suffit de remplir un tableau \texttt{t} à $k$ entrées tel que la $i$-ième entrée soit égale au nombre de gens souhaitant prendre le train $i$.
+
+\lstinputlisting[linerange={1-12}]{\SourceFile}
+
+\Q
+Il n'est clairement pas toujours possible de faire voyager tout le monde : par exemple, ce n'est pas possible si plus de $c$ personnes veulent prendre le dernier train. On propose un algorithme de type \og glouton \fg{}, qui remplit les trains un par un dans l'ordre.\\
+Pour remplir le train $i$, on regarde d'abord tous les voyageurs qui souhaitaient prendre le train $i-1$ mais qui n'y ont pas été affectés, et on les met dans le train $i$ (s'il n'y a pas assez de places, on arrête l'algorithme). Puis, parmi les voyageurs qui veulent prendre le train $i$, on satisfait le maximum de requêtes possibles.\\
+Après avoir rempli les trains 0, 1, 2, ..., $k-1$, on vérifie qu'il ne reste pas de voyageurs sans affectation.
+\smallskip
+
+Cet algorithme garantit que pour tout $i$, le maximum de gens voyagent dans les trains 0, 1, ..., $i$, et trouve donc toujours une affectation lorsque cela est possible.
+
+\lstinputlisting[linerange={14-37}]{\SourceFile}
+
+\Q
+On utilise la même idée que la question 2 : celle d'un algorithme glouton. On traite tour à tour les personnes désirant prendre le train 0, puis celles désirant prendre le train 1, etc. Chaque personne est affectée au premier train non rempli à partir de celui qu'elle désire prendre.
+
+\lstinputlisting[linerange={39-54}]{\SourceFile}
