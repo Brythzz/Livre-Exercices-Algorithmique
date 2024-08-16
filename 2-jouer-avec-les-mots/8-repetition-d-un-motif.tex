@@ -1,0 +1,106 @@
+\renewcommand{\SourceFile}{2-jouer-avec-les-mots/src/2-8.ml}
+
+\section{Répétition d'un motif}
+
+Nous disposons d'un alphabet $\Sigma$. Nous nous intéressons aux mots ne possédant pas deux facteurs consécutifs égaux, autrement dit les mots sans fecteurs carrés : ils ne peuvent pas s'écrire $rs^2t$ avec $|s|\geq1$.
+
+\Q
+Montrer que si $\Sigma$ est réduit à deux éléments alors tout mot de quatre lettres ou plus possède un facteur carré.
+
+\Q
+Écrire une fonction booléenne qui renvoie \texttt{true} si le mot entré ne comporte pas de facteur carré et \texttt{false} sinon.
+\smallskip
+
+Préciser le nombre maximum d'itérations.
+
+\Q
+On considère l'alphabet $\Sigma=\{0,1\}$ et le morphisme $\sigma$ défini par $\sigma(0) = 01$ et $\sigma(1) = 10$.
+\vspace{-12pt}
+\smallskip
+
+Nous avons $\sigma(mm')=\sigma(m)\sigma(m')$ où $m$ et $m'$ sont deux mots et $mm'$ est la concaténation de $m$ et $m'$.
+\smallskip
+
+Nous pouvons ainsi générer la suite : $0 \rightarrow 01 \rightarrow 0110 \rightarrow 01101001 \rightarrow ...$ en appliquant $\sigma$ successivement. Le mot infini obtenu est appelé la suite de Thue-Morse.
+\medskip
+
+Écrire une fonction permettant de générer une telle suite.
+\medskip
+
+Montrer qu'il est impossible d'avoir une sous-suite de la forme $\omega\omega x$ où $\omega$ est un mot et $x$ la première lettre de $\omega$.
+
+\Q
+Construire la suite des nombres de 1 compris entre deux 0 de la suite précédente.
+\medskip
+
+Montrer que l'alphabet $\{0,1,2\}$ est suffisant pour l'écrire, et qu'elle ne possède pas de facteurs carrés.
+\medskip
+
+Déterminer le morphisme correspondant.
+
+\Corrige
+
+\Q
+Notons $\Sigma=\{a,b\}$. Tout mot de plus de trois lettres sur l'alphabet $\Sigma$ et sans facteur carré possède l'un des deux préfixes suivants : $aba$ ou $bab$ (les six autres facteurs possibles comportent tous un carré). S'il possède au moins quatre lettres, le préfixe suivant sera l'un des quatre mots : $abaa$, $abab$, $baba$, $babb$, qui tous possèdent un facteur carré.
+
+\Q
+Un facteur propre de $s=s_0...s_{n-1}$ est de la forme $s_is_{i+1}...s_{j-1}$ avec $0\leq i < j \leq n$. On les examine tous à la recherche d'un facteur carré.
+\medskip
+
+On commence par définir une fonction testant si un facteur donné est un carré :
+
+\lstinputlisting[linerange={1-11}]{\SourceFile}
+
+Puis on teste tous les facteurs possibles :
+
+\lstinputlisting[linerange={13-24}]{\SourceFile}
+
+On peut majorer le nombre d'itérations par :
+\[
+\sum_{i=0}^{n-1}\sum_{j=i+1}^n\frac{j-i}{2}=\frac{1}{2}\sum_{i=0}^{n-i}j=\frac{1}{4}\sum_{i=0}^{n-1}(n-i)(n-i+1)=\frac{1}{4}\sum_{i=1}^ni(i+1)=\frac{n(n+1)(n+2)}{12}
+\]
+
+On peut réduire la complexité en remplaçant la comparaison effectuée dans \texttt{est\_carre} par une comparaison de deux nombres. Il s'agit de considérer les lettres comme des chiffres et le cardinal de l'alphabet comme la base.\\
+Si on se limite à une longueur de répétition équivalente au plus grand entier machine, le nombre d'itérations devient de l'ordre de $n^2$ au lieu de $n^3$.
+
+\Q
+Il n'est pas utile de repartir du début. Chaque caractère d'indice $i$ engendre deux nouveaux caractères en fin de mot (indices $2i$ et $2i+1$).
+
+\lstinputlisting[linerange={26-38}]{\SourceFile}
+
+Montrons qu'il est impossible d'avoir une sous-suite de la forme $\omega\omega x$ où $\omega$ est un mot et $x$ la première lettre de $\omega$.
+\smallskip
+
+Nous pouvons rapidement vérifier que 111 et 000 n'ont pas d'antécédents.
+\smallskip
+
+Supposons que $\omega\omega x$ soit le plus petit mot possible de cette forme. Il suffit de rechercher les antécédents possibles et voir que ceux-ci sont de la même forme ou inexistants, ce qui contredit notre hypothèse.
+\medskip
+
+Nous pouvons remarquer que cette suite de $\{0,1\}$ est identique à celle obtenue en regardant la parité du nombre de 1 dans l'écriture binaire des entiers :
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+    entier & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+    \hline
+    parité & 0 & 1 & 1 & 0 & 1 & 0 & 0\\
+    \hline
+\end{tabular}
+
+\Q
+L'alphabet $\Sigma=\{0,1,2\}$ est suffisant car on ne peut avoir plus de deux 1 consécutifs, on aurait sinon un facteur de la forme $\omega\omega x$.
+\medskip
+
+Supposons que la suite possède deux facteurs consécutifs égaux. Ces derniers ont pour origine un facteur de la forme $0\nu0\nu0$ où $\nu\in\Sigma^*$, autrement dit de la forme $\omega\omega x$.
+\medskip
+
+Nous considérons $\Sigma=\{0,1,2\}$ et le morphisme $\phi$ tel que :\\
+$0 \rightarrow (010 \rightarrow 0101) \rightarrow 1...$\\
+et\\
+$1 \rightarrow (010 \rightarrow 011001) \rightarrow 21...$\\
+et\\
+$2 \rightarrow (0110 \rightarrow 01101001) \rightarrow 210...$
+\bigskip
+
+\Fin
