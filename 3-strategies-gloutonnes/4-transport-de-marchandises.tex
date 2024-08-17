@@ -1,0 +1,63 @@
+\renewcommand{\SourceFile}{3-strategies-gloutonnes/src/3-4.ml}
+
+\section{Transport de marchandises}
+
+On dispose de divers modèles de camions (on considère tout d'abord que l'on dispose d'un nombre illimité de camions de chaque modèle !) d'une contenance de 1 tonne, 2 tonnes, 5 tonnes et 10 tonnes. On cherche de combien de façons on peut charger $n$ tonnes ($n > 1$) en utilisant ces camions. Par exemple, si $n=6$, il y a 5 façons possibles :
+\begin{itemize}
+    \item utiliser un camion de 5 tonnes et un camion de 1 tonne
+    \item utiliser 3 camions de 2 tonnes
+    \item utiliser 2 camions de 2 tonnes et 2 camions d'1 tonne
+    \item utiliser 1 camion de 2 tonnes et 4 camions d'1 tonne
+    \item utiliser 6 camions d'une tonne
+\end{itemize}
+
+\Q
+Écrire une fonction OCaml qui calcule le nombre de possibilités.
+
+\Q
+Même chose en supposant qu'on ne dispose pas de plus de \texttt{max10} camions de 10 tonnes, \texttt{max5} camions de 5 tonnes, \texttt{max2} camions de 2 tonnes et \texttt{max1} camions d'une tonne.
+
+\Q
+Le stock de camions est à nouveau illimité dans chaque catégorie. Écrire une fonction OCaml qui donne la façon de charger $n$ tonnes qui utilise le moins de camions. Justifier votre réponse. Votre réponse marcherait-elle encore si la contenance des camions était différente ? Que dire si les contenances sont 1, $p$, $p^2$, ..., $p^k$, où $p$ est un entier supérieur ou égal à 2 ?
+
+\Corrige
+
+\Q
+On donne la fonction suivante (où on compte implicitement le nombre de camions de 1 tonne) :
+
+\lstinputlisting[linerange={1-12}]{\SourceFile}
+
+\Q
+Il suffit de changer les bornes des boucles \og for \fg{} et de vérifier qu'on ne dépasse pas le nombre de camions de 1 tonne.
+
+\lstinputlisting[linerange={16-29}]{\SourceFile}
+
+\Q
+On peut bien sûr employer l'algorithme de la question 1 et mémoriser à chaque fois le nombre de camions mais cette approche est peu efficace car de complexité proportionnelle au nombre de possibilités.
+\medskip
+
+On utilise donc plutôt un algorithme glouton qui utilise le plus possible de camions de 10 tonnes (soit $\lfloor n/10 \rfloor$), puis le plus possible de camions de 5 tonnes (c'est à dire $\lfloor (n\ \textrm{mod}\,10)/5\rfloor$) et ainsi de suite.
+
+\lstinputlisting[firstline=31]{\SourceFile}
+
+Montrons que cet algorithme donne bien les valeurs recherchées. Pour ceci, montrons d'abord que le nombre de camions de 10 tonnes d'une solution optimale est nécessairement $\lfloor n/10 \rfloor$. Soit une solution optimale :
+\begin{itemize}
+    \item cette solution utilise au plus un camion de 5 tonnes (sinon on obtiendrait une meilleure solution en remplaçant 2 camions de 5 tonnes par un camion de 10 tonnes) ;
+    \item cette solution utilise au plus 2 camions de 2 tonnes (sinon on pourrait remplacer 3 camions de 2 tonnes par un de 5 tonnes + un de 1 tonne) ;
+    \item cette solution utilise au plus 1 camion de 1 tonne (sinon on pourrait remplacer 2 camions de 1 tonne par 1 camion de 2 tonnes).
+\end{itemize}
+Donc la charge totale constituée par les camions qui ne sont pas des camions de 10 tonnes est au plus de $1\times5 + 2\times2 + 1=10$ tonnes. Elle ne peut pas être exactement de 10 tonnes, sinon on pourrait remplacer le tout par un camion de 10 tonnes, elle est donc au plus de 9 tonnes. Donc le nombre de camions de 10 tonnes est bien de $\lfloor n/10 \rfloor$ et ce qui reste est bien $n$ mod 10. On poursuit le raisonnement sans difficulté avec les camions de 5 puis de 2 tonnes.
+\medskip
+
+Cet algorithme ne donne pas forcément la solution optimale avec d'autres modèles de camions : si on a des camions de 18, 7 et 1 tonnes, et si $n=21$ tonnes, alors l'algorithme glouton donne 1 camion de 18 tonnes et 3 camions de 1 tonne, alors que la meilleure solution est 3 camions de 7 tonnes.
+\medskip
+
+Si les valeurs des camions sont 1, $p$, $p^2$, ..., $p^k$, où $p$ est un entier supérieur ou égal à 2, l'algorithme glouton donne toujours une solution optimale. On montre comme précédemment que dans une solution optimale :
+\begin{itemize}
+    \item il y a au plus $(p-1)$ camions de $p^{k-1}$ tonnes (sinon on pourrait remplacer $p$ camions de $p^{k-1}$ tonnes par un camion de $p^k$ tonnes) ;
+    \item il y a au plus $(p-1)$ camions de $p^{k-2}$ tonnes...
+\end{itemize}
+Donc la charge totale des camions de charge strictement inférieure à $p^k$ est au plus $\sum_{i=0}^{k-1}(p-1)p^k=p^k-1$, donc le nombre de camions de charge $p^k$ doit être $\lfloor n/p^k \rfloor$, etc.
+\bigskip
+
+\Fin
