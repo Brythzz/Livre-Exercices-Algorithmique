@@ -1,0 +1,29 @@
+\renewcommand{\SourceFile}{3-strategies-gloutonnes/src/3-3.ml}
+
+\section{Remplissage optimal ou quasi-optimal d'un camion}
+
+On dispose de $n$ marchandises, de poids respectifs $a_1$, $a_2$, ..., $a_n$, où les $a_i$ sont des entiers strictement positifs ordonnés dans le sens croissant ($a_1 \leq a_2 \leq ... \leq a_n$). On dispose d'un camion dont la charge maximale autorisée est $P$. On désire le charger avec certaines marchandises, de manière à obtenir le plus grand poids possible inférieur ou égal à $P$. On cherche donc la plus grande valeur inférieure ou égale à $P$ que l'on puisse obtenir en sommant les éléments d'un sous-ensemble de $\{a_1,a_2,...,a_n\}$.
+
+\Q
+Écrire une fonction OCaml résolvant le problème (on demande seulement le poids maximal et non l'ensemble correspondant). Quelle est la complexité de votre fonction dans le pire cas ?
+
+\Q
+Pour obtenir un résultat plus rapidement, on va simplifier le problème : on se fixe une valeur $\varepsilon>0$ donnée, et on cherche maintenant un sous-ensemble de $\{a_1,a_2,....a_n\}$ dont la somme $S$ des éléments est inférieure à $P$ et telle que si $S^*$ est la somme correspondant à la solution optimale, alors $S\geq S^*(1-\varepsilon)$. Proposer un programme OCaml résolvant ce problème. Pourquoi est-il plus efficace que le précédent ?
+
+\Corrige
+
+\Q
+On donne la fonction récursive suivante :
+
+\lstinputlisting[linerange={1-7}]{\SourceFile}
+
+Dans le pire cas, la somme des $a_i$ est inférieure à $P$ et on construit un arbre de décision de taille $2^n$. On a donc une complexité exponentielle.
+\smallskip
+
+Il n'est pas difficile de modifier la fonction pour renvoyer l'ensemble d'objets correspondant au poids maximal.
+
+\Q
+Il suffit de modifier la fonction précédente de manière à ne considérer un élément que si l'élément précédemment ajouté est inférieur à cet élément multiplié par $(1-\varepsilon/n)$. On montre alors par récurrence sur $i$ que pour tout $\sigma$ appartenant à l'ensemble des sommes des parties de $a_1,...,a_i$, il existe un $\lambda$ appartenant aux objets déjà ajoutés tel que $(1-\varepsilon/n)^i\sigma \leq \lambda \leq \sigma$. On en déduit donc que si $S$ est le résultat donné par l'algorithme et $S^*$ l'optimum, que $(1-\varepsilon/n)^nS^* \leq S$, ce qui donne $(1-\varepsilon)S^* \leq S$. L'incidence sur la complexité provient du fait qu'à tout moment, le rapport entre deux éléments consécutifs considérés est supérieur ou égal à $1/(1-\varepsilon/n)$. Le nombre maximum d'éléments à ajouter est donc majoré par le plus grand $k$ tel que $1/(1-\varepsilon/n)^k \leq P$, ce qui donne $k \approx (n\log P)/\varepsilon$.
+\bigskip
+
+\Fin
