@@ -36,4 +36,11 @@ Cet algorithme garantit que pour tout $i$, le maximum de gens voyagent dans les 
 \Q
 On utilise la même idée que la question 2 : celle d'un algorithme glouton. On traite tour à tour les personnes désirant prendre le train 0, puis celles désirant prendre le train 1, etc. Chaque personne est affectée au premier train non rempli à partir de celui qu'elle désire prendre.
 
-\lstinputlisting[linerange={39-54}]{\SourceFile}
+\lstinputlisting[linerange={39-66}]{\SourceFile}
+
+\Q
+Ce problème fait partie de la classe de problèmes dits \og en ligne \fg{}, où les données ne sont pas toutes connues dès le départ mais arrivent une à une au cours du temps. Les algorithmes en-ligne forment un domaine actif de la recherche actuelle. Dans cette question, tous les trains se remplissent à peu près en même temps et donc il est nécessaire d'avoir un tableau donnant à chaque instant le nombre de personnes dans chaque train. C'est en fait ici une variante de la question 1, sauf que si un train est plein, au lieu d'arrêter l'algorithme, on cherche un train libre pour le client.
+
+\lstinputlisting[firstline=68]{\SourceFile}
+
+\Fin
