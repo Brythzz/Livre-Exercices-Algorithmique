@@ -1,0 +1,41 @@
+\renewcommand{\SourceFile}{3-strategies-gloutonnes/src/3-6.ml}
+
+\section{Organisation}
+
+Un organisateur de tournoi sportif désire utiliser au mieux le gymnase locale lors de la journée \og portes ouvertes \fg{}. Il y a $n$ évènements $E_1$, ..., $E_n$, chaque évènement commençant à l'heure $d_i$ et se finissant à l'heure $f_i$. Autrement dit, l'évènement $E_i$ requiert le gymnase durant l'intervalle de temps $[d_i,f_i[$. Le problème est de planifier le nombre maximal d'évènements parmi les $n$ dans le gymnase.
+
+\Q
+Indiquer comment modéliser la situation.
+
+\Q
+Proposer un algorithme et écrire une fonction OCaml qui résout le problème. On pourra supposer que $f_1 \leq f_2 \leq ... \leq f_n$.
+
+\Q
+Prouver que votre solution conduit bien au nombre maximal d'évènements. Que pensez-vous de votre solution ? Pouvez-vous l'améliorer ?
+
+\Corrige
+
+\Q
+On utilise deux tableaux d'entiers pour stocker les dates de début et de fin, et un tableau d'entiers pour stocker les numéros d'évènements sélectionnés.
+
+\Q
+L'idée est d'utiliser un algorithme glouton. Soit $j$ le dernier évènement ajouté à la liste d'évènements $A$. Alors $f_j=\max\{f_k\ ;\ k\in A\}$, et donc le gymnase est libre à partir de l'heure $f_j$. On ajoute un évènement $i$ à la liste si et seulement si $d_i \geq f_j$ :
+
+\lstinputlisting[firstline=1]{\SourceFile}
+
+\Q
+L'algorithme est en $O(n)$ si les dates de fin son déjà triées. Il faut montrer que le nombre d'évènements obtenu est optimal :
+\begin{itemize}
+    \item on montre d'abord qu'il existe une solution optimale qui commence avec $E_1$. Soit $A$ une solution optimale et soit $k$ l'indice de la première activité de $A$. Si $k \neq 1$, soit $B=A-E_k+E_1$ (comprendre $B=(A\cup E_1)\smallsetminus \{E_k\}$). Comme $k$ est le premier évènement de $A$, tous les autres commencent après $f_k$. Comme $f_1 \leq f_k$, $B$ est une solution possible, optimale comme $A$. D'où le résultat.
+    \item Si $A$ est une solution optimale commençant par $E_1$, alors $A'=A-E_1$ est une solution optimale pour le problème où les évènements sont les $\{E_j,\ 2 \leq j \leq n,\ d_j \geq f_1\}$. Sinon, on pourrait trouver une solution $B'$ meilleure que $A'$ pour ce dernier problème, et alors $B'+E_1$ serait meilleur que $A$ !
+\end{itemize}
+Par récurrence, on a le résultat.
+\medskip
+
+Une autre solution est d'écrire un algorithme qui calcule $m_i$, itérativement pour $i=1$, 2, ..., $n$, où $m_i$ est le nombre maximal d'évènements compatibles dans $E_1$, ..., $E_i$. Le lecteur consciencieux qui résoudra ce problème vérifiera que cette approche est plus coûteuse.
+\medskip
+
+Pour terminer, mentionnons que l'algorithme présenté est un algorithme glouton. D'une manière générale. un algorithme glouton effectue à une étape donnée le meilleur choix qui se présente. Bien sûr, cette stratégie d'optimisation locale n'est pas toujours globalement optimale. C'est le cas dans notre problème, mais considérons pour nous en convaincre le problème des pièces de monnaie : comment obtenir une somme $S$ avec le moins de pièces possibles, les pièces pouvant valoir 10, 5 et 1 centime. Un algorithme glouton proposera d'utiliser $p_{10}=\lfloor S/10 \rfloor$ pièces de 10 centimes, puis $p_5=\lfloor (S-10\cdot p_{10})/5 \rfloor$ pièces de 5 centimes, puis le reste en pièces de 1 centime. Pour ce jeu de pièces, il se trouve que l'algorithme glouton est optimal (heureusement pour notre vie quotidienne !), mais ce n'est pas vrai en général. Ainsi, avec des pièces de 11, 5 et 1 centime : pour obtenir $S=15$, l'algorithme glouton propose une pièce de 11 centimes et quatre pièces de 1 centime, alors que trois pièces de 5 centimes est le meilleur choix.
+\bigskip
+
+\Fin
