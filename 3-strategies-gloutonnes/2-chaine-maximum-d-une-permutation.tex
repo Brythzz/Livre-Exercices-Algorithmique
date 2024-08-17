@@ -1,0 +1,65 @@
+\renewcommand{\SourceFile}{3-strategies-gloutonnes/src/3-2.ml}
+
+\section{Chaîne maximum d'une permutation}
+
+On considère une permutation $p$ de 0, ..., $n-1$. On note $p_i=(i,\ p(i)) \in \mathbb{N}^2$ et on dit que $p_i$ domine $p_j$ si $i \geq j$ et $p(i) \geq p(j)$.
+
+\Q
+Montrer que la relation de domination est une relation d'ordre partiel. On la note $\geq$, et on note $p_i > p_j$ pour $p_i \geq p_j$ et $p_i \neq p_j$. Une chaîne est une suite de points $p_{i_1} > p_{i_2} > ... > p_{i_k}$. On définit la hauteur de $p_i$ comme étant la longueur maximale d'une chaîne dans l'ensemble \{$p_j$ tels que $p_i \geq p_j$\} et on note $S_h$ l'ensemble des points de hauteur $h$.
+
+\Q
+Montrer que si $p_i$ est de hauteur $h > 1$, alors il existe un point $p_j$, $j < i$, qui appartient à $S_{h-1}$ et est dominé par $p_i$. Montrer qu'alors le point de $S_{h-1}$ le plus à droite (c'est-à-dire d'abscisse maximum) parmi ceux qui sont à gauche de $p_i$ (c'est-à-dire d'abscisse strictement inférieure à celle de $p_i$) est aussi dominé par $p_i$.
+
+\Q
+Proposer un algorithme pour calculer les hauteurs des éléments d'un ensemble de $n$ points.
+
+\Q
+Écrire une fonction qui prend en entrée un tableau $p$ de $n$ entiers, codant la permutation, et donne en sortie la hauteur maximale des $p_i$ et un tableau \texttt{hauteur} tel que \texttt{hauteur.(i)} contient la hauteur du point $p_i$.
+
+\Q
+Proposer un algorithme pour trouver une chaîne de $p$ de taille maximale.
+
+\Corrige
+
+\Q
+Réflexivité, antisymétrie et transitivité sont immédiates.
+
+\Q
+Comme $p_i$ est de hauteur $h$, il existe une chaîne $c$ : $p_i > p_{i_2}> p_{i_3} > ... > p_{i_h}$. Soit $p_j=p_{i_2}$. La chaîne $c$ prouve que $p_j$ est de hauteur au moins $h-1$. Par ailleurs, si $p_j$ était de hauteur $h$, alors en ajoutant $p_j$ à sa chaîne maximale, on obtiendrait une chaîne de hauteur $h+1$ pour $p_i$ : impossible. Donc $p_j$ appartient à $S_{h-1}$.
+\smallskip
+
+Supposons les points de $S_{h-1}$ triés par abscisse croissante. Alors leurs ordonnées sont triées par ordre décroissant : en effet, sinon il existerait deux points $p$ et $q$ de $S_{h-1}$ tels que $x(p) \leq x(q)$ et $y(p) < y(q)$, et donc $p < q$ : mais $p$ étant de hauteur $h-1$, $q$ serait alors de hauteur au moins $h$, ce qui est impossible. L'ensemble des points de $S_{h-1}$ d'abscisse inférieure à ou égale à celle de $p_i$ est non vide, puisque $p_i$ domine au moins un point $p_j$ de hauteur $h-1$. Soit donc $q$ le point de $S_{h-1}$ d'abscisse maximale parmi ceux à gauche de $p_i$. L'abscisse de $q$ est supérieure à celle de $p_j$, donc son ordonnée est inférieure. Par conséquent : $x(q) \leq x(p_i)$ et $y(q) \leq y(p_j) \leq y(p_i)$. Donc $p_i$ domine $q$.
+\medskip
+
+Voir la figure suivante :
+
+\begin{tikzpicture}[scale=1.5]
+    \node[label=right:$p_j$] (pj) at (2,1) {};
+    \node[label=above right:$h-1$, yshift=-3] (h1) at (2,0) {};
+    \node[label=right:$p_i$] (pi) at (4.5,2) {};
+    \node[label=above right:$h$, yshift=-3] (h) at (4.5,0) {};
+
+
+    \draw[dashed] (0,1) -- (2,1);
+    \draw[dashed] (2,1) -- (2,0);
+    \draw[dashed] (0,2) -- (4.5,2);
+    \draw[dashed] (4.5,2) -- (4.5,0);
+
+
+    \draw[very thick, ->] (0,0) -- (0,3.5);
+    \draw[very thick, ->] (0,0) -- (6,0);
+\end{tikzpicture}
+
+\Q
+On parcourt la liste des points de gauche à droite en déterminant leur hauteur au fur et à mesure, par un algorithme glouton. On va utiliser un tableau \texttt{hauteur} tel que \texttt{hauteur.(i)} contienne la hauteur de $p_i$, et un tableau \texttt{adroite} tel que \texttt{adroite.(i)=j} si $p_j$ est le point le plus à droite parmi les points de hauteur $h$ et \texttt{adroite.(i)=-1} s'il n'y a pas de point de hauteur $h$. De plus, une variable \texttt{hmax} donne la hauteur maximale trouvée jusqu'à présent. Supposons que $p_0$, $p_1$, ..., $p_{i-1}$ aient déjà été traités, et soit $hmax$ leur hauteur maximale. On veut déterminer la hauteur de $p_i$. Si $p_i$ domine le point d'indice \texttt{adroite.(hmax)}, alors $p_i$ est de hauteur $hmax+1$, sinon, on parcourt le tableau \texttt{adroite} dans l'ordre décroissant pour trouver le plus grand $l<i$ tel que $p_i$ domine le point d'indice \texttt{adroite.(l)} : $p_i$ est alors de hauteur $l+1$ ; si $p_i$ ne domine aucun point du tableau \texttt{adroite}, alors $p_i$ est de hauteur 1. Il ne reste plus qu'à mettre à jour les tableaux \texttt{hauteur} et \texttt{adroite} ainsi que la variable \texttt{hmax}.
+
+\Q
+On donne la fonction suivante :
+
+\lstinputlisting[firstline=1]{\SourceFile}
+
+\Q
+Il suffit de prendre les points d'abscisses \texttt{adroite.(hmax-1)}, \texttt{adroite.(hmax-2)}, ..., \texttt{adroite.(0)} pour avoir une chaîne de taille maximale.
+\bigskip
+
+\Fin
