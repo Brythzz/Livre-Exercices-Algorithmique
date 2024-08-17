@@ -26,8 +26,8 @@ L'idée est d'utiliser un algorithme glouton. Soit $j$ le dernier évènement aj
 \Q
 L'algorithme est en $O(n)$ si les dates de fin son déjà triées. Il faut montrer que le nombre d'évènements obtenu est optimal :
 \begin{itemize}
-    \item on montre d'abord qu'il existe une solution optimale qui commence avec $E_1$. Soit $A$ une solution optimale et soit $k$ l'indice de la première activité de $A$. Si $k \neq 1$, soit $B=A-E_k+E_1$ (comprendre $B=(A\cup E_1)\smallsetminus \{E_k\}$). Comme $k$ est le premier évènement de $A$, tous les autres commencent après $f_k$. Comme $f_1 \leq f_k$, $B$ est une solution possible, optimale comme $A$. D'où le résultat.
-    \item Si $A$ est une solution optimale commençant par $E_1$, alors $A'=A-E_1$ est une solution optimale pour le problème où les évènements sont les $\{E_j,\ 2 \leq j \leq n,\ d_j \geq f_1\}$. Sinon, on pourrait trouver une solution $B'$ meilleure que $A'$ pour ce dernier problème, et alors $B'+E_1$ serait meilleur que $A$ !
+    \item on montre d'abord qu'il existe une solution optimale qui commence avec $E_1$. Soit $A$ une solution optimale et soit $k$ l'indice de la première activité de $A$. Si $k \neq 1$, soit $B=(A\cup E_1)\smallsetminus \{E_k\}$. Comme $k$ est le premier évènement de $A$, tous les autres commencent après $f_k$. Comme $f_1 \leq f_k$, $B$ est une solution possible, optimale comme $A$. D'où le résultat.
+    \item Si $A$ est une solution optimale commençant par $E_1$, alors $A'=A\smallsetminus\{E_1\}$ est une solution optimale pour le problème où les évènements sont les $\{E_j,\ 2 \leq j \leq n,\ d_j \geq f_1\}$. Sinon, on pourrait trouver une solution $B'$ meilleure que $A'$ pour ce dernier problème, et alors $B'\cup \{E_1\}$ serait meilleur que $A$ !
 \end{itemize}
 Par récurrence, on a le résultat.
 \medskip
