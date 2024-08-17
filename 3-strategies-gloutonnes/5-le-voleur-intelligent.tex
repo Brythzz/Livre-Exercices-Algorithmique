@@ -1,0 +1,23 @@
+\section{Le voleur intelligent}
+
+Un cambrioleur entre par effraction dans une maison et désire emporter quelques-uns des objets de valeur qui s'y trouvent. Il n'est capable de porter que $X$ kilos : il lui faudra donc choisir entre les différents objets, suivant leur valeur (il veut bien entendu amasser la plus grande valeur possible).
+
+\Q
+On suppose que les objets sont des matières fractionnelles (on peut en prendre n'importe quelle quantité, c'est le cas d'un liquide ou d'une poudre). Il y a $M$ matières différentes, la $i$-ième matières vaut un prix \texttt{p.(i)} par kilo, et la quantité disponible (en kilos) de cette matière \texttt{q.(i)}. On suppose que tous les prix \texttt{p.(i)} sont différents deux à deux. Donner un algorithme qui donne un choix optimal pour le voleur.
+
+\Q
+On suppose maintenant que les objets sont non fractionnables (c'est le cas d'une chaise ou d'un téléviseur). Le $i$-ième objet vaut un prix \texttt{p.(i)} (à l'unité, pas au kilo !) et pèse un poids \texttt{q.(i)}. Proposer une méthode dérivée de celle de la question 1. Donne-t-elle un choix optimal ? Proposer un algorithme qui donne la valeur optimale que le voleur peut espérer emporter (aide : on construira au fur et à mesure des tableaux qui à l'étape $i$ de l'algorithme contiendront, pour chaque sous-ensemble de l'ensemble des $i$ premiers objets dont la somme des poids est inférieure à $X$, la somme des poids et la somme des valeurs de ces objets).
+
+\Corrige
+
+\Q
+On utilise un algorithme glouton. On repère la matière la plus précieuse. On en prend le plus possible (jusqu'à ce qu'on en ait $X$ kilos ou que l'on ait épuisé cette matière). Si on peut encore prendre des choses, on continue avec la matière la plus précieuse parmi celles restantes, et ainsi de suite. Justification : supposons que la distribution optimale soit différente. Soit $q$ la quantité de la matière la plus précieuse dans cette distribution et $q'$ celle donnée par notre algorithme. Par construction de notre algorithme $q' \geq q$. Si jamais $q' > q$, on obtient visiblement une meilleure distribution que celle supposée en remplaçant $q'-q$ kilos de n'importe quelle autre matière par $q'-q$ kilos de la matière la plus précieuse, donc $q'=q$. On se ramène au même problème avec $X-q$ kilos transportables et toutes les autres matières sauf la matière la plus précieuse.
+
+\Q
+Dans ce cas, on peut sans difficulté proposer une méthode gloutonne, mais elle ne donne plus une distribution optimale. On peut même être très éloigné de l'optimum : supposons $X=1$, et 3 objets de poids respectifs $1/2+\varepsilon$, $1/2+\varepsilon/2$ et $1/2-\varepsilon/2$ et de valeurs égales à leur poids. L'optimum consiste bien entendu à prendre les 2ème et 3ème objets, on aura alors une valeur de 1, tandis que la méthode gloutonne conduira à prendre le premier, on aura une valeur de $1/2+\varepsilon$. L'algorithme obtenu est le même que celui du problème \og remplissage d'un camion \fg{}.
+\medskip
+
+Ce problème est connu sous le nom de \og problème du sac à dos \fg{}. Il est possible de gagner en efficacité par rapport à l'algorithme exhaustif en utilisant un algorithme de type séparation et évaluation (\textit{branch and bound}), maximisant la valeur des objets dans le sac.
+\bigskip
+
+\Fin
