@@ -90,13 +90,17 @@ autrement dit,
 Si l'on tient compte du fait que, sur une branche, au plus un nœud sur deux est rouge, la profondeur d'un arbre bicolore de noire-profondeur $np$ est au plus $2np$ c'est à dire d'au plus $2\log_2(n+1)$.
 
 \Q
+Pour alléger les fonctions et puisque la coloration n'apporte rien ici, on définit un type d'arbre binaire sans couleurs :
+
+\lstinputlisting[linerange={15-15}]{\SourceFile}
+
 On propose les fonctions de rotations gauche et droite autour de la racine de \texttt{t} (la transformation n'est pas effectuée si elle est impossible) :
 
-\lstinputlisting[linerange={10-16}]{\SourceFile}
+\lstinputlisting[linerange={17-23}]{\SourceFile}
 
 Si l'on souhaite effectuer une rotation autour d'un nœud en particulier, il suffit de descendre jusqu'à celui-ci de manière récursive puis de le remplacer, similairement à ce qui est fait pour l'insertion :
 
-\lstinputlisting[linerange={18-22}]{\SourceFile}
+\lstinputlisting[linerange={25-29}]{\SourceFile}
 
 La fonction \texttt{rotate\_node\_right} s'écrit de manière analogue.
 \medskip
@@ -301,7 +305,11 @@ On représente ici l'une des quatre situations où une rotation est nécessaire 
 
 Nous obtenons ainsi les fonctions OCaml suivantes où l'on n'effectue pas de rotation de manière \og explicite \fg{} mais où on utilise une fonction de \textit{pattern-matching} pour gérer les cas où deux nœuds rouges se suivent :
 
-\lstinputlisting[firstline=24]{\SourceFile}
+\lstinputlisting[linerange={31-49}]{\SourceFile}
+
+Notons que pour éviter de répéter deux fois la même chose, on pourrait définir une fonction constructeur comme suit :
+
+\lstinputlisting[firstline=51]{\SourceFile}
 
 Nous disposons d'un arbre binaire de recherche dont la profondeur est d'au plus $2\log_2(n+1)$, avec des algorithmes d'insertion et de suppression qui parcourent un nombre donné de fois une branche de l'arborescence. Nous disposons ainsi d'une structure de données où toutes les opérations peuvent se faire en un temps logarithmique suivant la taille de cette base de données.
 \bigskip
