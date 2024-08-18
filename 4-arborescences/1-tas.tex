@@ -15,24 +15,24 @@ Un arbre binaire complet est un graphe comme celui de la figure : tous les nivea
         inner sep=0pt,
         minimum size=8pt},
     level distance=1cm,
-     level 1/.style={sibling distance=2.5cm},
-     level 2/.style={sibling distance=1.6cm},
-     level 3/.style={sibling distance=1cm}]
-     \node[label={[yshift=-2pt]north east:$t\lbrack1\rbrack{=}3$}] {}
-     child {node[label={[xshift=-2pt]left:$t\lbrack2\rbrack{=}5$}] {}
-       child {node[label={[xshift=-2pt]left:$t\lbrack4\rbrack{=}6$}] {}
-         child {node[label={[yshift=10pt, xshift=-12pt]south:$t\lbrack8\rbrack{=}12$}] {}}
-         child {node[label={[yshift=10pt]south:$t\lbrack9\rbrack{=}18$}] {}}
-       }
-       child {node[label={[xshift=-3pt, yshift=-1pt]north east:$t\lbrack5\rbrack{=}8$}] {}
-         child {node[label={[xshift=2pt, yshift=-2pt]right:$t\lbrack10\rbrack{=}14$}] {}}
-         child[missing]
-       }
-     }
-     child {node[label={[xshift=6pt, yshift=-8pt]north east:$t\lbrack3\rbrack{=}9$}] {}
-       child {node[label={[yshift=10pt, xshift=10pt]south:$t\lbrack6\rbrack{=}11$}] {}}
-       child {node[label={[yshift=10pt, xshift=12pt]south:$t\lbrack7\rbrack{=}10$}] {}}
-     };
+    level 1/.style={sibling distance=2.5cm},
+    level 2/.style={sibling distance=1.6cm},
+    level 3/.style={sibling distance=1cm}]
+    \node[label={[yshift=-2pt]north east:$t\lbrack1\rbrack{=}3$}] {}
+    child {node[label={[xshift=-2pt]left:$t\lbrack2\rbrack{=}5$}] {}
+        child {node[label={[xshift=-2pt]left:$t\lbrack4\rbrack{=}6$}] {}
+            child {node[label={[yshift=10pt, xshift=-12pt]south:$t\lbrack8\rbrack{=}12$}] {}}
+            child {node[label={[yshift=10pt]south:$t\lbrack9\rbrack{=}18$}] {}}
+        }
+        child {node[label={[xshift=-3pt, yshift=-1pt]north east:$t\lbrack5\rbrack{=}8$}] {}
+            child {node[label={[xshift=2pt, yshift=-2pt]right:$t\lbrack10\rbrack{=}14$}] {}}
+            child[missing]
+        }
+    }
+    child {node[label={[xshift=6pt, yshift=-8pt]north east:$t\lbrack3\rbrack{=}9$}] {}
+        child {node[label={[yshift=10pt, xshift=10pt]south:$t\lbrack6\rbrack{=}11$}] {}}
+        child {node[label={[yshift=10pt, xshift=12pt]south:$t\lbrack7\rbrack{=}10$}] {}}
+    };
     \node[draw=none, fill=none] at (5, 0) {\texttt{niveau 0}};
     \node[draw=none, fill=none] at (5, -1) {\texttt{niveau 1}};
     \node[draw=none, fill=none] at (5, -2) {\texttt{niveau 2}};
