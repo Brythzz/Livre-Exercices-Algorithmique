@@ -83,6 +83,23 @@
 \titleformat{\section}{\sl\LARGE\bfseries}{\thesection}{\fontdimen2\font}{}
 
 
+%%% Style de la table des matières %%%
+
+\usepackage[titles]{tocloft}
+
+% Format des titres de chapitres
+\renewcommand{\cftchapfont}{\Large\itshape}
+\renewcommand{\cftchappagefont}{\Large\itshape}
+\renewcommand{\cftchapaftersnum}{\,:}
+\setlength{\cftchapnumwidth}{\cftsecnumwidth}
+
+\setlength{\cftbeforechapskip}{1.8em}
+\renewcommand\cftchapafterpnum{\vskip4mm}
+
+% Format des titres de sections
+\setlength{\cftsecindent}{0em}
+\setlength{\cftbeforesecskip}{0.5em}
+
 %%% Style des listes %%%
 
 \frenchsetup{StandardItemLabels=true}
