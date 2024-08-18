@@ -2,7 +2,7 @@
 
 \section{Tas}
 
-Un arbre binaire complet est un graphe comme celui de la figure : tous les niveaux sont remplis de gauche à droite, sauf éventuellement le dernier niveau. On numérote les sommets de 1 à $n$, niveau par niveau, et pour chaque niveau, de gauche à droite. S'il y a une flèche de $i$ vers $j$, on dit que $i$ est le père de $j$, et que $j$ est un fils de $i$. Le sommet d'en haut qui n'a pas de père (niveau 0), est la racine. Les sommets du dernier niveau, qui n'ont pas de fils, sont des feuilles. À chaque sommet numéro $i$, on associe un attribut entier. On représente alors un arbre binaire complet de taille $n$ par un tableau de taille $n+1$ dont la première case est vide (comme indiqué sur la figure).
+Un arbre binaire complet est un graphe comme celui de la figure : tous les niveaux sont remplis de gauche à droite, sauf éventuellement le dernier niveau. On numérote les sommets de 1 à $n$, niveau par niveau, et pour chaque niveau, de gauche à droite. S'il y a une flèche de $i$ vers $j$, on dit que $i$ est le père de $j$, et que $j$ est un fils de $i$. Le sommet d'en haut qui n'a pas de père (niveau 0), est la racine. Les sommets du dernier niveau, qui n'ont pas de fils, sont des feuilles. À chaque sommet numéro $i$, on associe un attribut entier. On représente alors un arbre binaire complet de taille $n$ par un tableau de taille $n+1$ dont la première case contient le nombre d'éléments du tas.
 \medskip
 
 \hspace{1cm}
@@ -64,21 +64,29 @@ Pour la fonction demandée, on vérifie les attributs des fils des sommets qui n
 \lstinputlisting[linerange={1-9}]{\SourceFile}
 
 \Q
-Une idée naturelle serait d'essayer de remonter le plus petit des fils de la racine à sa place, puis de continuer ainsi... mais on aboutit à un déséquilibre de l'arbre, qui n'est plus complet. Comme l'indication le suggère, il est plus simple de placer le dernier élément à la racine puis de le descendre à la bonne place :
+Une idée naturelle serait d'essayer de remonter le plus petit des fils de la racine à sa place, puis de continuer ainsi... mais on aboutit à un déséquilibre de l'arbre, qui n'est plus complet. Comme l'indication le suggère, il est plus simple de placer le dernier élément à la racine puis de le descendre à la bonne place (percolation basse) :
 
-\lstinputlisting[linerange={10-27}]{\SourceFile}
+\lstinputlisting[linerange={11-35}]{\SourceFile}
 
 La procédure a une complexité au pire proportionnelle au nombre de niveaux de l'arbre soit $\lceil \log_2n\rceil$.
 
 \Q
-Comme précédemment, une idée simple est d'ajouter la nouvelle valeur en dernière position, puis de la remonter tant que besoin est :
+Comme précédemment, une idée simple est d'ajouter la nouvelle valeur en dernière position, puis de la remonter tant que besoin est (percolation haute) :
 
-\lstinputlisting[linerange={10-27}]{\SourceFile}
+\lstinputlisting[linerange={37-51}]{\SourceFile}
 
 Ici encore, la fonction a une complexité proportionnelle au nombre de niveaux de l'arbre, donc en $O(\lceil \log_2n \rceil)$.
 \medskip
 
-Signalons que la structure de tas est à la base d'une méthode de tri très performante : le tri par tas. L'idée est simple : on part du tableau t de n éléments à trier, et on construit un tas par ajout successif des $n$ éléments. On retire ensuite toutes les racines et on obtient ainsi les éléments dans l'ordre :
+Signalons que la structure de tas est à la base d'une méthode de tri très performante : le tri par tas. L'idée est simple : on part du tableau \texttt{a} de $n$ éléments à trier, et on construit un tas par ajout successif des $n$ éléments. On retire ensuite toutes les racines et on obtient ainsi les éléments dans l'ordre :
 
-\lstinputlisting[firstline=30]{\SourceFile}
+\lstinputlisting[firstline=53]{\SourceFile}
 
+Le coût de chaque insertion ou suppression est proportionnel à la hauteur du tas courant ($\log_2p$ pour $p$ éléments), et donc le coût total est de l'ordre de :
+\[
+\sum_{p=1}^{n}\log_2p=\log_2n!=O(n\log_2n)
+\]
+(d'après la formule de Stirling ou par comparaison avec $\int_{1}^{n}\log x\,\mathrm{d}x$). Le tri par tas est donc asymptotiquement très rapide.
+\bigskip
+
+\Fin
