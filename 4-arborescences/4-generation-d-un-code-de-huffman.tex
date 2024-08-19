@@ -1,0 +1,278 @@
+\renewcommand{\SourceFile}{4-arborescences/src/4-4.ml}
+
+\section{Génération d'un code de Huffman}
+
+En machine, à chaque caractère correspond un code binaire formé de 0 et de 1. Notre but est de construire une table de codage. Le codage de Huffman prend en compte les fréquences d'apparition des caractères. Nous allons étudier ici comment ce code est construit.
+\medskip
+
+La structure de données utilisée pour la construction d'un tel code est celle d'arbre binaire : une feuille représente un caractère et à chaque sous-arbre est associé un poids correspondant à la somme des fréquences de ses feuilles.
+
+\Q
+On désire fusionner deux arbres binaires en un seul de la manière suivante : on crée un nouvel arbre, de poids la somme des poids des deux arbres et dont la racine a pour fils gauche l'arbre de poids le plus faible et pour fils droit l'autre arbre.
+\medskip
+
+Écrire une fonction de fusion des deux arbres binaires. Préciser la structure de données adoptée.
+
+\Q
+Après l'analyse d'un texte écrit avec l'alphabet \{a, b, c, d, e, f, g, h\}, nous obtenons pour chaque lettre une fréquence d'apparition. À partir de ces fréquences, nous construisons 8 arbres correspondant aux 8 caractères de l'alphabet ; chaque arbre correspond à une feuille avec comme poids la fréquence de chaque caractère.
+\medskip
+
+Nous fusionnons ensuite successivement les arbres de poids les plus faibles jusqu'à n'obtenir qu'un seul arbre.
+\medskip
+
+Illustrer le fonctionnement de cet algorithme avec l'exemple suivant :
+\smallskip
+
+\begin{tabular}{| c | c | c | c | c | c | c | c | c |}
+    \hline
+    lettre & a & b & c & d & e & f & g & h\\
+    \hline
+    fréquence & 25 & 12 & 10 & 8 & 27 & 10 & 5 & 3\\
+    \hline
+\end{tabular}
+\smallskip
+
+\Q
+Nous déduisons un codage pour chaque caractère avec l'arbre obtenu : on marque les branches gauches avec des 0 et les branches droites avec des 1. Le chemin de la racine à la feuille correspondant à un caractère nous donne une suite de 0 et de 1 qui définit le code du caractère.
+\medskip
+
+Quelle est, dans le pire cas, la plus grande longueur possible pour le code d'un caractère ? Quelle structure de données peut-on utiliser pour stocker ces codes ?
+\medskip
+
+Écrire une fonction OCaml permettant de construire le code correspondant pour chaque caractère.
+
+\Corrige
+
+\Q
+On représente un arbre binaire avec le type :
+
+\lstinputlisting[linerange={1-3}]{\SourceFile}
+
+On propose la fonction de fusion suivante, où \texttt{occ} est un tableau des occurrences des lettres dans l'ordre et où on suppose que \texttt{a1} est de poids plus petit que \texttt{a2} :
+
+\lstinputlisting[linerange={5-12}]{\SourceFile}
+
+\Q
+Notons qu'une manière efficace de construire un tel arbre à partir de l'ensemble de feuilles est d'utiliser un tas et de successivement fusionner les deux éléments les plus petits (situés à la racine) puis de réinsérer l'arbre obtenu dans le tas. On pourra se référer au premier exercice de ce chapitre pour l'implémentation en OCaml.
+\bigskip
+
+\tikzstyle{lbl}=[label=below:\parbox{8mm}{\centering #1}]
+\begin{tikzpicture}[
+    level distance=7mm,
+    sibling distance=9mm,
+    align=center,
+    label distance=-4pt,
+    every node/.style={
+    font=\ttfamily,
+    fill=black,
+    inner sep=0pt,
+    minimum size=4pt,
+    circle, draw, fill=black}]
+
+    \begin{scope}
+        \node[fill=none, draw=none] (id) {1};
+        \node[yshift=3mm, lbl={h,3}, right=of id] (h) {};
+        \node[lbl={g,5}, right=of h] (g) {};
+        \node[lbl={d,8}, right=of g] (d) {};
+        \node[lbl={c,10}, right=of d] (c) {};
+        \node[lbl={f,10}, right=of c] (f) {};
+        \node[lbl={b,12}, right=of f] (b) {};
+        \node[lbl={a,25}, right=of b] (a) {};
+        \node[lbl={e,27}, right=of a] (e) {};
+
+        \draw ([yshift=-6mm, xshift=-5mm]h.south west) -- ([yshift=-6mm, xshift=5mm]e.south east);
+    \end{scope}
+
+    \begin{scope}[yshift=-1.2cm]
+        \node[fill=none, draw=none] (id) {2};
+
+        \node[yshift=2mm, right=of id, label={[label distance=2pt]above right:8}] (t1) {}
+            child {node[lbl={h,3}] {}}
+            child {node[lbl={g,5}] {}};
+        \node[lbl={d,8}, right=of t1] (d) {};
+        \node[lbl={c,10}, right=of d] (c) {};
+        \node[lbl={f,10}, right=of c] (f) {};
+        \node[lbl={b,12}, right=of f] (b) {};
+        \node[lbl={a,25}, right=of b] (a) {};
+        \node[lbl={e,27}, right=of a] (e) {};
+
+        \draw ([yshift=-1.3cm, xshift=-5mm]t1.south west) -- ([yshift=-1.3cm, xshift=5mm]e.south east);
+    \end{scope}
+
+    \begin{scope}[yshift=-3.2cm]
+        \node[fill=none, draw=none] (id) {3};
+
+        \node[yshift=2mm, lbl={c,10}, right=of id] (c) {};
+        \node[lbl={f,10}, right=of c] (f) {};
+        \node[lbl={b,12}, right=of f] (b) {};
+
+        \node[right=of b, label={[label distance=2pt]above right:16}] (t1) {}
+            child {node {}
+                child {node[lbl={h,3}] {}}
+                child {node[lbl={g,5}] {}}
+            }
+            child {node[lbl={d,8}] {}};
+        \node[lbl={a,25}, right=of t1] (a) {};
+        \node[lbl={e,27}, right=of a] (e) {};
+    \end{scope}
+\end{tikzpicture}
+
+\begin{tikzpicture}[
+    level distance=7mm,
+    sibling distance=9mm,
+    align=center,
+    label distance=-4pt,
+    every node/.style={
+    font=\ttfamily,
+    fill=black,
+    inner sep=0pt,
+    minimum size=4pt,
+    circle, draw, fill=black}]
+
+    \begin{scope}
+        \node[fill=none, draw=none] (id) {4};
+
+        \node[yshift=2mm, lbl={b,12}, right=of id] (b) {};
+
+        \node[right=of b, label={[label distance=2pt]above right:16}] (t1) {}
+            child {node {}
+                child {node[lbl={h,3}] {}}
+                child {node[lbl={g,5}] {}}
+            }
+            child {node[lbl={d,8}] {}};
+        \node[xshift=7mm, right=of t1, label={[label distance=2pt]above right:20}] (t2) {}
+            child {node[lbl={c,10}] {}}
+            child {node[lbl={f,10}] {}};
+        \node[lbl={a,25}, right=of t2] (a) {};
+        \node[lbl={e,27}, right=of a] (e) {};
+
+        \draw ([yshift=-2cm, xshift=-5mm]b.south west) -- ([yshift=-2cm, xshift=5mm]e.south east);
+    \end{scope}
+
+    \begin{scope}[yshift=-2.6cm]
+        \node[fill=none, draw=none] (id) {5};
+
+        \node[yshift=2mm, right=of id, label={[label distance=2pt]above right:20}] (t2) {}
+            child {node[lbl={c,10}] {}}
+            child {node[lbl={f,10}] {}};
+
+        \node[lbl={a,25}, right=of t2] (a) {};
+        \node[lbl={e,27}, right=of a] (e) {};
+
+        \node[right=of e, label={[label distance=2pt]above right:28}] (t1) {}
+            child {node[lbl={b,12}] {}}
+            child { node {}
+                child {node {}
+                    child {node[lbl={h,3}] {}}
+                    child {node[lbl={g,5}] {}}
+                }
+                child {node[lbl={d,8}] {}
+                }
+            };
+
+        \draw ([yshift=-2.7cm, xshift=-5mm]t2.south west) -- ([yshift=-2.7cm, xshift=1.5cm]t1.south east);
+    \end{scope}
+
+    \begin{scope}[yshift=-6.2cm]
+        \node[fill=none, draw=none] (id) {6};
+
+        \node[yshift=2mm, lbl={e,27}, right=of id] (e) {};
+
+        \node[right=of e, label={[label distance=2pt]above right:45}] (t2) {}
+            child { node {}
+                child {node[lbl={c,10}] {}}
+                child {node[lbl={f,10}] {}}
+            }
+            child { node[lbl={a,25}] {}};
+
+        \node[xshift=8mm, right=of t2, label={[label distance=2pt]above right:28}] (t1) {}
+            child { node[lbl={b,12}] {}}
+            child { node {}
+                child {node {}
+                    child {node[lbl={h,3}] {}}
+                    child {node[lbl={g,5}] {}}
+                }
+                child {node[lbl={d,8}] {}
+                }
+            };
+    \end{scope}
+\end{tikzpicture}
+\begin{tikzpicture}[
+    level distance=7mm,
+    sibling distance=9mm,
+    align=center,
+    label distance=-4pt,
+    every node/.style={
+    font=\ttfamily,
+    fill=black,
+    inner sep=0pt,
+    minimum size=4pt,
+    circle, draw, fill=black}]
+
+    \begin{scope}[yshift=-1cm]
+        \node[fill=none, draw=none] (id) {7};
+
+        \node[yshift=2mm, right=of id, label={[label distance=2pt]above right:28}] (t1) {}
+            child { node[lbl={b,12}] {}}
+            child { node {}
+                child {node {}
+                    child {node[lbl={h,3}] {}}
+                    child {node[lbl={g,5}] {}}
+                }
+                child {node[lbl={d,8}] {}
+                }
+            };
+
+        \node[xshift=10mm, right=of t1, label={[label distance=2pt]above right:55}] (t2) {}
+            child { node[lbl={e,27}] {}}
+            child {
+                child { node {}
+                    child {node[lbl={c,10}] {}}
+                    child {node[lbl={f,10}] {}}
+                }
+                child { node[lbl={a,25}] {}}
+            };
+
+        \draw ([yshift=-3.4cm, xshift=-5mm]t1.south west) -- ([yshift=-3.4cm, xshift=1.5cm]t2.south east);
+    \end{scope}
+
+    \begin{scope}[yshift=-5.4cm, level 1/.style={sibling distance=2cm}, level 2/.style={sibling distance=9mm}]
+        \node[fill=none, draw=none] (id) {8};
+
+        \node[yshift=2mm, xshift=1.3cm, right=of id, label={[label distance=2pt]above right:100}] (t1) {}
+            child { node {}
+                child { node[lbl={b,12}] {}}
+                child { node {}
+                    child {node {}
+                        child {node[lbl={h,3}] {}}
+                        child {node[lbl={g,5}] {}}
+                    }
+                    child {node[lbl={d,8}] {}
+                    }
+                }
+            }
+            child { node {}
+                child { node[lbl={e,27}] {}}
+                child {
+                    child { node {}
+                        child {node[lbl={c,10}] {}}
+                        child {node[lbl={f,10}] {}}
+                    }
+                    child { node[lbl={a,25}] {}}
+                }
+            };
+    \end{scope}
+\end{tikzpicture}
+
+\Q
+Le pire cas se présente lorsque l'arborescence obtenue est composée d'une seule branche portant tous les caractères. La longueur du plus grand code possible pour un caractère est égale au cardinal de l'alphabet $-1$.
+\medskip
+
+Une manière efficace de stocker les codes pour faciliter l'encodage de messages est d'utiliser une table de hachage.
+\medskip
+
+De manière analogue à ce qui a été fait dans l'exercice précédent, on peut parcourir l'arbre et ajouter tous les codes à la table :
+
+\lstinputlisting[firstline=14]{\SourceFile}
+
+\Fin
