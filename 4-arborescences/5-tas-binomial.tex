@@ -1,0 +1,103 @@
+\renewcommand{\SourceFile}{4-arborescences/src/4-5.ml}
+
+\section{Tas binomial}
+
+Un arbre étiqueté est défini par une racine, des nœuds et des feuilles. Un nœud est défini par un père, un fils aîné, un frère, une étiquette (entier positif). La racine est un nœud sans père et une feuille un nœud sans fils.
+
+\Q
+Expliquer comment représenter un arbre étiqueté en OCaml.
+
+\Q
+Un arbre binomial est défini par récurrence : l'arbre binomial d'ordre 0 ne contient qu'un seul nœud, l'arbre binomial d'ordre $k$ est construit à partir de deux arbres binomiaux d'ordre $k-1$ en plaçant la racine de l'un comme fils aîné de la racine de l'autre et l'ancien fils aîné devant le frère.
+\medskip
+
+Montrer que la racine d'un arbre binomial est de degré $k$ (nombre de fils).
+\medskip
+
+Montrer que si les fils de la racine d'un arbre binomial sont numérotés de $k-1$ à 0 en partant du fils aîné alors le fils $i$ est un arbre binomial d'ordre $i$.
+\medskip
+
+Montrer enfin qu'un arbre binomial d'ordre $k$ possède $2^k$ nœuds et que la plus longue branche contient $k$ nœuds.
+
+\Q
+Donner une fonction de fusion de deux arbres binomiaux d'ordre $k$ en un seul d'ordre $k+1$.
+
+\Q
+Un tas binomial est une liste d'arbres binomiaux telle que : il y a au plus un arbre binomial d'un degré donné et dans chaque arbre l'étiquette d'un nœud est supérieure ou égale aux étiquettes de ses parents.
+\medskip
+
+Comment stocker un tas binomial ?
+\medskip
+
+Combien d'arbres binomiaux composent un tas binomial de $n$ étiquettes ?
+\medskip
+
+Donner une fonction unifiant deux tas binomiaux en une liste ordonnée par ordre croissant (il peut y avoir deux arbres binomiaux de même ordre).
+
+\Q
+Donner une fonction de fusion de deux tas binomiaux en un seul.
+\medskip
+
+Donner une fonction permettant d'extraire la plus petite étiquette d'un tas binomial.
+\newpage
+
+\Corrige
+
+\Q
+On représente chaque nœud de l'arbre par un tuple contenant l'ordre de l'arbre dont le nœud est racine, l'étiquette du nœud et une liste de tous ses fils directs :
+
+\lstinputlisting[linerange={1-1}]{\SourceFile}
+
+\Q
+Le fait que la racine d'un arbre binomial d'ordre $k$ soit de degré $k$ se montre par récurrence directement à partir de la définition donnée dans l'énoncé.
+\medskip
+
+Il en est de même pour le fait que si les fils de la racine d'un arbre binomial sont numérotés de $k-1$ à $0$ en partant du fils aîné alors le fils $i$ est un arbre binomial d'ordre $i$. On ajoute un arbre d'ordre $k-1$ en fils aîné d'un arbre d'ordre $k-1$ pour construire un arbre d'ordre $k$.
+\medskip
+
+Enfin, il est aisé de voir que si un arbre d'ordre $k-1$ possède $2^{k-1}$ nœuds alors un arbre d'ordre $k$ en possède $2^{k-1}+2^{k-1}=2^k$.
+\medskip
+
+Le fait que la plus longue branche contienne $k$ nœuds se montre aussi par récurrence.
+
+\Q
+On donne la fonction de fusion suivante :
+
+\lstinputlisting[linerange={3-7}]{\SourceFile}
+
+\Q
+Il suffit de considérer une liste d'arbres binomiaux.
+\medskip
+
+Un arbre binomial possède une puissance de deux comme nombre d'étiquettes. La décomposition de $n$ sous la forme d'une somme de puissances de deux est unique, c'est son écriture binaire.
+\medskip
+
+Le nombre d'arbres binomiaux d'un tas binomial de $n$ étiquettes est donc égal au nombre de 1 dans l'écriture binaire de $n$.
+\medskip
+
+La fonction demandée requiert simplement de parcourir les deux listes (supposées ordonnées) simultanément.
+\medskip
+
+On commence par définir une fonction utilitaire :
+\lstinputlisting[linerange={9-11}]{\SourceFile}
+
+\lstinputlisting[linerange={13-21}]{\SourceFile}
+
+\Q
+On utilise ici la fonction précédente pour obtenir une unique liste (contenant éventuellement des arbres de même ordre) et on transforme cette liste, union de deux tas en un tas (sans arbres de même ordre) :
+
+\lstinputlisting[firstline=23]{\SourceFile}
+
+Pour extraire le plus petit, il suffit, vue la structure d'un tas binomial, de parcourir les racines en recherchant le minimum.
+\medskip
+
+En supprimant le minimum, on transforme un tas binomial en deux tas binomiaux : l'ancien privé de l'arbre binomial de plus petite étiquette et du tas créé par la suppression de la racine de l'arbre cité que l'on ordonne suivant les ordres croissants. On reforme le tas en fusionnant ces deux tas.
+\medskip
+
+La structure de tas binomial permet donc d'effectuer toutes les actions suivantes en $O(\log_2n)$ : l'insertion d'un nouvel élément, la recherche du plus petit élément, la suppression du plus petit élément, la fusion de deux tas en un seul.
+\medskip
+
+Notons qu'il est également possible de décrémenter ou de supprimer un élément donné du tas en $O(\log_2n)$ en utilisant les opérations précédentes.
+\bigskip
+
+\Fin
