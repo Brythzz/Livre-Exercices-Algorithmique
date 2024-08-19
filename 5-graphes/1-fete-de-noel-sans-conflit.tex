@@ -1,0 +1,22 @@
+\renewcommand{\SourceFile}{5-graphes/src/5-1.ml}
+
+\section{Fête de Noël sans conflit}
+
+On considère une grande famille de $n$ personnes avec beaucoup de gens qui ne s'entendent pas, représentée par une matrice $A=(a_{i,j})\in \mathscr{M}_n$ telle que $a_{i,j}=a_{j,i}=1$ si $i$ et $j$ ne peuvent pas se voir, 0 sinon. On a deux maisons de famille et on veut partager les $n$ personnes entre ces deux maisons pour les fêtes de Noël, de façon que deux personnes qui ne s'entendent pas soient toujours dans des maisons différentes.
+
+\Q
+Montrer par un exemple qu'il n'est pas toujours possible de répartir les membres de la famille entre les deux maisons pour éviter tout conflit.
+
+\Q
+On va mettre le résultat dans un tableau \texttt{maison} de taille $n$ tel que \texttt{maison.(i-1)=1} si la personne $i$ est dans la première maison et \texttt{maison.(i-1)=-1} si la personne $i$ est dans l'autre maison. Écrire une fonction \texttt{partage (a:int array array) : int array} qui teste s'il est possible de faire un partage sans conflit et propose un partage lorsque cela et possible.
+
+\Q
+Deux personnes $i$ et $j$ sont dites en relation d'influence s'il existe une suite $k_1$, ..., $k_l$ telle que $a_{i,k_1}=a_{k_1,k_2}=...=a_{k_{l-1},k_l}=a_{k_l,j}=1$. Montrer que cette relation est une relation d'équivalence. Soit $N$ le nombre de classes d'équivalence, si l'on pose par convention $a_{i,i}=1$ pour tout $i$. Montrer qu'un partage sans conflit est possible si et seulement si il n'existe pas de suite $i_1$, ..., $i_{2l+1}$ telle que $a_{i_1,i_2}=...=a_{i_{2l+1,i_1}}=1$. Montrer que le nombre de partages sans conflits est soit 0, soit $2N$.
+
+\Q
+On suppose maintenant qu'il y a trois maisons de famille. Proposer un algorithme qui fasse un partage sans conflits entre les trois maisons lorsque cela est possible. Qu'en pensez-vous ?
+
+\Corrige
+
+\Q
+Il suffit d'une famille de trois personnes qui sont chacune en conflit avec les deux autres.
