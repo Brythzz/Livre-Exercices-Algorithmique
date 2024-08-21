@@ -1,0 +1,36 @@
+\renewcommand{\SourceFile}{5-graphes/src/5-3.ml}
+
+\section{Un mariage stable}
+
+$n$ garçon et $n$ filles se jugent mutuellement : chaque fille classe les garçons par ordre de préférence et chaque garçon classe les filles par ordre de préférence. Les classements sont représentés par deux matrices \texttt{f} et \texttt{g} de taille $n \times n$ : \texttt{f.(i).(j)} est le classement que la fille $i$ donne au garçon $j$ et \texttt{g.(i).(j)} est le classement que donne le garçon $i$ à la fille $j$. Par exemple, si \texttt{f.(i).(j)=1}, le garçon $j$ est celui que préfère la fille $i$.
+\medskip
+
+On appelle \textit{mariage stable} une bijection $M$ de l'ensemble des filles vers l'ensemble des garçons telle que pour tous $i_1$, $i_2$, $j_1$ et $j_2$ tels que $j_1 = M(i_1)$ et $j_2 = M(i_2)$, soit la fille $i_1$ préfère le garçon $j_1$ au garçon $j_2$, soit le garçon $j_2$ préfère la fille $i_2$ à la fille $i_1$.
+
+\Q
+Montrer qu'un mariage stable est toujours possible et proposer un algorithme permettant de trouver un mariage stable.
+
+\Corrige
+
+\Q
+On va construire petit à petit des couples de fiancés. On crée les deux tableaux suivants : \texttt{fiance} et \texttt{fiancee} tels que \texttt{fiance.(i)} est le numéro du fiancé de la fille $i$ et \texttt{fiance.(j)} est le numéro de la fiancée du garçon $j$. Au début, tous les éléments de \texttt{fiance} et \texttt{fiancee} sont mis à zéro. On crée également une fonction \texttt{preferee (i:int) (f:int array) : int} telle que \texttt{preferee i f} renvoie la fille préférée du garçon $i$ parmi les choix possibles (l'algorithme supprimera des choix au fur et à mesure en plaçant la valeur $n+1$ dans le tableau $f$ ou le tableau $g$). Il vient donc :
+
+\lstinputlisting[linerange={1-10}]{\SourceFile}
+
+L'algorithme sera le suivant : tant qu'il existe un garçon $g$ non fiancé\footnote{On peut bien entendu faire un algorithme équivalent en raisonnant sur les filles, pas de misogynie !}, on cherche quelle est sa fille préférée $f$. Si cette fille n'est pas fiancée ou si elle ne préfère pas son actuel fiancé à $g$, on les fiance et on retire $f$ des choix possible de l'ancien éventuel fiancé de $f$, sinon on retire $f$ des choix de $g$. Donnons d'abord l'algorithme, on le discutera ensuite.
+
+\lstinputlisting[firstline=12]{\SourceFile}
+
+Il nous faut maintenant prouver que ce programme termine et que le résultat est un mariage stable (ce qui prouvera l'existence d'un tel mariage).
+\medskip
+
+Terminaison : Il suffit de constater qu'à chaque étape, soit le nombre de choix possibles pour un garçon (le garçon considéré ou son rival) diminue strictement, soit le nombre de garçons non fiancés décroît strictement. Le nombre $\sum$ card \{\textit{choix possibles des garçons}\} + card\{\textit{garçons non fiancés}\} est une suite d'entiers positifs strictement décroissants, elle est donc finie.
+\medskip
+
+Correction : lors de l'exécution de l'algorithme, on n'enlève une fille des choix possibles d'un garçon que si cette fille préfère un autre garçon auquel elle est fiancée (ou devient fiancée). Par la suite, elle changera peut-être de fiancé, mais uniquement pour un garçon qu'elle préfère. On en déduit que si une fille est enlevée à un moment donné des choix possibles d'un garçon, elle sera finalement mariée à quelqu'un qu'elle préfère à ce garçon. Considérons deux couples $(i_1,j_1)$ et $(i_2,j_2)$ mariés par notre programme. Lorsque l'on a fiancé le garçon $j_2$ pour la dernière fois, soit la fille $i_1$ n'était plus dans la liste des choix possibles de $j_2$ et dans ce cas, elle se retrouve mariée à un garçon qu'elle préfère à $j_2$, soit elle était dans la liste des choix possibles mais puisqu'alors on a fiancé $j_2$ à celle qu'il préférait parmi les choix restants (c'est-à-dire $i_2$), on en déduit que : soit la fille $i_1$ préfère le garçon $j_1$ au garçon $j_2$, soit le garçon $j_2$ préfère la fille $i_2$ à la fille $i_1$.
+\medskip
+
+D'où le résultat.
+\bigskip
+
+\Fin
