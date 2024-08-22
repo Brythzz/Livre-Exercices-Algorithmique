@@ -1,0 +1,31 @@
+\renewcommand{\SourceFile}{5-graphes/src/5-4.ml}
+
+\section{Coloriage d'un réseau de trains}
+
+On désire repeindre les gares d'un réseau de voies ferrées de sorte que deux gares reliées directement\footnote{C'est à dire telles qu'on puisse aller directement en train de l'une à l'autre sans avoir à passer par une autre gare.} ne soient jamais peintes de la même couleur. Dans un premier temps, on supposera que l'on ne dispose que de deux couleurs. Peindre des gares ainsi n'est pas toujours possible.
+\medskip
+
+On suppose qu'il y a $n$ gares. Le réseau est représenté par une matrice de booléens \texttt{r} tel que \texttt{r.(i).(j)} vaut \texttt{true} si la gare $i$ est immédiatement reliée à la gare $j$ et \texttt{false} sinon. On a toujours \texttt{r.(i).(j) = r.(j).(i)}.
+
+\Q
+On dispose de seulement 2 couleurs, numérotées 1 et 2. Donner une fonction OCaml qui propose une couleur pour chaque gare de sorte que deux gares reliées directement ne soient jamais peintes de la même couleur si cela est possible, et qui indique si cela est impossible.
+
+\Q
+Montrer que si chaque gare est reliée directement à au plus $p$ gares, alors il existe un coloriage possible à l'aide d'au plus $p+1$ couleurs. Proposer un algorithme donnant un coloriage en $p+1$ couleurs dans un tel cas.
+
+\Corrige
+
+\Q
+Le principe de l'algorithme est d'effectuer un parcours en profondeur du graphe des gares en faisant alterner la couleur de coloriage : on choisit une couleur arbitraire pour la première gare, puis on colore les gares voisines de l'autre couleur si elles n'ont pas encore été coloriées, ou on vérifie qu'elles sont de la bonne couleur sinon. Si pour la plupart des graphes, un parcours en largeur permettrait de trouver plus rapidement une éventuelle erreur, un parcours en profondeur est plus simple à mettre en place. On donne la fonction récursive suivante :
+\newpage
+
+\lstinputlisting[linerange={1-30}]{\SourceFile}
+
+\Q
+La preuve se fait simplement par récurrence sur le nombre de gares. La propriété est élémentaire pour une gare. Si elle est vraie pour $n-1$ gares, alors considérons un réseau à $n$ gares qui vérifie la propriété $P$ : \og chaque gare est connectée à au plus $p$ gares \fg{}. Enlevons une gare à ce réseau. Le nouveau réseau vérifie trivialement la propriété $P$ (on n'a fait qu'enlever des connexions). On peut donc le colorier à l'aide de $p+1$ couleurs. La gare qu'on avait enlevée est connectée à au plus $p$ gares : on peut donc trouver pour cette gare au moins une couleur qui n'a pas été utilisée pour les gares adjacentes.
+\medskip
+
+L'algorithme se déduit immédiatement de la récurrence.
+\bigskip
+
+\Fin
