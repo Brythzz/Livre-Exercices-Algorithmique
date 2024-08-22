@@ -1,0 +1,44 @@
+\renewcommand{\SourceFile}{5-graphes/src/5-5.ml}
+
+\section{Graphes de dépendances}
+
+On considère l'ensemble $X=\{a,b,c,d\}$. Chaque élément de $X$ représente une action possible d'un système et une relation réflexive et symétrique $D$ incluse dans $X \times X$ décrit les actions ne pouvant pas être exécutées simultanément ($D$ est dite relation de dépendance). Un graphe orienté étiqueté est un triplet $(S,A,etiq)$ où $S$ est l'ensemble fini des sommets, $A$ inclus dans $S \times S$ est l'ensemble fini des arêtes et $etiq$ une application de $S$ dans $X$ est l'étiquetage du graphe. Un graphe fini orienté étiqueté $G=(S,A,etiq)$ est un graphe de dépendance s'il est sans cycle et si pour toute paire de sommets $(s,s')$ :
+\[
+    (etiq(s),etiq(s')) \in D \textrm{ si et seulement si } [s=s' \textrm{ ou } (s,s') \in A \textrm{ ou } (s',s) \in A].
+\]
+Ainsi,, il y a une arête entre $s$ et $s'$ distinct si et seulement si les actions correspondant aux étiquettes de $s$ et $s'$ ne peuvent être exécutées simultanément.
+
+\Q
+Modéliser la notion de graphe orienté étiqueté décrite ci-dessus (pour un tel graphe $G=(S,A,etiq)$, on pourra supposer pour simplifier que les sommets de $S$ sont des entiers et séparer les modélisations de $(S,A)$ d'une part et $etiq$ d'autre part). Écrire un algorithme qui, étant donné un tel graphe, vérifie si c'est ou non un graphe de dépendance.
+
+\Q
+Soit $G=(S,A,etiq)$ un graphe de dépendance. Une bijection $C$ de l'ensemble $\{1,...,|S|\}$ dans $S$ peut être vue comme un choix successif de sommets distincts : si $C(i)=s$, on a choisi le sommet $s$ au $i$-ième coup. La bijection $C$ est fiable si, pour tous $i$, $j$ : $(C(i),C(j)) \in A$ entraîne $i < j$ (i.e s'il y a une arête entre le sommet $C(i)$ et le sommet $C(j)$ alors il faut choisir $C(i)$ avant $C(j)$). Une linéarisation de $G=(S,A,etiq)$ est une suite $(u_1,u_2,...,u_{|S|})$ d'éléments de $X$ telle qu'il existe une bijection fiable $C$ de $\{1,...,|S|\}$ dans $S$ vérifiant $u_i=etiq(C(i))$ pour tout $i$. Donner un algorithme qui, étant donné un graphe de dépendance $G$, calcule une linéarisation de $G$.
+
+\Corrige
+
+\Q
+Comme le suggère l'énoncé, on va représenter l'ensemble $S$ des sommets par l'ensemble des entiers de 1 à $N$ pour une certaine constante $N$ fixée. L'ensemble des arêtes sera décrit par un tableau de booléens. Enfin, la fonction d'étiquetage sera donnée par un tableau d'éléments de $X$.
+\medskip
+
+En ce qui concerne la relation de dépendance $D$, il suffit de la représenter par une matrice carrée de booléens indexée par les éléments de $X$.
+\medskip
+
+Pour vérifier qu'un graphe $(S,A,etiq)$ est bien un graphe de dépendance, la seule difficulté est de vérifier qu'il est bien acyclique. Pour cela, on effectue un parcours en profondeur du graphe en marquant en blanc les nœuds non visités, en gris les nœuds en cours de visite (i.e les nœuds se trouvant dans la pile d'appels récursifs) et en noir les nœuds visités. Si au cours du parcours on arrive sur un nœud colorié en gris alors le graphe contient un cycle, sinon il est bien acyclique.
+\medskip
+
+On définit un type couleur :
+
+\lstinputlisting[linerange={1}]{\SourceFile}
+
+\lstinputlisting[linerange={3-24}]{\SourceFile}
+
+On a donc la fonction :
+
+\lstinputlisting[linerange={26-42}]{\SourceFile}
+
+\Q
+Par définition, une linéarisation commence par l'étiquette d'un sommet $s$ sans prédécesseur, c'est à dire tel qu'il n'existe pas d'arête de la forme $(s',s)$. Pour obtenir une bijection fiable, il faut donc trouver un sommet sans prédécesseur (il en existe puisque le graphe est acyclique), effacer toutes ses arêtes sortantes puis recommencer. Notons que le graphe privé de $s$ reste acyclique donc il existe toujours un sommet sans prédécesseur jusqu'à ce que tous les sommets aient été considérés.
+
+\lstinputlisting[firstline=44]{\SourceFile}
+
+\Fin
