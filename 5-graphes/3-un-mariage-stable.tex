@@ -13,7 +13,7 @@ Montrer qu'un mariage stable est toujours possible et proposer un algorithme per
 \Corrige
 
 \Q
-On va construire petit à petit des couples de fiancés. On crée les deux tableaux suivants : \texttt{fiance} et \texttt{fiancee} tels que \texttt{fiance.(i)} est le numéro du fiancé de la fille $i$ et \texttt{fiance.(j)} est le numéro de la fiancée du garçon $j$. Au début, tous les éléments de \texttt{fiance} et \texttt{fiancee} sont mis à zéro. On crée également une fonction \texttt{preferee (i:int) (f:int array) : int} telle que \texttt{preferee i f} renvoie la fille préférée du garçon $i$ parmi les choix possibles (l'algorithme supprimera des choix au fur et à mesure en plaçant la valeur $n+1$ dans le tableau $f$ ou le tableau $g$). Il vient donc :
+On va construire petit à petit des couples de fiancés. On crée les deux tableaux suivants : \texttt{fiance} et \texttt{fiancee} tels que \texttt{fiance.(i)} est le numéro du fiancé de la fille $i$ et \texttt{fiance.(j)} est le numéro de la fiancée du garçon $j$. Au début, tous les éléments de \texttt{fiance} et \texttt{fiancee} sont initialisés à $-1$. On crée également une fonction \texttt{preferee (i:int) (f:int array) : int} telle que \texttt{preferee i f} renvoie la fille préférée du garçon $i$ parmi les choix possibles (l'algorithme supprimera des choix au fur et à mesure en plaçant la valeur $n+1$ dans le tableau $f$ ou le tableau $g$). Il vient donc :
 
 \lstinputlisting[linerange={1-10}]{\SourceFile}
 
