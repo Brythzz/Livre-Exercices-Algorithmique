@@ -1,0 +1,103 @@
+\renewcommand{\SourceFile}{6-geometrie-et-images/src/6-1.ml}
+
+\section{Pavage d'un rectangle par des dominos}
+
+On appelle domino une pièce formée de deux carrés unité adjacents.
+\medskip
+
+\begin{tikzpicture}[scale=1.3]
+    \draw (0,0) rectangle (1,1);
+    \draw[yshift=-1pt] (0,1) rectangle (1,2);
+
+    \draw (2,1) rectangle (3,2);
+    \draw (3,1)[xshift=-1pt] rectangle (4,2);
+\end{tikzpicture}
+\medskip
+
+Un pavage d'un rectangle de largeur $n$ et de hauteur $k$ est un recouvrement des cases du rectangle par des dominos, chaque domino recouvrant deux cases et chaque case étant couverte par exactement un domino.
+
+\Q
+Combien y a-t-il de pavages du rectangle $n \times 1$ ?
+
+\Q
+Soit $u_n$ le nombre de pavages du rectangle $n \times 2$. Écrire une fonction de calcul de $u_n$.
+
+\Q
+Soit $u_n$ le nombre de pavages du rectangle $n \times 3$. Proposer un algorithme de calcul de $u_n$. Écrire la fonction correspondante.
+
+\Q
+Que pensez-vous du nombre de pavages du carré $n \times n$ ?
+
+\Corrige
+
+\Q
+Le rectangle $n \times 1$ n'admet pas de pavage si $n$ est impair, sa surface étant impaire. Si $n$ est pair, il y a un pavage unique.
+
+\Q
+Soit $u_n$ le nombre de pavages du rectangle $n \times 2$. Considérons les deux cases les plus à droite du rectangle. Soit elles sont recouvertes par un même domino vertical, auquel cas le reste de la figure forme un rectangle $(n-1) \times 2$ qui doit également être pavé, soit elles sont recouvertes par deux dominos horizontaux l'un au dessus de l'autre, auquel cas le reste de la figure forme un rectangle $(n-1) \times 2$. On a donc la récurrence :
+\[
+    u_n = u_{n-1} + u_{n-2},
+\]
+avec les conditions initiales $u_1=1$ et $u_2=2$. On reconnaît d'ailleurs là la suite de Fibonacci. Programmer la récurrence donne la fonction suivante :
+
+\lstinputlisting[linerange={1-12}]{\SourceFile}
+
+Cette solution, très simple, permet de calculer $u_n$ en $O(n)$ opérations. Il est cependant possible de faire mieux : en effet, il est bien connu qu'on peut calculer $u_n$ explicitement, et on obtient $u_n=(\alpha^{n+1} - \beta^{n+1})/\sqrt{5}$, où $\alpha$ et $\beta$ sont les deux racines de l'équation $x^2=x+1$. Ainsi, on a simplement besoin d'une fonction calculant la $n$-ième puissance d'un nombre réel, ce qui peut se faire en $O(\log_2n)$ multiplications en utilisant la décomposition binaire de $n$. Voir ci-dessous une fonction dite \og d'exponentiation rapide \fg{} pour calculer $a^n$.
+
+\lstinputlisting[linerange={14-17}]{\SourceFile}
+
+\Q
+On a maintenant un rectangle de largeur 3. Soit $w_n$ le nombre de pavages de la figure suivante, obtenue à partir du rectangle en enlevant le coin en bas à droite :
+\medskip
+
+\begin{tikzpicture}[scale=.7, every node/.style={font=\ttfamily, label distance=-2pt}]
+    \node[label=above:0] (A) at (0,3) {};
+    \node[label=above:n] (B) at (10,3) {};
+    \node (C) at (10,1) {};
+    \node (D) at (9,1) {};
+    \node[label=below:n-1] (E) at (9,0) {};
+    \node[label=below:0] (F) at (0,0) {};
+
+    \draw (0,3) -- (10,3) -- (10,1) -- (9,1) -- (9,0) -- (0,0) -- (0,3);
+
+    \node[label=left:3] (G) at (-.2,1.5) {};
+    \node[label=right:2] (H) at (10.2,2) {};
+
+    \draw[-latex, thick] (G) -- +(0,1.5);
+    \draw[-latex, thick] (G) -- +(0,-1.5);
+
+    \draw[-latex, thick] (H) -- +(0,1);
+    \draw[-latex, thick] (H) -- +(0,-1);
+\end{tikzpicture}
+
+Pour calculer $u_n$, on regarde les dominos recouvrant les trois cases les plus à droite du rectangle. Soit ce sont trois dominos horizontaux, auquel cas il reste un pavage du rectangle de taille $n-2$, soit ce sont un domino horizontal et un domino vertical, disposés de deux façons possibles, auquel cas il reste une region du type ci-dessus, c'est à dire un rectangle de taille $n-1$ auquel il manque un coin (par symétrie, que le coin soit en haut à gauche ou en haut à droite, le nombre de pavages est le même). On a donc la récurrence :
+\[
+    u_n = 2w_{n-1} + u_{n-2},
+\]
+De même, on observe facilement que :
+\[
+    w_n = u_{n-1} + w_{n-2}.
+\]
+De plus, $u_n=0$ si $n$ est impair et $w_n=0$ si $n$ est pair (car la surface doit être paire). Les conditions initiales sont : $u_2=3$ et $w_1=1$. D'où la fonction suivante, qui à chaque étape calcule $w_{2i-1}$ et $u_{2i}$ (les autres valeurs sont 0 par parité de la surface) :
+
+\lstinputlisting[firstline=19]{\SourceFile}
+
+Ici encore, on peut résoudre explicitement le système et se ramener à une formule qui peut être évaluée en $O(\log_2n)$ multiplication de réels.
+
+\Q
+Tout d'abord, par parité, le nombre de pavages est 0 si $n$ est impair. Si $n$ est pair, soit $u_n$ le nombre de pavages. On sait que chaque carré $2 \times 2$ peut être pavé de deux manières par des dominos. Donc en partitionnant un carré $n \times n$ en $n/2 \times n/2$ petits carrés $2 \times 2$, on obtient la borne inférieure :
+\[
+    u_n \geq 2^{n^2/4}.
+\]
+Par ailleurs, tout pavage peut être décrit par un mot de $n^2/2$ bits comme suit : si le carré en haut à gauche est recouvert par un domino horizontal, le premier bit est 0, sinon il est 1. Supposons que les $k$ premiers bits décrivent la position de $k$ dominos. Si la case la plus en haut à gauche de la région restante est recouverte par un domino horizontal, le $(k+1)$-ième bit est 0, sinon il est 1. Ceci décrit une application injective de l'ensemble des pavages vers l'ensemble des mots de longueur $n^2/2$, et donc :
+\[
+    u_n \leq 2^{n^2/2}.
+\]
+En fait, ce problème est bien connu en physique statistique, où le nombre de pavages correspond au nombre de configurations de molécules diatomiques sur une surface. En 1961, Kasteleyn propose une formule compliquée donnant la valeur exacte de $u_n$ et calcule sa valeur asymptotique :
+\[
+    \frac{\log_2(u_n)}{n}\ \xrightarrow[n\to\infty]{}\ \sum_{r \geq 0}\frac{(-1)^r}{\pi(2r+1)^2} \approx 0.2916...
+\]
+Cependant, le nombre de pavages du cube $n \times n \times n$ par des dominos est toujours un problème ouvert.
+\bigskip
+
+\Fin
