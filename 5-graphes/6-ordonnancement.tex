@@ -58,12 +58,10 @@ Il faut et il suffit que le graphe des tâches soit acyclique (sans cycle). C'es
 
 \lstinputlisting[firstline=19]{\SourceFile}
 
-TODO: Finir et corriger cette section.
-
-(b) Avec $n$ machines, il n'y a pas de problème de ressource. Par récurrence, on montre que l'optimal est d'exécuter chaque tâche au plus tôt, c'est-à-dire que la tâche $i$ est exécutée au temps $deb(j) + dur(j)$ si elle a un prédécesseur $j$ et au temps 0 sinon.
+(b) Avec $n$ machines, il n'y a pas de problème de ressource. Par récurrence, on montre que l'optimal est d'exécuter chaque tâche au plus tôt, c'est-à-dire que la tâche $i$ est exécutée lorsque tous ses prédécesseurs ont été exécutés, soit au temps $\max \{deb(j) + dur(j),\textrm{ $j$ précécesseur de $i$}\}$ si elle a un prédécesseur $j$ et au temps 0 sinon. La fonction ressemble un peu à la précédente : pour chaque tâche sans prédécesseur non déjà traité, on calcule le max, puis on met à jour le tableau des temps de départ.
 \medskip
 
-(c) Divers algorithmes sont possibles.
+(c) Divers algorithmes d'approximation sont possibles. Un algorithme de liste (\og \textit{list scheduling algorithm} \fg{}) est un algorithme glouton qui semble assez naturel. Quant à l'algorithme optimal, le problème problème est NP-difficile donc il n'existe pas d'algorithme polynomial (sauf si P=NP).
 \bigskip
 
 \Fin
