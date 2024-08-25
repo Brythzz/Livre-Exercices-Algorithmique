@@ -63,4 +63,22 @@ D'où la fonction :
 \lstinputlisting[linerange={37-57}]{\SourceFile}
 
 \Q
-Le calcul de la surface $A$ peut sembler difficile, mais en fait il suffit d'utiliser la formule de Green-Riemann (cas particulier de la formule de Stokes) pour que la programmation devienne très simple.
+Le calcul de la surface $A$ peut sembler difficile, mais en fait il suffit d'utiliser la formule de Green-Riemann (cas particulier de la formule de Stokes) pour que la programmation devienne très simple. On a dans notre cas :
+\[
+    |A| = \iint_{\textrm{surface}}\textrm{d}x\textrm{d}y = \left|\int_{\textrm{contour}}x\textrm{d}y\right|
+\]
+Le lecteur pourra vérifier sur un schéma que la justification est évidente dans le cas présent. On a donc la fonction :
+
+\lstinputlisting[firstline=55]{\SourceFile}
+
+\Q
+Si le polygone est dessiné sur le réseau triangulaire, son contour est décrit par un mot où chaque lettre décrit l'une des six directions possibles ; on peut considérer que le réseau est formé par $\mathbb{Z}^2$ plus des arêtes diagonales montantes, ce qui permet d'appliquer encore une fois Green-Riemann avec de simples calculs en entiers ; la surface obtenue par une fonction analogue à celle de la question 4 est égale à deux fois le nombre de triangles.
+\medskip
+
+Si le polygone est dessiné sur le réseau régulier hexagonal, son contour est décrit par un mot où chaque lettre donne l'une des trois directions possibles, le sens étant déterminé par le sommet où on se trouve ; on peut encore une fois supposer que les sommets sont dans $\mathbb{Z}^2$, par exemple en prenant dans une direction des arêtes horizontales de longueur 1, dans la deuxième des arêtes diagonales de longueur $\sqrt{2}$, et dans la troisième, des arêtes de l'autre diagonale de longueur $\sqrt{2}$. Une fonction analogue à celle de la question 4 donne comme aire quatre fois le nombre d'hexagones dans la région considérée.
+\newpage
+
+Le lecteur pourra réfléchir à un algorithme qui teste si le polygone est simple, c'est-à-dire si le contour du polygone ne s'intersecte pas lui même.
+\bigskip
+
+\Fin

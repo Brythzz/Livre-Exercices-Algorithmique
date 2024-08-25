@@ -51,3 +51,18 @@ let dessin (poly:string) : int array array =
       | _ -> incr i);
     t.(!i).(!j) <- 1
   done; t
+
+let airesimple (poly:string) : int =
+  let n = String.length poly in
+  let aire = ref 0 in
+  let x = ref 0 in
+  for i=0 to n-1 do
+    let dy = ref 0 in
+    (match poly.[i] with
+      | 'h' -> dy := 1
+      | 'b' -> dy := -1
+      | 'd' -> incr x
+      | _ -> decr x);
+    aire := !aire + !x * !dy
+  done;
+  abs !aire
