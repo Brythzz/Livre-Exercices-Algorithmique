@@ -1,0 +1,97 @@
+\renewcommand{\SourceFile}{6-geometrie-et-images/src/6-3.ml}
+
+\section{Sommes de rectangles}
+
+On prend un ensemble de $n$ points de $\mathbb{R}$, où chaque point a un poids élément de $\mathbb{Z}^*$. On appelle intervalle un ensemble de deux points, l'un de poids 1 et l'autre de poids $-1$. L'addition de deux ensembles avec poids est définie en prenant l'union des deux ensembles et en prenant comme poids la somme des deux poids (un élément qui n'apparaît pas dans un ensemble est considéré comme ayant un poids de 0 dans cet ensemble).
+
+\Q
+Montrer qu'un ensemble $S$ avec poids peut être décrit comme somme d'ensembles si et seulement si la somme des poids de ses éléments est nulle.
+
+\Q
+Écrire une fonction qui teste si un ensemble est somme d'intervalles et trouve une telle décomposition lorsque cela est possible.
+\medskip
+
+On prend maintenant un ensemble de $n$ points de $\mathbb{R}^2$, où chaque point a un poids élément de $\mathbb{Z}^*$. On appelle rectangle un ensemble de 4 points de la forme $(x_1,y_1)$, $(x_1,y_2)$, $(x_2,y_1)$, $(x_2,y_2)$, où $(x_1,y_1)$ et $(x_2,y_2)$ ont un poids de 1 et $(x_1,y_2)$ et $(x_2,y_1)$ ont un poids de $-1$. Ceci est représenté graphiquement de la façon suivante :
+
+\begin{center}
+\begin{tikzpicture}[font=\ttfamily]
+    \node[label=below right:+] at (0,1.8) {};
+    \node[label=below left:-] at (3.5,1.8) {};
+    \node[label=above left:+] at (3.5,0) {};
+    \node[label=above right:-] at (0,0) {};
+
+    \draw (0,0) -- (0,1.8) -- (3.5,1.8) -- (3.5,0) -- (0,0);
+\end{tikzpicture}
+\end{center}
+
+De plus, lors de l'addition de deux ensembles avec poids, les poids du même point s'additionnent. Par exemple, on voit sur la figure suivante, le résultat de la somme de deux rectangles particuliers\footnote{On suppose ici leurs coins supérieurs gauches confondus}.
+
+\begin{center}
+\begin{tikzpicture}[font=\ttfamily, scale=.8, label distance=-4pt]
+    \begin{scope}
+        \draw (0,0) -- (0,4) -- (2.5,4) -- (2.5,0) -- (0,0);
+
+        \node[label=below right:-] at (0,4) {};
+        \node[label=below left:+] at (2.5,4) {};
+        \node[label=above left:-] at (2.5,0) {};
+        \node[label=above right:+] at (0,0) {};
+
+        \draw (-.5,3) -- (-.5,4.5) -- (4, 4.5) -- (4,3) -- (-.5,3);
+
+        \node[label=below right:+] at (-.5,4.5) {};
+        \node[label=below left:-] at (4,4.5) {};
+        \node[label=above left:+] at (4,3) {};
+        \node[label=above right:-] at (-.5,3) {};
+
+        \draw[dashed, color=lightgray] (-.5,4.5) -- (0,4);
+        \draw[dashed, color=lightgray] (2,4.5) -- (2.5,4);
+        \draw[dashed, color=lightgray] (-.5,3) -- (0,2.5);
+        % \draw[dashed, color=lightgray] (-.5,.5) -- (0,0);
+        % \draw[dashed, color=lightgray] (-.5,.5) -- (-.5,3);
+
+    \end{scope}
+
+    \draw[-latex, thick] (5,2) -- (8.5,2);
+
+    \begin{scope}[xshift=10cm]
+        \draw (0,0) -- (0,3) -- (2.5,3) -- (2.5,0) -- (0,0);
+
+        \node[label=below right:-] at (0,3) {};
+        \node[label=above left:-] at (2.5,0) {};
+        \node[label=above right:+] at (0,0) {};
+
+        \draw (2.5,3) -- (2.5,4.5) -- (4, 4.5) -- (4,3) -- (2.5,3);
+
+        \node[label=below right:+] at (2.5,4.5) {};
+        \node[label=below left:-] at (4,4.5) {};
+        \node[label=above left:+] at (4,3) {};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+On souhaite décider si un ensemble de points donné peut s'écrire comme somme de rectangles.
+
+\Q
+Trouver une condition nécessaire et suffisante généralisant celle de la question 1.
+
+\Q
+On suppose que les points de $S$ sont donnés triés par ordonnée croissante et, à ordonnée égale, par abscisse croissante. Écrire une fonction qui écrit $S$ comme somme de rectangles lorsque cela est possible. Combien de rectangles apparaissent dans la somme dans le pire cas ?
+
+\Q
+On s'intéresse maintenant au problème analogue en trois dimensions : on a un ensemble de points de $\mathbb{R}^3$ avec des poids entiers et on désire l'écrire comme somme de parallélépipèdes, où les poids du parallélépipède sont 1 et $-1$ alternativement. Proposer un algorithme.
+
+\Corrige
+
+\Q
+Si $S$ peut être écrit comme somme d'intervalles, chaque intervalle ayant un poids total nul (somme de ses poids), le poids total de $S$ est donc nul.
+\medskip
+
+Inversement, si la somme des poids des éléments de $S$ est nulle, il existe au moins un élément $x$ de poids strictement positif et un $y$ de poids strictement négatif (si $S$ est non vide). On ajoute à $S$ l'intervalle $(x:-1,y:1)$, et la somme des valeurs absolues des poids des éléments de $S$ décroît strictement. Lorsque cette somme est 0, $S$ devient vide : par récurrence, $S$ est donc somme d'intervalles.
+
+\Q
+On suppose $S$ donné par un tableau de 2-tuples tel que le premier élément de chaque tuple donne l'abscisse du point et le second son poids. Il suffit de sommer les poids de tous les points pour voir si une décomposition est possible. La sortie est donnée sous forme d'un tableau d'intervalles représentés par des tuples $(x,y)$ avec $x$ de poids 1 et $y$ de poids $-1$.
+
+\lstinputlisting[linerange={1-34}]{\SourceFile}
+
+\Q
+La condition est : pour tout $x$ de $\mathbb{R}$, la somme des poids des points d'abscisse $x$ est 0, et pour tout $y$ de $\mathbb{R}$, la somme des poids des points d'ordonnée $y$ est 0. Cette condition est nécessaire : en effet, tout rectangle satisfait cette condition, et donc toute somme de rectangles également. Cette condition est suffisante : en effet, prenons le $y$ maximal tel que $S$ ait des points de poids non nul et d'ordonnée $y$. Comme la somme des points d'ordonnée $y$ est nulle, il en existe au moins un, soit $(x_1,y)$, de poids strictement positif, et au moins un, soit $(x_2,y)$, de poids strictement négatif. Soit $y_0$ l'ordonnée minimale telle que $S$ ait des points de poids non nul et d'ordonnée $y_0$. Si $y \neq y_0$, on retranche à $S$ le rectangle ($(x_1,y)$ : 1, $(x_2,y)$ : $-1$)
