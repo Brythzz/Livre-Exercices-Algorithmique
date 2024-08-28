@@ -1,4 +1,4 @@
-let organise (deb:int array) (fin:int array) =
+let organise (deb:int array) (fin:int array) : int list =
   let n = Array.length deb in
 
   let rec aux i j acc =   (* j = dernier ajouté *)
