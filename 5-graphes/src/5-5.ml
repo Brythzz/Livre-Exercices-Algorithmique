@@ -24,7 +24,7 @@ let est_acyclique (g:bool array array) : bool =
   with Exit -> false
 
 let est_graphe_dep (g:bool array array) (d:bool array array)
-    (etiq:int array ): bool =
+    (etiq:int array) : bool =
   let n = Array.length g in
   try
     for i=0 to n-1 do
