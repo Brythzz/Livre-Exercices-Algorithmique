@@ -9,7 +9,7 @@ Montrer qu'un ensemble $S$ avec poids peut être décrit comme somme d'ensembles
 
 \Q
 Écrire une fonction qui teste si un ensemble est somme d'intervalles et trouve une telle décomposition lorsque cela est possible.
-\medskip
+\bigskip
 
 On prend maintenant un ensemble de $n$ points de $\mathbb{R}^2$, où chaque point a un poids élément de $\mathbb{Z}^*$. On appelle rectangle un ensemble de 4 points de la forme $(x_1,y_1)$, $(x_1,y_2)$, $(x_2,y_1)$, $(x_2,y_2)$, où $(x_1,y_1)$ et $(x_2,y_2)$ ont un poids de 1 et $(x_1,y_2)$ et $(x_2,y_1)$ ont un poids de $-1$. Ceci est représenté graphiquement de la façon suivante :
 
@@ -24,7 +24,7 @@ On prend maintenant un ensemble de $n$ points de $\mathbb{R}^2$, où chaque poin
 \end{tikzpicture}
 \end{center}
 
-De plus, lors de l'addition de deux ensembles avec poids, les poids du même point s'additionnent. Par exemple, on voit sur la figure suivante, le résultat de la somme de deux rectangles particuliers\footnote{On suppose ici leurs coins supérieurs gauches confondus}.
+De plus, lors de l'addition de deux ensembles avec poids, les poids du même point s'additionnent. Par exemple, on voit sur la figure suivante, le résultat de la somme de deux rectangles particuliers. (On suppose ici leurs coins supérieurs gauches confondus).
 
 \begin{center}
 \begin{tikzpicture}[font=\ttfamily, scale=.8, label distance=-4pt]
@@ -46,9 +46,6 @@ De plus, lors de l'addition de deux ensembles avec poids, les poids du même poi
         \draw[dashed, color=lightgray] (-.5,4.5) -- (0,4);
         \draw[dashed, color=lightgray] (2,4.5) -- (2.5,4);
         \draw[dashed, color=lightgray] (-.5,3) -- (0,2.5);
-        % \draw[dashed, color=lightgray] (-.5,.5) -- (0,0);
-        % \draw[dashed, color=lightgray] (-.5,.5) -- (-.5,3);
-
     \end{scope}
 
     \draw[-latex, thick] (5,2) -- (8.5,2);
@@ -75,7 +72,7 @@ On souhaite décider si un ensemble de points donné peut s'écrire comme somme 
 Trouver une condition nécessaire et suffisante généralisant celle de la question 1.
 
 \Q
-On suppose que les points de $S$ sont donnés triés par ordonnée croissante et, à ordonnée égale, par abscisse croissante. Écrire une fonction qui écrit $S$ comme somme de rectangles lorsque cela est possible. Combien de rectangles apparaissent dans la somme dans le pire cas ?
+On suppose que les points de $S$ sont donnés triés par ordonnée décroissante et, à ordonnée égale, par abscisse croissante. Écrire une fonction qui écrit $S$ comme somme de rectangles lorsque cela est possible. Combien de rectangles apparaissent dans la somme dans le pire cas ?
 
 \Q
 On s'intéresse maintenant au problème analogue en trois dimensions : on a un ensemble de points de $\mathbb{R}^3$ avec des poids entiers et on désire l'écrire comme somme de parallélépipèdes, où les poids du parallélépipède sont 1 et $-1$ alternativement. Proposer un algorithme.
@@ -83,15 +80,146 @@ On s'intéresse maintenant au problème analogue en trois dimensions : on a un e
 \Corrige
 
 \Q
-Si $S$ peut être écrit comme somme d'intervalles, chaque intervalle ayant un poids total nul (somme de ses poids), le poids total de $S$ est donc nul.
+Si $S$ peut être écrit comme somme d'intervalles, chaque intervalle ayant un poids total nul (somme de ses poids), le poids total de $S$ est nul.
 \medskip
 
 Inversement, si la somme des poids des éléments de $S$ est nulle, il existe au moins un élément $x$ de poids strictement positif et un $y$ de poids strictement négatif (si $S$ est non vide). On ajoute à $S$ l'intervalle $(x:-1,y:1)$, et la somme des valeurs absolues des poids des éléments de $S$ décroît strictement. Lorsque cette somme est 0, $S$ devient vide : par récurrence, $S$ est donc somme d'intervalles.
 
 \Q
-On suppose $S$ donné par un tableau de 2-tuples tel que le premier élément de chaque tuple donne l'abscisse du point et le second son poids. Il suffit de sommer les poids de tous les points pour voir si une décomposition est possible. La sortie est donnée sous forme d'un tableau d'intervalles représentés par des tuples $(x,y)$ avec $x$ de poids 1 et $y$ de poids $-1$.
+On suppose $S$ donné par un tableau de 2-tuples tel que le premier élément de chaque tuple donne l'abscisse du point et le second son poids. Il suffit de sommer les poids de tous les points pour voir si une décomposition est possible. La sortie est donnée sous forme d'une liste d'intervalles représentés par des tuples $(x,y)$ avec $x$ de poids 1 et $y$ de poids $-1$.
 
-\lstinputlisting[linerange={1-34}]{\SourceFile}
+\lstinputlisting[linerange={1-29}]{\SourceFile}
 
 \Q
-La condition est : pour tout $x$ de $\mathbb{R}$, la somme des poids des points d'abscisse $x$ est 0, et pour tout $y$ de $\mathbb{R}$, la somme des poids des points d'ordonnée $y$ est 0. Cette condition est nécessaire : en effet, tout rectangle satisfait cette condition, et donc toute somme de rectangles également. Cette condition est suffisante : en effet, prenons le $y$ maximal tel que $S$ ait des points de poids non nul et d'ordonnée $y$. Comme la somme des points d'ordonnée $y$ est nulle, il en existe au moins un, soit $(x_1,y)$, de poids strictement positif, et au moins un, soit $(x_2,y)$, de poids strictement négatif. Soit $y_0$ l'ordonnée minimale telle que $S$ ait des points de poids non nul et d'ordonnée $y_0$. Si $y \neq y_0$, on retranche à $S$ le rectangle ($(x_1,y)$ : 1, $(x_2,y)$ : $-1$)
+La condition est : pour tout $x$ de $\mathbb{R}$, la somme des poids des points d'abscisse $x$ est 0, et pour tout $y$ de $\mathbb{R}$, la somme des poids des points d'ordonnée $y$ est 0. Cette condition est nécessaire : en effet, tout rectangle satisfait cette condition, et donc toute somme de rectangles également. Cette condition est suffisante : en effet, prenons le $y$ maximal tel que $S$ ait des points de poids non nul et d'ordonnée $y$. Comme la somme des points d'ordonnée $y$ est nulle, il en existe au moins un, soit $(x_1,y)$, de poids strictement positif, et au moins un, soit $(x_2,y)$, de poids strictement négatif. Soit $y_0$ l'ordonnée minimale telle que $S$ ait des points de poids non nul et d'ordonnée $y_0$. Si $y \neq y_0$, on retranche à $S$ le rectangle ($(x_1,y)$ : 1, $(x_2,y)$ : $-1$, $(x_1,y_0)$ : $-1$, $(x_2,y_0)$ : 1), et la somme des valeurs absolues des poids des points d'ordonnée maximale a diminué. On se ramène ainsi au cas où tous les points de $S$ ont la même ordonnée $y_0$. Soit $(x,y_0)$ l'un de ces points. Comme la somme des poids des points d'abscisse $x$ doit être nulle, $(x,y_0)$ doit avoir un poids de 0. Par conséquent, $S$ est réduit à l'ensemble vide.
+
+\Q
+On va utiliser l'algorithme esquissé dans la question 3. On représente les points à l'aide d'un tableau de 2-tuples tel que le premier élément de chaque tuple donne les coordonnées $(x,y)$ du point et le second son poids. Chaque rectangle doit être donné par deux abscisses et deux ordonnées : on représentera donc un rectangle par un tuple de deux points correspondant aux points de poids 1 du rectangle. Chaque rectangle posé ajoute deux nouveaux points sur la ligne d'ordonnée $y_0$, et on doit vérifier à la fin que tous ces points s'annulent mutuellement : les coordonnées des points étant des flottants, on va utiliser une table de hachage afin d'associer à chaque ordonnée $x$ la somme des poids des points à cette ordonnée.
+
+\lstinputlisting[linerange={31-76}]{\SourceFile}
+
+On donne ici une représentation graphique de l'algorithme :
+
+\begin{center}
+\begin{tikzpicture}[font=\ttfamily, label distance=-3pt, scale=1.3]
+    \begin{scope}
+        \node[label=below:-1] at (0,0) {$\times$};
+        \node[label=below:1] at (1,0) {$\times$};
+        \node[label=above:1] at (0,1) {$\times$};
+        \node[label=above:-2] at (1,1) {$\times$};
+        \node[label=above:1] at (2,1) {$\times$};
+        \node[label=above:1] at (1,2) {$\times$};
+        \node[label=above:-1] at (2,2) {$\times$};
+
+        \draw (-1,0) -- (3,0);
+        \draw (-1,1) -- (3,1);
+        \draw (-1,2) -- (3,2);
+        \node[label=right:$y_0$] at (3,0) {};
+        \node[label=right:$y$] at (3,2) {};
+    \end{scope}
+
+    \draw[-latex, thick] (3.6,1) -- (4.4,1);
+
+    \begin{scope}[xshift=6cm]
+        \node[label=below:-1] at (0,0) {$\times$};
+        \node[label=below:2] at (1,0) {$\times$};
+        \node[label=above:1] at (0,1) {$\times$};
+        \node[label=above:-2] at (1,1) {$\times$};
+        \node[label=above:1] at (2,1) {$\times$};
+        \node[label=above:0] at (1,2) {$\times$};
+        \node[label=above:0] at (2,2) {$\times$};
+        \node[label=below:-1] at (2,0) {$\times$};
+
+        \draw (-1,0) -- (3,0);
+        \draw (-1,1) -- (3,1);
+        \draw (-1,2) -- (3,2);
+        \node[label=left:$y_0$] at (-1,0) {};
+        \node[label=left:$y$] at (-1,2) {};
+
+        \draw (1,2) -- (2,2) -- (2,0) -- (1,0) -- (1,2);
+        \node[label=below right:+] at (1,2) {};
+        \node[label=below left:-] at (2,2) {};
+        \node[label=above left:+] at (2,0) {};
+        \node[label=above right:-] at (1,0) {};
+    \end{scope}
+
+    \draw[-latex, thick] (7,-.8) -- (7,-1.6);
+
+    \begin{scope}[xshift=6cm, yshift=-4.5cm]
+        \draw (-1,0) -- (3,0);
+        \draw (-1,1) -- (3,1);
+        \draw (-1,2) -- (3,2);
+        \node[label=left:$y_0$] at (-1,0) {};
+        \node[label=left:$y$] at (-1,2) {};
+
+        \draw[color=gray] (1,2) -- (2,2) -- (2,0) -- (1,0) -- (1,2);
+
+        \node[label=below:0] at (0,0) {$\times$};
+        \node[label=below:1] at (1,0) {$\times$};
+        \node[label=above:0] at (0,1) {$\times$};
+        \node[label=above:-1] at (1,1) {$\times$};
+        \node[label=above:1] at (2,1) {$\times$};
+        \node[label=above:0] at (1,2) {$\times$};
+        \node[label=above:0] at (2,2) {$\times$};
+        \node[label=below:-1] at (2,0) {$\times$};
+
+        \draw (0,1) -- (1,1) -- (1,0) -- (0,0) -- (0,1);
+        \node[label=below right:+] at (0,1) {};
+        \node[label=below left:-] at (1,1) {};
+        \node[label=above left:+] at (1,0) {};
+        \node[label=above right:-] at (0,0) {};
+    \end{scope}
+
+    \draw[-latex, thick,yshift=-4.5cm] (4.4,1) -- (3.6,1);
+
+    \begin{scope}[yshift=-4.5cm]
+        \draw (-1,0) -- (3,0);
+        \draw (-1,1) -- (3,1);
+        \draw (-1,2) -- (3,2);
+        \node[label=right:$y_0$] at (3,0) {};
+        \node[label=right:$y$] at (3,2) {};
+
+        \draw[color=gray] (1,2) -- (2,2) -- (2,0) -- (1,0) -- (1,2);
+
+        \node[label=below:0] at (0,0) {$\times$};
+        \node[label=below:0] at (1,0) {$\times$};
+        \node[label=above:0] at (0,1) {$\times$};
+        \node[label=above:0] at (1,1) {$\times$};
+        \node[label=above:0] at (2,1) {$\times$};
+        \node[label=above:0] at (1,2) {$\times$};
+        \node[label=above:0] at (2,2) {$\times$};
+        \node[label=below:0] at (2,0) {$\times$};
+
+        \draw[color=gray] (0,1) -- (1,1) -- (1,0) -- (0,0) -- (0,1);
+
+        \draw (1,1) -- (2,1) -- (2,0) -- (1,0) -- (1,1);
+        \node[label=below right:-] at (1,1) {};
+        \node[label=below left:+] at (2,1) {};
+        \node[label=above left:-] at (2,0) {};
+        \node[label=above right:+] at (1,0) {};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+Soient deux points $(x_1,y_1)$ et $(x_2,y_2)$ considérés par l'algorithme à une certaine étape. L'algorithme ajoute un rectangle à la liste si et seulement si $y_1=y_2$ et $y_1 > y_0$ c'est-à-dire si les deux points sont sur une même ligne d'ordonnée strictement supérieure à $y_0$. Supposons l'ensemble de points décomposable en somme de rectangles.
+\medskip
+
+Par récurrence sur le nombre de points sur une ligne $y>y_0$ donnée, montrons que l'algorithme ajoute un nombre de rectangles égal à la demi-somme des valeurs absolues des poids des points de cette ligne lorsqu'il considère tous les points de cette ligne.
+\medskip
+
+Initialisation : Soit donc une ligne d'ordonnée $y$ contenant deux uniques points $(x_1,y)$ et $(x_2,y)$. Tant que les deux points ont un poids non nul, l'algorithme fait strictement décroître leurs poids en valeur absolue puis ajoute un rectangle. Or, par hypothèse, on a $x_1+x_2=0 \implies |x_1|=|x_2|$ donc par le variant de boucle, l'algorithme ajoute exactement $|x_1|$ rectangles soit $\frac{1}{2}(|x_1|+|x_2|)$.
+\medskip
+
+Hérédité : Soit une ligne d'ordonnée $y$ contenant $n+1$ points d'abscisses $x_1 < x_2 < ... < x_{n+1}$ et de poids respectifs $p_1, p_2, ..., p_{n+1}$. Les points de même ordonnée étant triés par abscisse croissante, l'algorithme considère les points dans l'ordre. Par hypothèse de récurrence, il ajoute $\frac{1}{2} \sum_{i=1}^n|p_i|$ rectangles lorsqu'il considère les points 1 à $n$. Par l'existence d'une décomposition en rectangles, le poids du point $n$ après traitement des points 1 à $n$, noté $\tilde{p_n}$, vérifie nécessairement $|\tilde{p_n}|=|p_{n+1}|$. Par ce qui précède, l'algorithme ajoute donc $|p_{n+1}|$ rectangles à la dernière étape. D'où la propriété au rang $n+1$.
+\medskip
+
+Donc en sommant sur toutes les lignes : le nombre de rectangles renvoyés correspond donc à la demi-somme des valeurs absolues des poids de tous les points d'ordonnée strictement supérieure à $y_0$ :
+\[
+    \frac{1}{2} \sum_{y>y_0}\sum_{x}|\textrm{poids}(x,y)|=\frac{1}{2}\sum_{\substack{(x,y) \\ y>y_0}}|\textrm{poids}(x,y)|
+\]
+
+\Q
+Les conditions des questions précédentes se généralisent naturellement : $S$ est somme de parallélépipèdes si et seulement si pour tout choix de deux coordonnées ($x$ et $y$, $y$ et $z$ ou $z$ et $x$), la somme des poids des points qui ont ces deux coordonnées, la troisième étant libre, est égale à 0. On peut adapter l'algorithme précédent en conséquence.
+\bigskip
+
+\Fin
