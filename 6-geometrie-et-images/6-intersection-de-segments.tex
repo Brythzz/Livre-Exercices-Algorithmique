@@ -1,0 +1,78 @@
+\renewcommand{\SourceFile}{6-geometrie-et-images/src/6-6.ml}
+
+\section{Intersection de segments}
+
+Nous définissons un point de l'écran (que l'on considère muni d'un repère orthonormé direct) comme étant un couple d'entiers $(x,y)$, et un segment comme un couple de points. Dans un premier temps, nous désirons déterminer si l'intersection de deux segments donnés est vide ou non. Attention : nous ne disposons pas de fonctions trigonométriques.
+\medskip
+
+\Q
+Écrire une fonction OCaml \texttt{trigo} qui, étant donnés un segment et un point renvoie 1 si le point est à gauche du segment (sens trigonométrique), 0 s'il est sur la droite support du segment, et $-1$ sinon.
+
+\Q
+Écrire une fonction OCaml \texttt{coupe} qui, étant donnés deux segments, renvoie 1 si le deuxième segment coupe le support du premier en un point, 0 s'il se trouve sur ce support, et $-1$ sinon.
+
+\Q
+Écrire une fonction OCaml \texttt{intersecte} qui, étant donnés deux segments, renvoie \texttt{true} si l'intersection des deux segments passés en argument est non-vide, et \texttt{false} sinon.
+
+\Q
+Considérons un ensemble de $n$ segments stocké dans une variable \texttt{s}. Écrire la fonction OCaml \texttt{intersection} qui renvoie \texttt{true} si au moins deux segments de l'ensemble \texttt{s} possède une intersection non-vide, et \texttt{false} sinon (notre but ici n'est pas de déterminer toutes les intersections). Évaluez le nombre d'appels à la fonction \texttt{intersecte} dans le pire des cas.
+
+\Q
+Considérons que tout segment est donné avec des extrémités ordonnées suivant les abscisses croissantes et qu'aucun segment n'est vertical (même abscisse pour les deux extrémités).
+\medskip
+
+Peut-on envisager une solution effectuant un balayage, suivant les abscisses croissantes, des sommets des segments de \texttt{s} où pour chaque sommet rencontré on utilise au plus deux fois la fonction \texttt{intersecte} ? Dans quel cas cette solution peut-elle s'avérer meilleure que la précédente ?
+
+\Corrige
+\vspace{.6cm}
+
+Dans tout l'exercice, nous définissons les types suivants :
+
+\lstinputlisting[linerange={1-7}]{\SourceFile}
+
+\Q
+La connaissance du signe du sinus d'un angle défini par le segment et le point nous permet de déterminer de quel côté se trouve le point par rapport au segment.
+\medskip
+
+\begin{tikzpicture}[scale=1.5, font=\ttfamily, label distance=-4pt]
+    \coordinate (s1) at (0,0);
+    \coordinate (s2) at (2.5,1.6);
+    \coordinate (pt) at (2,.2);
+
+    \fill (pt) circle (.08);
+
+    \draw[thick] (s1) -- (s2);
+    \draw (s1) -- (pt);
+    \pic [draw, <-, angle radius=2cm] {angle = pt--s1--s2};
+
+    \node at (.8,1.2) {le segment};
+    \node at (1.75,.65) {l'angle};
+    \node at (2.4,-.1) {le point};
+\end{tikzpicture}
+
+Pour simplifier, considérons les extrémités des segments ordonnés suivant les abscisses croissantes (en cas d'égalité, suivant les ordonnées croissantes). Ainsi, la fonction \texttt{trigo} qui utilise le produit vectoriel, renvoie le signe de la mesure de l'angle défini par le segment et le point. On utilise la propriété $\det(u,v) = ||u||\cdot||v||\cdot\sin(u,v)$.
+
+\lstinputlisting[linerange={9-14}]{\SourceFile}
+
+\Q
+Nous vérifions si les extrémités du deuxième segment sont de part et d'autre du support du premier segment.
+
+\lstinputlisting[linerange={16-21}]{\SourceFile}
+
+\Q
+Mis à part le cas où les deux segments ont le même support, nous vérifions si chaque segment coupe le support de l'autre.
+
+\lstinputlisting[linerange={23-32}]{\SourceFile}
+
+\Q
+Nous effectuons un parcours exhaustif de l'ensemble des segments,
+
+\lstinputlisting[linerange={34-44}]{\SourceFile}
+
+Le pire cas se présente lorsqu'il n'y a pas d'intersection. Dans ce cas, pour chaque segment \texttt{e.(i)} de l'ensemble \texttt{e}, on vérifie s'il intersecte \texttt{e.(j)} pour tout $j>i$. Donc le nombre d'appels à \texttt{intersecte} vaut :
+\[
+    \sum_{i=1}^{n-1}(n-i)=\frac{n(n-1)}{2}
+\]
+
+\Q
+Considérons la droite verticale $\Delta_\alpha$ correspondant à l'abscisse $\alpha$. Cette droite va balayer l'écran en partant de $\alpha=0$. Supposons que l'ont ait une une structure de données \texttt{t} permettant de stocker la liste des segments interceptés par la droite de balayage $\Delta_\alpha$ (les segments interceptés sont ainsi ordonnés suivant un ordre total $\leq_\alpha$).
