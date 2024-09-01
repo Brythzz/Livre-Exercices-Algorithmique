@@ -1,0 +1,63 @@
+\renewcommand{\SourceFile}{7-arithmetique-et-calculs-numeriques/src/7-1.ml}
+
+\section{Parties d'un ensemble}
+
+On considère un ensemble $E=\{0,...,N-1\}$. On représente une partie de $E$ par un tableau \texttt{p} d'entiers de $\{0,1\}$ de taille $N$ tel que \texttt{p.(i)=1} si et seulement si l'élément $i$ est dans la partie représentée par \texttt{p}. On associe à chaque partie \texttt{p} son numéro défini par $\textrm{numéro}(\texttt{p})=\sum_{i=0}^{N-1}\texttt{p.(i)}2^i$.
+
+\Q
+Écrire un algorithme qui, étant donnée une variable \texttt{p} représentant une partie, calcule $\textrm{numero}(\texttt{p})$. Quel est le nombre de multiplications par 2 effectuées par votre algorithme ? Pouvez-vous diminuer ce nombre ?
+
+\Q
+Étant donné un entier positif ou nul $k$, montrer qu'il existe au plus une partie de \texttt{p} telle que $\textrm{numero}(\texttt{p})=k$. Écrire un algorithme qui donne cette partie \texttt{p} lorsqu'elle existe. On pourra utiliser la fonction OCaml \texttt{mod} (si \texttt{a} et \texttt{b} sont deux entiers positifs, \texttt{a mod b} est le reste de la division euclidienne de \texttt{a} par \texttt{b}).
+
+\Q
+Écrire un algorithme qui, étant donnée une partie \texttt{p}, calcule la partie \texttt{q} (lorsqu'elle existe) telle que $\textrm{numero}(\texttt{q})=\textrm{numero}(\texttt{p})+1$.
+
+\Q
+Écrire un algorithme qui énumère toutes les parties de $E$.
+
+\Corrige
+
+\Q
+On donne la fonction :
+
+\lstinputlisting[linerange={1-9}]{\SourceFile}
+
+Le nombre de multiplications effectuées par cet algorithme est de $N$. La puissance maximale de 2 à calculer étant $2^{N-1}$, $N-1$ multiplications sont nécessaires. Il est facile d'écrire un algorithme, peut-être un tout petit peu moins naturel que celui présenté, effectuant $N-1$ multiplications.
+
+\Q
+Soit $k \in \mathbb{N}$. S'il existe une partie \texttt{p} de $E$ telle que $\textrm{numero}(\texttt{q})=k$, la suite \texttt{p.(n-1)}, \texttt{p.(n-2)}, ..., \texttt{p.(0)} est exactement l'écriture en binaire du nombre $k$. Ainsi, si la partie \texttt{p} existe, elle est unique. De plus, \texttt{p} existe si et seulement si $0 \leq k \leq \sum_{i=0}^{N-1}2^i=2^{N}-1$.
+\medskip
+
+Dans ce cas, les éléments \texttt{p.(i)} sont obtenus en calculant successivement \texttt{k mod 2}, \texttt{(k/2) mod 2}, ...
+
+\lstinputlisting[linerange={11-20}]{\SourceFile}
+
+Cette fonction a l'inconvénient de faire des calculs inutiles si $k$ est petit par rapport à $2^N$. La fonction suivante est, de ce point de vue, plus efficace.
+
+\lstinputlisting[linerange={22-32}]{\SourceFile}
+
+\Q
+Cette question revient à déterminer le successeur d'un entier écrit en binaire. Il suffit de parcourir les chiffres de cet entier de droite à gauche et de transformer les 1 en 0 jusqu'au moment où on trouve un 0 que l'on transforme en 1.
+\medskip
+
+Exemple :
+\begin{tabular}{r}
+    101011\\
+    +1\\
+    \hline
+    101100\\
+\end{tabular}
+
+\lstinputlisting[linerange={34-47}]{\SourceFile}
+
+\Q
+Il suffit d'appliquer l'algorithme de la question précédente de manière itérative à partir de la partie vide.
+
+\lstinputlisting[firstline=49]{\SourceFile}
+\medskip
+
+Notons qu'il serait plus efficace de définir une fonction \texttt{plus\_un\_en\_place (p:int array) : int} qui modifie \texttt{p} en place plutôt que créer un nouveau tableau à chaque itération.
+\bigskip
+
+\Fin
