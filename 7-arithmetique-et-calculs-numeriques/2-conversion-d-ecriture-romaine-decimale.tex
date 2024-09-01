@@ -1,0 +1,36 @@
+\renewcommand{\SourceFile}{7-arithmetique-et-calculs-numeriques/src/7-2.ml}
+
+\section{Conversion d'écriture romaine-décimale}
+
+On rappelle le système d'écriture des nombres utilisés par les romains. Il utilise les symboles I=1, V=5, X=10, L=50, C=100, D=500, M=1000. On rappelle quelques exemples dont le candidat pourra s'inspirer pour déduire les règles d'écriture des nombres :
+\medskip
+
+(I, II, III, IV, V, VI, VII, VIII, IX, X) = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10).
+\medskip
+
+XXXIX = 39, XL = 40.
+\medskip
+
+(XLI, XLII, XLIII, XLIV, XLV, XLVI, XLVII, XLVIII, XLIX, L) = (41, 42, 43, 44, 45, 46, 47, 48 , 49, 50).
+\medskip
+
+En particulier, on ne peut jamais avoir quatre symboles identiques consécutifs. Un nombre $n$ est supposé codé dans un tableau d'entiers s'il est écrit dans le système décimal, le chiffre le plus significatif étant en tête du tableau, et dans un tableau de caractères s'il est écrit dans le système romain.
+
+\Q
+Quel est le plus grand nombre qui puisse être écrit ? Quel est le nombre dont l'écriture est la plus longue ?
+
+\Q
+Donner un algorithme qui prend en entrée un nombre écrit dans le système romain et donne en sortie son écriture dans le système décimal usuel. Écrire la fonction correspondante.
+
+\Q
+Donner un algorithme de conversion de décimal en romain. Écrire la fonction correspondante.
+
+\Q
+Proposer un algorithme d'addition de deux nombres dans le système romain.
+
+\Q
+Que pensez-vous du nombre moyen de caractères nécessaires pour écrire un nombre en romain ?
+
+\Corrige
+
+\Q
