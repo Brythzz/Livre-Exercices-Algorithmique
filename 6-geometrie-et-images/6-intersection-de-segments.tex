@@ -15,7 +15,7 @@ Nous définissons un point de l'écran (que l'on considère muni d'un repère or
 Écrire une fonction OCaml \texttt{intersecte} qui, étant donnés deux segments, renvoie \texttt{true} si l'intersection des deux segments passés en argument est non-vide, et \texttt{false} sinon.
 
 \Q
-Considérons un ensemble de $n$ segments stocké dans une variable \texttt{s}. Écrire la fonction OCaml \texttt{intersection} qui renvoie \texttt{true} si au moins deux segments de l'ensemble \texttt{s} possède une intersection non-vide, et \texttt{false} sinon (notre but ici n'est pas de déterminer toutes les intersections). Évaluez le nombre d'appels à la fonction \texttt{intersecte} dans le pire des cas.
+Considérons un ensemble de $n$ segments stocké dans une variable \texttt{s}. Écrire la fonction OCaml \texttt{intersection} qui renvoie \texttt{true} si au moins deux segments de l'ensemble \texttt{s} possèdent une intersection non-vide, et \texttt{false} sinon (notre but ici n'est pas de déterminer toutes les intersections). Évaluez le nombre d'appels à la fonction \texttt{intersecte} dans le pire des cas.
 
 \Q
 Considérons que tout segment est donné avec des extrémités ordonnées suivant les abscisses croissantes et qu'aucun segment n'est vertical (même abscisse pour les deux extrémités).
@@ -76,3 +76,45 @@ Le pire cas se présente lorsqu'il n'y a pas d'intersection. Dans ce cas, pour c
 
 \Q
 Considérons la droite verticale $\Delta_\alpha$ correspondant à l'abscisse $\alpha$. Cette droite va balayer l'écran en partant de $\alpha=0$. Supposons que l'ont ait une une structure de données \texttt{t} permettant de stocker la liste des segments interceptés par la droite de balayage $\Delta_\alpha$ (les segments interceptés sont ainsi ordonnés suivant un ordre total $\leq_\alpha$).
+\medskip
+
+On se propose ici d'implémenter une version simplifiée l'algorithme de Bentley-Ottmann (permettant de trouver toutes les intersections d'un ensemble de segments), utilisant un arbre binaire de recherche équilibré et une file de priorité.
+\medskip
+
+On utilise ici un arbre bicolore pour stocker les segments rencontrés en les ordonnant selon l'ordonnée de leur point d'abscisse minimale. On suppose disposer des fonctions suivantes :
+\begin{itemize}
+    \item \texttt{insere\_abr (t:arbre) (s:segment) : arbre} qui permet d'insérer le segment \texttt{s} dans l'arbre bicolore \texttt{t} ;
+    \item \texttt{supprime\_abr (t:arbre) (s:segment) : arbre} qui permet de supprimer le segment \texttt{s} de l'arbre bicolore \texttt{t} ;
+    \item \texttt{en\_dessous (t:arbre) (s:segment) : segment option} qui renvoie \texttt{Some(s')} s'il existe un segment \texttt{s'} immédiatement en dessous de \texttt{s} et \texttt{None} sinon ;
+    \item \texttt{au\_dessus (t:arbre) (s:segment) : segment option} qui renvoie \texttt{Some(s')} s'il existe un segment \texttt{s'} immédiatement au dessus de \texttt{s} et \texttt{None} sinon.
+\end{itemize}
+Certains détails d'implémentation sont donnés dans l'exercice 2 du chapitre 4.
+\medskip
+
+On se munit également d'un tas-min permettant de stocker les points du plan et le segment auquel ils sont associés, ordonnés par abscisse croissante. On suppose disposer des fonctions suivantes :
+\begin{itemize}
+    \item \texttt{init\_tas (n:int) : tas} qui permet de créer un tas-min de taille $n$ ;
+    \item \texttt{insere\_tas (t:tas) (e:point * segment) : unit} qui permet d'insérer l'élément \texttt{e} dans le tas \texttt{t} ;
+    \item \texttt{retire\_tas (t:tas) : (point * segment)} qui permet de retirer l'élément à la racine (donc d'abscisse minimale) du tas \texttt{t} et de le renvoyer.
+\end{itemize}
+Certains détails d'implémentation sont donnés dans l'exercice 1 du chapitre 4.
+\bigskip
+
+L'algorithme parcourt tous les segments et ajoute leurs extrémités au tas-min qui permet de les ordonner selon leur abscisse. Il balaye ensuite les points (c'est-à-dire les retire du tas) tant qu'aucune intersection n'a été trouvée et qu'il reste des points dans le tas. Lorsqu'un nouveau point est rencontré, deux cas de figure sont possibles :
+\begin{itemize}
+    \item Si le point correspond à l'extrémité gauche d'un segment \texttt{s} alors ce segment n'a jamais été vu et il est alors inséré dans l'arbre \texttt{t}. Puis, on vérifie si \texttt{s} intersecte le segment immédiatement au dessus de lui ou le segment immédiatement au dessus de lui (en parcourant l'arbre).
+    \item Si le point correspond à l'extrémité droite d'un segment \texttt{s} alors ce segment se trouve déjà dans \texttt{t}. On vérifie si \texttt{s} intersecte le segment immédiatement au dessus de lui ou le segment immédiatement au dessus de lui, puis, on retire \texttt{s} de \texttt{t}.
+\end{itemize}
+\medskip
+
+On donne la fonction suivante :
+
+\lstinputlisting[firstline=60]{\SourceFile}
+
+L'arbre \texttt{t} étant équilibré, toutes les opérations ont une complexité en $O(\log_2n)$ avec $n$ le nombre de segments. De même, les opérations effectuées dans le tas-min sont en $O(\log_2n)$.
+\medskip
+
+Dans le pire cas (pas d'intersection), chaque segment est ajouté puis retiré de l'arbre. On a donc une complexité en $O(n\log_2n)$ et le nombre d'appels à \texttt{intersecte} est de $2n$. Notons que la complexité dépend de la structure de données choisie et qu'un choix moins judicieux pourrait conduire à une solution moins efficace.
+\bigskip
+
+\Fin

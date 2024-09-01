@@ -42,3 +42,51 @@ let intersection (s:segment array) : bool =
     done;
     false
   with Exit -> true
+
+type arbre =
+  | Nil
+  | R of arbre * segment * arbre
+  | N of arbre * segment * arbre
+let insere_abr (t:arbre) (s:segment) : arbre = Nil
+let supprime_abr (t:arbre) (s:segment) : arbre = Nil
+let en_dessous (t:arbre) (s:segment) : segment option = None
+let au_dessus (t:arbre) (s:segment) : segment option = None
+
+type tas = (point * segment) array
+let init_tas (n:int) : tas = [|(0,0), ((0,0), (0,0))|]
+let insere_tas (t:tas) (e:point * segment) = ()
+let retire_tas (t:tas) = (0,0), ((0,0), (0,0))
+
+let test_intersection (t:arbre) (s:segment) : unit =
+  match au_dessus t s with
+  | Some x when intersecte x s -> raise Exit
+  | _ -> ();
+match en_dessous t s with
+  | Some x when intersecte x s -> raise Exit
+  | _ -> ()
+
+let intersection (s:segment array) : bool =
+  let n = Array.length s in
+  let tas = init_tas (2*n) in
+  let arbre = ref Nil in
+
+  for i=0 to n-1 do
+    let p1, p2 = s.(i) in
+    insere_tas tas (p1, s.(i));
+    insere_tas tas (p2, s.(i))
+  done;
+
+  try
+    for i=0 to 2*n-1 do
+      let p, s = retire_tas tas in
+      let p1, p2 = s in
+      if p = p1 then (    (* Cas 1 *)
+        arbre := insere_abr !arbre s;
+        test_intersection !arbre s
+      ) else (    (* Cas 2 *)
+        test_intersection !arbre s;
+        arbre := supprime_abr !arbre s
+      )
+    done;
+    false
+  with Exit -> true
