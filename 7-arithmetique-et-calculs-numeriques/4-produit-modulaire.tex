@@ -1,0 +1,98 @@
+\renewcommand{\SourceFile}{7-arithmetique-et-calculs-numeriques/src/7-4.ml}
+
+\section{Produit modulaire}
+
+Nous nous intéressons au produit modulaire de grands nombres. Cette opération est très utilisée en cryptographie.
+\medskip
+
+Les nombres utilisés en cryptographie sont de grands entiers (environ mille chiffres binaires). Nous devons écrire des fonctions pour de grands entiers.
+
+\Q
+Définir une structure de données pour ces grands entiers (en les considérant par exemple dans une grande base $r$ : $A=\sum_{i=0}^n a_ir^i$ avec $r$ une puissance de 2 judicieusement choisie).
+\medskip
+
+Écrire une fonction d'addition.
+\medskip
+
+Écrire une fonction de multiplication par un \og chiffre \fg{} (dans la base $r$).
+\bigskip
+
+Nous présentons ici un algorithme dû à Peter Montgomery en 1985. La valeur du modulo $M$ ne varie pas, certaines valeurs pourront être considérées comme pré-calculées.
+\medskip
+
+Considérons l'algorithme suivant où $A$, $B$, $Q$, $S$ et $M$ sont de grands entiers, $r$ représente la base.
+\medskip
+
+\texttt{calcul}($A$, $B$, $M$, $S$)\\
+\hspace*{2em} $S \leftarrow 0$\\
+\hspace*{2em} pour $i=0$ à $n$ faire\\
+\hspace*{4em}   $q_i \leftarrow (s_0 + a_i \times b_0)(r-m_0)^{-1}$\quad mod $r$\\
+\hspace*{4em}   $S \leftarrow S + a_i \times B + q_i \times M$\\
+\hspace*{4em}   $S \leftarrow S \div r$
+\bigskip
+
+où $(r-m_0)^{-1} \times m_0 \equiv -1$ mod $r$.
+
+\Q
+Que peut-on dire de $S + a_i \times B + q_i \times M$ ? Que vaut $S$ à la fin de l'exécution ? Quel est son ordre de grandeur si $A$ est plus petit que $2 \times M$, $B$ plus petit que $M$ et $M$ plus petit que $r^n$ ?
+\medskip
+
+Que peut-on dire de la division par $r$ ?
+\medskip
+
+Écrire la fonction OCaml correspondant à l'algorithme présenté.
+
+\Q
+En déduire un algorithme évaluant le produit de $A \times B$ mod $M$.
+
+\Corrige
+
+\Q
+Nous proposons de représenter les nombres dans un tableau d'entiers machine où l'élément d'indice $i$ est le chiffre de poids $r^i$ de l'écriture en base $r$. Pour le choix de la base, nous considérons que les entiers machine ont au plus 15 chiffres binaires. Les opérations de base sont l'addition de deux chiffres et le produit de deux chiffres. Nous proposons donc de prendre $r=2^7$.
+\medskip
+
+Les deux fonctions demandées peuvent s'écrire :
+
+\lstinputlisting[linerange={1-30}]{\SourceFile}
+\newpage
+
+\Q
+À chaque itération, $q_i$ est tel que $S + a_i \times B + q_i \times M$ est un multiple de $r$.
+\medskip
+
+En fin d'exécution, $S=\frac{A \times B + Q \times M}{r^{n+1}}$.
+\medskip
+
+À chaque itération, $S$ est inférieur à $3\times M$ vu les valeurs prises $A$ et $B$. À la dernière itération, $S$ est inférieur à $2 \times M$.
+\medskip
+
+Le choix de la taille des tableaux $n$ doit tenir compte du fait que $S$ est au cours de l'itération de l'ordre de $3 \times r \times M$.
+\medskip
+
+La division par $r$ est un simple décalage.
+\medskip
+
+Nous initialisons \texttt{m'} à $(r-m_0)^{-1}$ mod $r$ et \texttt{r\_carre} à $(r^{n+1})^2$ mod $M$, ce sont toutes les deux des variables de type \texttt{nombre}. Nous prenons par exemple $M=123 \times r + 11$.
+
+\lstinputlisting[linerange={32-53}]{\SourceFile}
+
+\Q
+Pour évaluer le produit $A \times B$ mod $M$, il suffit d'utiliser deux fois de suite l'algorithme de Montgomery. Au premier passage, nous évaluons :
+\[
+    C := A \times B \times (r^{n+1})^{-1} \textrm{ mod } M(? + M)
+\]
+avec $C < 2M$.
+\medskip
+
+Au deuxième passage, nous obtenons :
+\[
+    C := C \times (r^{n+1})^2 \times (r^{n+1})^{-1} \textrm{ mod } M(? + M) = A \times B \textrm{ mod } M(? + M)
+\]
+avec $C < 2M$.
+\medskip
+
+On a donc $0 \leq C < 2M$. Si $C \geq M$, on effectue une soustraction pour se ramener à $0 \leq C < M$.
+
+\lstinputlisting[firstline=55]{\SourceFile}
+
+\Fin
