@@ -1,0 +1,102 @@
+\renewcommand{\SourceFile}{7-arithmetique-et-calculs-numeriques/src/7-5.ml}
+
+\section{JPEG : Transformée en cosinus discrète}
+
+Nous considérons des images en niveaux de gris données sous la forme de matrices d'entiers compris entre 0 et 255. Le format JPEG permet de stocker ces images en occupant moins de place. Ce format est basé sur la transformée en cosinus discrète qui transforme un bloc image en un bloc de fréquences que l'on filtre afin d'obtenir une matrice creuse (beaucoup de coefficients nuls).
+\medskip
+
+Chaque image est découpée en blocs $8 \times 8$ (ce qui sous-entend que le nombre de colonnes et que le nombres de lignes sont des multiples de 8) et on applique une transformée en cosinus discrète sur chacun de ces blocs $8 \times 8$. Un bloc $8 \times 8$ dont les pixels sont repérés par $\textrm{pix}(x,y)$ avec $x$ et $y$ deux entiers compris entre 0 et 7 (inclus) est transformé en un bloc de fréquences $\textrm{dct}(i,j)$ avec $i$ et $j$ deux entiers compris entre 0 et 7 (inclus). Nous avons la relation suivante :
+\[
+    \textrm{dct}(i,j) = \frac{1}{4}C(i)C(j)\sum_{x=0}^7\sum_{y=0}^7\textrm{pix}(x,y)\cos\frac{(2x+1)i\pi}{16}\cos\frac{(2y+1)j\pi}{16}
+\]
+avec $C(k) = \begin{cases}
+      \ \frac{1}{\sqrt{2}} & \textrm{si } k=0 \\
+      \ \ \, 1 & \textrm{sinon}
+    \end{cases}$
+
+\Q
+\begin{enumerate}
+    \item Écrire une fonction OCaml qui prend en entrée la matrice $8 \times 8$ d'un bloc image et qui renvoie en sortie la matrice $8 \times 8$ du bloc de fréquences de la transformée en cosinus discrète correspondante.
+    \item Évaluer le nombre total d'additions et de multiplications effectuées lors de l'exécution de votre fonction.
+\end{enumerate}
+
+\Q
+En fait, l'évaluation de la transformée en cosinus discrète peut se décomposer comme un produit de matrices.
+\[
+    \textrm{DCT}=\frac{1}{4}D\times\textrm{PIX}\times D^\top
+\]
+où PIX est la matrice $8 \times 8$ représentant le bloc image, DCT la matrice représentant le bloc issu de la transformée et $D$ une matrice $8 \times 8$.
+\begin{enumerate}
+    \item Déterminer les coefficients de la matrice $D$.
+    \item Écrire une nouvelle fonction OCaml qui renvoie le bloc $8 \times 8$ des fréquences de la transformée en cosinus discrète d'un bloc image donné en entrée.
+    \item Évaluer le nombre total d'additions et de multiplications effectuées lors de l'exécution de votre fonction.
+\end{enumerate}
+
+\Q
+\begin{enumerate}
+    \item Montrer que la matrice $D$ peut se décomposer en $D = B \times A$ avec
+    \[
+        A=\begin{pmatrix}
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & -1 \\
+            0 & 1 & 0 & 0 & 0 & 0 & -1 & 0 \\
+            0 & 0 & 1 & 0 & 0 & -1 & 0 & 0 \\
+            0 & 0 & 0 & 1 & -1 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+            0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+        \end{pmatrix}
+    \]
+    \item Que peut-on dire des multiplications par 1 ou $-1$ ? En déduire une fonction OCaml évaluant la transformée en cosinus discrète.
+    \item Évaluer le nombre d'additions et de multiplications effectuées lors de l'exécution de votre fonction.
+    \item Pouvez-vous améliorer votre fonction ?
+\end{enumerate}
+
+\Corrige
+
+\Q
+On suppose que la variable \texttt{cos} est une matrice contenant les valeurs pré-calculées de $\cos\frac{(2x_1)i\pi}{16}$.
+\medskip
+
+On donne la fonction de conversion  suivante.
+
+\lstinputlisting[linerange={3-15}]{\SourceFile}
+
+Le nombre d'additions et de multiplications effectuées lors de l'exécution de cette fonction sont : $8^4$ additions et $2\times8^4+8^2$ multiplications.
+
+\Q
+Les coefficients de la matrice $D$ sont :
+\[
+D=\begin{pmatrix}
+    \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} \\[6pt]
+    \cos\frac{\pi}{16} & \cos\frac{3\pi}{16} & \cos\frac{5\pi}{16} & \cos\frac{7\pi}{16} & \cos\frac{9\pi}{16} & \cos\frac{11\pi}{16} & \cos\frac{13\pi}{16} & \cos\frac{15\pi}{16} \\[6pt]
+    \cos\frac{\pi}{8} & \cos\frac{3\pi}{8} & \cos\frac{5\pi}{8} & \cos\frac{7\pi}{8} & \cos\frac{9\pi}{8} & \cos\frac{11\pi}{8} & \cos\frac{13\pi}{8} & \cos\frac{15\pi}{8} \\[6pt]
+    \cos\frac{3\pi}{16} & \cos\frac{9\pi}{16} & \cos\frac{15\pi}{16} & \cos\frac{21\pi}{16} & \cos\frac{27\pi}{16} & \cos\frac{33\pi}{16} & \cos\frac{39\pi}{16} & \cos\frac{45\pi}{16} \\[6pt]
+    \cos\frac{\pi}{4} & \cos\frac{3\pi}{4} & \cos\frac{5\pi}{4} & \cos\frac{7\pi}{4} & \cos\frac{9\pi}{4} & \cos\frac{11\pi}{4} & \cos\frac{13\pi}{4} & \cos\frac{15\pi}{4} \\[6pt]
+    \cos\frac{5\pi}{16} & \cos\frac{15\pi}{16} & \cos\frac{25\pi}{16} & \cos\frac{35\pi}{16} & \cos\frac{45\pi}{16} & \cos\frac{55\pi}{16} & \cos\frac{65\pi}{16} & \cos\frac{75\pi}{16} \\[6pt]
+    \cos\frac{3\pi}{8} & \cos\frac{9\pi}{8} & \cos\frac{15\pi}{8} & \cos\frac{21\pi}{8} & \cos\frac{27\pi}{8} & \cos\frac{33\pi}{8} & \cos\frac{39\pi}{8} & \cos\frac{45\pi}{8} \\[6pt]
+    \cos\frac{7\pi}{16} & \cos\frac{21\pi}{16} & \cos\frac{35\pi}{16} & \cos\frac{49\pi}{16} & \cos\frac{63\pi}{16} & \cos\frac{77\pi}{16} & \cos\frac{91\pi}{16} & \cos\frac{105\pi}{16} \\[6pt]
+\end{pmatrix}
+\]
+
+En simplifiant, $D$ devient :
+\[
+\begin{pmatrix}
+    \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} \\[6pt]
+    \cos\frac{\pi}{16} & \cos\frac{3\pi}{16} & \cos\frac{5\pi}{16} & \cos\frac{7\pi}{16} & -\cos\frac{7\pi}{16} & -\cos\frac{5\pi}{16} & -\cos\frac{3\pi}{16} & -\cos\frac{\pi}{16} \\[6pt]
+    \cos\frac{\pi}{8} & \cos\frac{3\pi}{8} & -\cos\frac{3\pi}{8} & -\cos\frac{\pi}{8} & -\cos\frac{\pi}{8} & -\cos\frac{3\pi}{8} & \cos\frac{3\pi}{8} & \cos\frac{\pi}{8} \\[6pt]
+    \cos\frac{3\pi}{16} & -\cos\frac{7\pi}{16} & -\cos\frac{\pi}{16} & -\cos\frac{5\pi}{16} & \cos\frac{5\pi}{16} & \cos\frac{\pi}{16} & \cos\frac{7\pi}{16} & -\cos\frac{3\pi}{16} \\[6pt]
+    \frac{1}{\sqrt2} & -\frac{1}{\sqrt2} & -\frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & -\frac{1}{\sqrt2} & -\frac{1}{\sqrt2} & \frac{1}{\sqrt2} \\[6pt]
+    \cos\frac{5\pi}{16} & -\cos\frac{\pi}{16} & \cos\frac{7\pi}{16} & \cos\frac{\pi}{16} & -\cos\frac{\pi}{16} & -\cos\frac{7\pi}{16} & \cos\frac{\pi}{16} & -\cos\frac{5\pi}{16} \\[6pt]
+    \cos\frac{3\pi}{8} & -\cos\frac{\pi}{8} & \cos\frac{\pi}{8} & -\cos\frac{3\pi}{8} & -\cos\frac{3\pi}{8} & \cos\frac{\pi}{8} & -\cos\frac{\pi}{8} & \cos\frac{3\pi}{8} \\[6pt]
+    \cos\frac{7\pi}{16} & -\cos\frac{5\pi}{16} & \cos\frac{3\pi}{16} & -\cos\frac{\pi}{16} & \cos\frac{\pi}{16} & -\cos\frac{3\pi}{16} & \cos\frac{5\pi}{16} & -\cos\frac{7\pi}{16}
+\end{pmatrix}
+\]
+
+Nous en déduisons une nouvelle fonction OCaml qui renvoie le bloc $8 \times 8$ des fréquences de la transformée en cosinus discrète d'un bloc image donné en entrée.
+\medskip
+
+La matrice $D$ est pré-calculée.
+\newpage
+
+\lstinputlisting[linerange={17-36}]{\SourceFile}
