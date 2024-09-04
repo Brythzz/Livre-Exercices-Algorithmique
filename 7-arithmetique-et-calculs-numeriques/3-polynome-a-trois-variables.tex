@@ -2,15 +2,14 @@
 
 \section{Polynômes à trois variables}
 
-On veut représenter des polynômes à coefficients entiers sur trois variables $X$, $Y$ et $Z$. Un monôme est un élément de la forme $aX^bY^cZ^d$ où $a$ est un entier et $b$, $c$, $d$ des entiers positifs ou nuls. L'entier $a$ est le coefficient du monôme et le triplet $(b,c,d)$ le degré du monôme. Un polynôme $P$ est un ensemble non vide de monômes. Dans un polynôme, on peut regrouper les monômes de même degré en faisant la somme de leurs coefficients (bien sûr, si cette somme est nulle, il est sans intérêt de faire apparaître le monôme correspondant dans l'écriture du polynôme). Un polynôme est dit réduit s'il contient au plus un monôme de degré fixé. On supposera pour simplifier que le nombre de monômes pouvant apparaître dans un polynôme est inférieur ou égal à une constante $N$ fixée.
-TODO: Check si on a besoin de l'hypothèse de simplification
+On veut représenter des polynômes à coefficients entiers sur trois variables $X$, $Y$ et $Z$. Un monôme est un élément de la forme $aX^bY^cZ^d$ où $a$ est un entier et $b$, $c$, $d$ des entiers positifs ou nuls. L'entier $a$ est le coefficient du monôme et le triplet $(b,c,d)$ le degré du monôme. Un polynôme $P$ est un ensemble non vide de monômes. Dans un polynôme, on peut regrouper les monômes de même degré en faisant la somme de leurs coefficients (bien sûr, si cette somme est nulle, il est sans intérêt de faire apparaître le monôme correspondant dans l'écriture du polynôme). Un polynôme est dit réduit s'il contient au plus un monôme de degré fixé.
 \newpage
 
 \Q
 Modéliser la situation décrite et écrire un algorithme qui, étant donné un polynôme, calcule une représentation réduite de ce polynôme. Quel est le nombre de comparaisons entre monômes effectuées par votre algorithme ?
 
 \Q
-Donner une manière de ranger les polynômes dans la modélisation d'un polynôme afin qu'il existe un algorithme résolvant la question 1 en effectuant au plus $N$ comparaisons entre monômes. Donner cet algorithme.
+Donner une manière de ranger les polynômes dans la modélisation d'un polynôme afin qu'il existe un algorithme résolvant la question 1 en effectuant au plus $N$ comparaisons entre monômes, où $N$ est le nombre de monômes. Donner cet algorithme.
 
 \Q
 Un polynôme est dit symétrique si le monôme $aX^bY^cZ^d$ apparaît dans $P$ si et seulement si les monômes $aX^bY^dZ^c$, $aX^cY^bZ^d$, $aX^cY^dZ^b$, $aX^dY^bZ^c$ et $aX^dY^cZ^b$ apparaissent. Écrire un algorithme qui, étant donné un polynôme $P$, indique si ce polynôme est symétrique ou non.
