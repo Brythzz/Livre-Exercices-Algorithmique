@@ -1,0 +1,50 @@
+\renewcommand{\SourceFile}{8-vers-la-recursivite/src/8-2.ml}
+
+\section{Produit de plusieurs matrices}
+
+On cherche à effectuer un produit de matrices
+\[
+    M_1 \times M_2 \times ... \times M_n
+\]
+où la matrice $i$ comporte $r_{i-1}$ lignes et $r_i$ colonnes, en effectuant la moins possible de multiplications de réels (la multiplication de deux matrices se fera par la méthode usuelle).
+
+\Q
+Écrire une fonction qui multiplie une matrice $A$ de taille $p \times q$ par une matrice $B$ de taille $q \times r$. Combien de multiplications de réels nécessite-t-elle ?
+
+\Q
+On effectue le produit $M_1 \times M_2 \times M_3 \times M_4$, où $M_1$ est de taille $10 \times 20$, $M_2$ de taille $20 \times 50$, $M_3$ de taille $50 \times 1$ et $M_4$ de taille $1 \times 100$. Combien de multiplications de réels fera-t-on si on calcule le produit dans les deux ordres (indiqués par les parenthèses) suivants :
+\[
+\begin{split}
+    M_1 \times (M_2 \times (M_3 \times M_4))\\[6pt]
+    (M_1 \times (M_2 \times M_3)) \times M_4
+\end{split}
+\]
+
+\Q
+Écrire une fonction pour trouver le plus petit nombre de multiplications de réels nécessaires pour calculer $M_0 \times M_1 \times ... \times M_{n-1}$, où la matrice $i$ comporte $r_{i-1}$ lignes et $r_i$ colonnes. Aide : définir une valeur \texttt{m.(i).(k)} égale au plus petit nombre de multiplications pour calculer $M_i \times M_{i+1} \times ... \times M_k$.
+
+\Corrige
+
+\Q
+On a classiquement :
+
+\lstinputlisting[linerange={1-14}]{\SourceFile}
+
+Cette fonction utilise $p \times q \times r$ multiplications.
+
+\Q
+Il faut $50\times1\times100 + 20\times50\times100 + 10\times20\times100 = 125\,000$ multiplications pour la première méthode et $20\times50\times1 + 10\times20\times1 + 10\times1\times100 = 2200$ pour la seconde méthode.
+
+\Q
+Il suffit de voir comment s'obtient \texttt{m.(i).(j)}. On trouve aisément :
+\[
+    \texttt{m.(i).(j)} = \begin{cases}
+        \ 0 & \textrm{si } i=j \\
+        \ \min_{i \leq k < j}\ \{\texttt{m.(i).(k)} + \texttt{m.(k+1).(j)} + r_{i-1}r_kr_j\} & \textrm{sinon}
+      \end{cases}
+\]
+Il n'est pas nécessaire d'écrire une fonction récursive, on itère sur la longueur des chaînes de multiplication.
+
+\lstinputlisting[firstline=16]{\SourceFile}
+
+\Fin
