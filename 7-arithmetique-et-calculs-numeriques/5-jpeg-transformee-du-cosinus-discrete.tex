@@ -97,6 +97,40 @@ Nous en déduisons une nouvelle fonction OCaml qui renvoie le bloc $8 \times 8$ 
 \medskip
 
 La matrice $D$ est pré-calculée.
-\newpage
 
-\lstinputlisting[linerange={17-36}]{\SourceFile}
+\lstinputlisting[linerange={17-40}]{\SourceFile}
+
+Les nombres d'addition et de multiplications effectuées lors de l'exécution de cette fonction sont : $2 \times 8^3$ additions et $2 \times 8^3 + 8^2$ multiplications.
+
+\Q
+Certaines symétries apparaissent au sein des lignes de la matrice $D$. Les colonnes de la matrice $A$ représentent ces symétries. La matrice $A$ est inversible.
+\medskip
+
+On en déduit la matrice $B$ suivante (on peut vérifier en effectuant le produit) :
+\[
+B=\begin{pmatrix}
+    0 & 0 & 0 & 0 & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} & \frac{1}{\sqrt2} \\[6pt]
+    \cos\frac{\pi}{16} & \cos\frac{3\pi}{16} & \cos\frac{5\pi}{16} & \cos\frac{7\pi}{16} & 0 & 0 & 0 & 0 \\[6pt]
+    0 & 0 & 0 & 0 & -\cos\frac{\pi}{8} & -\cos\frac{3\pi}{8} & \cos\frac{3\pi}{8} & \cos\frac{\pi}{8} \\[6pt]
+    \cos\frac{3\pi}{16} & -\cos\frac{7\pi}{16} & -\cos\frac{\pi}{16} & -\cos\frac{5\pi}{16} & 0 & 0 & 0 & 0 \\[6pt]
+    0 & 0 & 0 & 0 & \frac{1}{\sqrt2} & -\frac{1}{\sqrt2} & -\frac{1}{\sqrt2} & \frac{1}{\sqrt2} \\[6pt]
+    \cos\frac{5\pi}{16} & -\cos\frac{\pi}{16} & \cos\frac{7\pi}{16} & \cos\frac{\pi}{16} & 0 & 0 & 0 & 0 \\[6pt]
+    0 & 0 & 0 & 0 & -\cos\frac{3\pi}{8} & \cos\frac{\pi}{8} & -\cos\frac{\pi}{8} & \cos\frac{3\pi}{8} \\[6pt]
+    \cos\frac{7\pi}{16} & -\cos\frac{5\pi}{16} & \cos\frac{3\pi}{16} & -\cos\frac{\pi}{16} & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+
+Il est bon de remarquer que multiplier par 1 ou $-1$ revient simplement à prendre en compte un facteur ou son inverse. De plus, les matrices $A$ et $B$ sont creuses, il n'est donc pas intéressant de programmer un produit de matrices.
+\medskip
+
+Nous en déduisons la fonction OCaml suivante :
+
+\lstinputlisting[firstline=42]{\SourceFile}
+
+Les nombres d'additions et de multiplications effectuées lors de l'exécution de cette fonction sont : $2 \times 8^2 + 8^3$ additions et $8^3+8^2$ multiplications.
+\medskip
+
+On peut réduire ce nombre de multiplications : en multipliant $B$ par $\sqrt{2}$, on obtient deux lignes de 1.
+\bigskip
+
+\Fin
