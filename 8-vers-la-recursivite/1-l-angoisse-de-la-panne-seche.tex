@@ -1,0 +1,41 @@
+\renewcommand{\SourceFile}{8-vers-la-recursivite/src/8-1.ml}
+
+\section{L'angoisse de la panne sèche}
+
+Une route comporte $n$ stations-service. La première est à une distance $d_1$ du départ, la la deuxième est à une distance $d_2$ de la première, la troisième à une distance $d_3$ de la deuxième, etc. La fin de la route est à une distance $d_{n+1}$ de la $n$-ième station-service. Les distances $d_i$ sont représentées par un tableau de flottants.
+\medskip
+
+Un automobiliste prend le départ de la route avec une voiture dont le réservoir d'essence est plein. Sa voiture est capable de parcourir une distance $r$ (mais pas plus !) avec un plein. On suppose que $r$ est supérieur ou égal à chacun des $d_i$ et inférieur à leur somme, sinon le problème n'a pas de sens.
+
+\Q
+L'automobiliste désire faire le plein le moins souvent possible. Écrire une fonction OCaml qui détermine à quelles stations-service il doit s'arrêter.
+
+\Q
+Maintenant, l'automobiliste part avec un réservoir vide. Il doit au départ acheter de l'essence (autant qu'il veut dans la contenance de son réservoir) au prix de $E_0$ euros par litre. Par la suite, à la station numéro $i$, l'essence coûte $E_i$ euros par litre. L'automobiliste consomme $kt$ litres pour parcourir une distance $t$, et le réservoir peut contenir $L$ litres d'essence. Écrire une fonction OCaml qui indique à quelles stations-service l'automobiliste doit s'arrêter, et combien de litres il doit prendre à chaque fois, pour que son trajet lui coûte le moins cher possible.
+
+\Corrige
+
+\Q
+Un algorithme glouton est optimal : on regarde jusqu'où on peut aller et on s'arrête à la première station avant ce point, puis on recommence.
+
+\lstinputlisting{\SourceFile}
+
+Cet algorithme est bien optimal. En effet, soit une autre solution. Son premier plein est forcément au même endroit ou avant le premier plein de la solution de l'algorithme. Par récurrence, son $i$-ième plein se produit au même endroit ou avant le $i$-ième plein de l'algorithme.
+
+\Q
+Repérons tout d'abord la station où l'essence est la moins chère, et faisons deux remarques :
+\begin{itemize}
+    \item L'automobiliste doit faire en sorte que son réservoir soit vide au moment où il arrive à cette station (risqué en pratique !). En effet, s'il lui reste $x$ litres d'essence à ce moment là, il les a payés plus cher auparavant pour rien.
+    \item Toujours à cette station, il doit prendre juste ce qu'il faut d'essence pour aller jusqu'au bout si la capacité de son réservoir le permet, soit remplir complètement son réservoir.
+\end{itemize}
+
+On recommence pour les deux sous-problèmes consistant à aller du début à cette station-service et de cette station service à la fin. Pas besoin de récursivité, la stratégie qui s'en déduit est la suivante. À chaque fois que l'on passe devant une station service :
+\begin{itemize}
+    \item Soit il existe dans le rayon d'action que peut atteindre la voiture avec un plein des stations moins chères, dans ce cas, on prend le minimum d'essence (éventuellement pas du tout) permettant d'aller à la première station moins chère que celle où l'on se trouve (attention : la première, c'est-à-dire pas nécessairement la moins chère des stations accessibles).
+    \item Soit toutes les stations que l'on peut atteindre sont plus chères, dans ce cas on remplit complètement le réservoir, sauf si on peut atteindre l'arrivée, dans quel cas on prend juste ce qu'il faut pour y aller.
+\end{itemize}
+
+L'écriture de la fonction OCaml ne représente plus aucune difficulté, elle est laissée au lecteur.
+\bigskip
+
+\Fin
