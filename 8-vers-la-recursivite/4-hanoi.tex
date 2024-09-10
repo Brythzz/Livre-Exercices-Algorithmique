@@ -156,11 +156,11 @@ La complexité en termes déplacement est optimale. On peut calculer le nombre d
     \item La moitié des nombres binaires se terminent par un 1. Dans ce cas, on effectue une comparaison.
     \item Parmi ceux se terminant par un 0, la moitié possède un 1 en deuxième position. Dans ce cas, on effectue 2 comparaisons.
     \item Parmi ceux se terminant par deux zéros, la moitié possède un 1 en troisième position. Dans ce cas, on effectue 3 comparaisons.
-    \item De manière récurrente, on a donc une proportion $\frac{1}{2^n}$ des nombres qui nécessitent $n$ itérations.
+    \item De manière récurrente, on a donc une proportion $\frac{1}{2^n}$ des nombres qui nécessitent $n$ comparaisons.
 \end{itemize}
 \medskip
 
-Donc en sommant sur toutes les longueurs, le nombre d'itérations $N$ est donné par la formule :
+Donc en sommant tous les cas possibles, le nombre de comparaisons $N$ est donné par la formule :
 \[
     N = 2^n\cdot\sum_{k=1}^nk\frac{1}{2^k}=2^{n-1}\cdot\sum_{k=1}^nk\left(\frac{1}{2}\right)^{k-1}
 \]
