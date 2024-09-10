@@ -91,8 +91,10 @@ let cherche (x:point array) (y:point array) : point * point =
   p1, p2
 
 let _ =
+  (* Exemple avec le minimum dans une seule des deux plus grandes zones *)
   let x = [|(100, 430); (140, 300); (210, 120); (215, 240); (225, 400); (300, 330); (350, 160); (400, 229); (425, 425); (475, 370); (509, 140); (590, 290); (625, 240); (680, 170)|] in
-  let x = [|(100,430); (140,300); (210,120); (215,240); (225,400); (330,425); (350,160); (395,230); (360,425); (475,370); (510,140); (590,290); (625,240); (680,170) |] in
+  (* Exemple avec des points de part et d'autre du point central *)
+  let x = [|(100, 430); (140, 300); (210, 120); (215, 240); (225, 400); (330, 425); (350, 160); (395, 230); (360, 425); (475, 370); (510, 140); (590, 290); (625, 240); (680, 170) |] in
   let y = Array.copy x in
   Array.sort (fun (_, ay) (_, by) -> if ay = by then 0 else if ay > by then 1 else -1) y;
   cherche x y
