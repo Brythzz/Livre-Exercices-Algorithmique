@@ -1,0 +1,185 @@
+\renewcommand{\SourceFile}{8-vers-la-recursivite/src/8-4.ml}
+
+\section{Hanoï}
+
+Les tours de Hanoï est un exemple très connu pour sa programmation récursive. Nous nous intéressons ici à sa version itérative.
+\medskip
+
+Le jeu en lui même est très simple. Nous disposons de trois colonnes sur lesquelles sont empilés des disques de taille différentes.
+\medskip
+
+Les règles sont les suivantes : sur chaque colonne, un disque plus gros ne peut pas être posé sur un disque plus petit, on ne peut déplacer qu'un seul disque à la fois.
+\medskip
+
+Au départ, tous les disques sont empilés sur la première colonne. Le joueur doit en un minimum de coups déplacer tous les disques de la première colonne à la dernière colonne.
+
+\Q
+Donner les déplacements à faire avec trois disques. Puis avec quatre disques.
+
+\Q
+Montrer que le plus petit disque se déplace de la même façon un coup sur deux. Montrer que pour chaque autre déplacement, un seul choix est possible.
+
+\Q
+Numérotons les coups en partant de 1.
+\medskip
+
+Déterminer la relation qu'il y a entre le numéro du disque à déplacer et le numéro du coup.
+\medskip
+
+Pour $n$ disques, combien de déplacements effectuez-vous ? Est-ce optimal ?
+\medskip
+
+Écrire le programme affichant tous les coups effectués.
+
+\Corrige
+
+\Q
+Nous donnons dans les tableaux suivants les positions de chaque disque au cours du temps. Les colonnes sont numérotées 0, 1 et 2. Les disques sont nommés du plus petit au plus grand $d_0$, $d_1$, ..., $d_n$. Tous les disques sont sur la colonne 0 au départ.
+\medskip
+
+Pour trois disques nous avons :
+\medskip
+
+\begin{tikzpicture}[scale=1.5]
+    \draw[thick] (0,0) -- (8,0);
+
+    \draw[thick] (2,0) -- (2,2);
+    \draw[thick] (4,0) -- (4,2);
+    \draw[thick] (6,0) -- (6,2);
+
+    \draw[draw] (1.75,.4) rectangle ++(.5,.2);
+    \draw[draw] (1.5,.2) rectangle ++(1,.2);
+    \draw[draw] (1.25,0) rectangle ++(1.5,.2);
+\end{tikzpicture}
+\medskip
+
+Comme nous devons déplacer le plus grand disque de la colonne 0 à la colonne 2, la configuration suivante est un passage obligé :
+\medskip
+
+\begin{tikzpicture}[scale=1.5]
+    \draw[thick] (0,0) -- (8,0);
+
+    \draw[thick] (2,0) -- (2,2);
+    \draw[thick] (4,0) -- (4,2);
+    \draw[thick] (6,0) -- (6,2);
+
+    \draw[draw] (3.75,.2) rectangle ++(.5,.2);
+    \draw[draw] (3.5,0) rectangle ++(1,.2);
+    \draw[draw] (1.25,0) rectangle ++(1.5,.2);
+\end{tikzpicture}
+\medskip
+
+Pour obtenir cette configuration, le disque immédiatement inférieur au plus grand a dû être déplacé de la colonne 0 sur la colonne 1 d'où un autre passage obligé :
+\medskip
+
+\begin{tikzpicture}[scale=1.5]
+    \draw[thick] (0,0) -- (8,0);
+
+    \draw[thick] (2,0) -- (2,2);
+    \draw[thick] (4,0) -- (4,2);
+    \draw[thick] (6,0) -- (6,2);
+
+    \draw[draw] (5.75,0) rectangle ++(.5,.2);
+    \draw[draw] (1.5,.2) rectangle ++(1,.2);
+    \draw[draw] (1.25,0) rectangle ++(1.5,.2);
+\end{tikzpicture}
+\medskip
+
+Nous en déduisons le tableau suivant :
+\medskip
+
+\begin{tabular}{| c || c | c | c | c | c | c | c | c |}
+    \hline
+    coups & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+    \hline
+    $d_0$ & 0 & 2 & 2 & 1 & 1 & 0 & 0 & 2 \\
+    \hline
+    $d_1$ & 0 & 0 & 1 & 1 & 1 & 1 & 2 & 2 \\
+    \hline
+    $d_2$ & 0 & 0 & 0 & 0 & 2 & 2 & 2 & 2 \\
+    \hline
+\end{tabular}
+\medskip
+
+Pour quatre disques, nous avons, en suivant le même raisonnement :
+\medskip
+
+\begin{tabular}{| c || c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c |}
+    \hline
+    coups & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+    \hline
+    $d_0$ & 0 & 1 & 1 & 2 & 2 & 0 & 0 & 1 & 1 & 2 & 2 & 0 & 0 & 1 & 1 & 2 \\
+    \hline
+    $d_1$ & 0 & 0 & 2 & 2 & 2 & 2 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 2 & 2 \\
+    \hline
+    $d_2$ & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 2 & 2 & 2 & 2 \\
+    \hline
+    $d_3$ & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 \\
+    \hline
+\end{tabular}
+
+\Q
+Les deux exemples précédents mettent en évidence une dépendance entre la parité du nombre de disques et le sens de déplacement de ceux-ci.
+\medskip
+
+Tous les coups impairs, le disque $d_0$ se déplace de la colonne $x$ vers la colonne $x+(-1)^n$ mod 3, où $n$ représente le nombre de disques.
+\medskip
+
+Comme on ne peut rien mettre sur le disque $d_0$, le seul choix possible est de déplacer le plus petit des disques situés sur les deux autres colonnes. Maintenant, seul le disque $d_0$ est déplaçable sinon il y a retour à la situation précédente. Nous vérifions ainsi que $d_0$ est à déplacer un coup sur deux.
+
+\Q
+En fait, le disque $d_1$ se déplace comme s'il était le disque 0 des $n-1$ disques restants en ne prenant en compte que les coups pairs. Ce qui revient à un déplacement tous les coups pairs (multiple de deux) non multiples de quatre.
+\medskip
+
+Ainsi, le disque $d_i$ se déplace de $(-1)^{n-1}$ tous les coups multiples de $2^i$ non multiples de $2^{i+1}$.
+\medskip
+
+Ainsi, le disque $d_{n-1}$ se déplace au coup $2^{n-1}$ lorsque tous les autres disques sont sur la colonne 1. Le temps de les replacer sur la colonne 2 est le même que celui pour les placer sur 1, c'est-à-dire $2^{n-1}-1$.
+\medskip
+
+D'où le temps total pour $n$ disques : $2^n-1$. On peut maintenant le montrer par récurrence.
+\medskip
+
+Est-il optimal ? Oui, car pour déplacer le plus grand des disques, il faut avoir déplacé tous les autres sur l'autre colonne, ce qui donne la formule de récurrence suivante, où $T(n)$ représente le nombre de coups pour $n$ disques :
+\[
+    T(n) = 2\cdot T(n-1)+1
+\]
+Nous obtenons $T(n)=2^n-1$.
+\medskip
+
+Voici un exemple de programme où :
+
+\lstinputlisting{\SourceFile}
+
+La complexité en termes déplacement est optimale. On peut calculer le nombre de comparaisons de la façon suivante (les seules comparaisons effectuées sont dans la condition de la boucle \texttt{while}) :
+\begin{itemize}
+    \item La moitié des nombres binaires se terminent par un 1. Dans ce cas, on effectue une comparaison.
+    \item Parmi ceux se terminant par un 0, la moitié possède un 1 en deuxième position. Dans ce cas, on effectue 2 comparaisons.
+    \item Parmi ceux se terminant par deux zéros, la moitié possède un 1 en troisième position. Dans ce cas, on effectue 3 comparaisons.
+    \item De manière récurrente, on a donc une proportion $\frac{1}{2^n}$ des nombres qui nécessitent $n$ itérations.
+\end{itemize}
+\medskip
+
+Donc en sommant sur toutes les longueurs, le nombre d'itérations $N$ est donné par la formule :
+\[
+    N = 2^n\cdot\sum_{k=1}^nk\frac{1}{2^k}=2^{n-1}\cdot\sum_{k=1}^nk\left(\frac{1}{2}\right)^{k-1}
+\]
+
+En remarquant que :
+\[
+    \sum_{k=1}^nkx^{k-1} = \frac{\textrm{d}}{\textrm{d}x}\sum_{k=1}^nx^k = \frac{\textrm{d}}{\textrm{d}x}\frac{x-x^{n+1}}{1-x}
+\]
+on obtient $N = 2^{n+1}-(n+2)$.
+\medskip
+
+On peut si on le désire également donner la version récursive suivante où $A$, $B$ et $C$ représentent les trois colonnes :
+\medskip
+
+\texttt{Hanoï}($n$, $A$, $B$, $C$)\\
+\hspace*{2em} si $n \geq 1$ faire\\
+\hspace*{4em}   \texttt{Hanoï}($n-1$, $A$, $C$, $B$)\\
+\hspace*{4em}   \textit{Déplacer le disque de $A$ vers $C$}\\
+\hspace*{4em}   \texttt{Hanoï}($n-1$, $B$, $A$, $C$)
+\bigskip
+
+\Fin
