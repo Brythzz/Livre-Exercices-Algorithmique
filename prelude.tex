@@ -79,7 +79,7 @@
   \raggedleft
   \fontsize{3.8cm}{0pt}\selectfont\ChapterNumber
   \vspace{3cm}
-  \fontsize{25pt}{0pt}\sl\bfseries\selectfont
+  \fontsize{25pt}{25pt}\sl\bfseries\selectfont
 }
 \titlespacing*{\chapter}{0pt}{0pt}{1cm}
 
@@ -109,8 +109,7 @@
 \frenchsetup{StandardItemLabels=true}
 
 \usepackage{enumitem}
-\setlist[itemize]{left=0pt..8mm}
-
+\setlist{left=0pt..8mm}
 
 %%% Style des blocs de code %%%
 
@@ -139,6 +138,14 @@
   \vspace{.4cm}
   {\sffamily Question \arabic{question}}
   \vspace{.4cm}\\
+}
+
+\newcounter{partie}[section] % Remis à 0 à chaque nouvelle section
+\newcommand{\Partie}[1]{
+  \stepcounter{partie}
+  \vspace{.4cm}
+  {\sffamily \Roman{partie}. #1}
+  \smallbreak
 }
 
 \newcommand{\Corrige}{

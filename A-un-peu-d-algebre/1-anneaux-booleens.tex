@@ -7,3 +7,29 @@ Si $E$ est un ensemble, on note $\mathcal{P}(E)$ l'ensemble des sous-ensembles f
 \medskip
 
 Dans tout le problème, $E$ sera supposé fini et de cardinal $n$.
+
+\Partie{Bases du calcul dans $\mathcal{AB}[E]$}
+
+\begin{enumerate}
+    \item Montrer que, dans tout anneau Booléen, pour tout $x$, $x+x=0$. En déduire que tout anneau booléen est naturellement muni d'une structure d'espace vectoriel sur $F_2$.
+    \item À chaque $e \in E$ on associe la fonction $\chi_e \in \mathcal{AB}[E]$ telle que $\chi_e(S)=1$ si et seulement si $e \in S$. On appelle \textit{monôme} tout produit (fini) $\chi_{e_1}\dots\chi_{e_k}$ où $e_1$, ..., $e_k \in E$. Par convention, si $k=0$, on obtient le monôme 1. Montrer que l'ensemble des monômes est une base de $\mathcal{AB}[E]$. Préciser le nombre d'éléments de $\mathcal{AB}[E]$.
+    \smallskip
+
+    On appellera dans la suite \textit{b-polynôme} tout élément de $\mathcal{AB}[E]$ représenté comme somme de monômes distincts.
+    \item On note $N=2^n$ et $E=\{1, ..., n\}$.\\
+    Soit $C_1$ l'application qui à tout monôme $\chi_{i_1}\dots\chi_{i_k}$ ($i_1$, ..., $i_k$ étant distincts et $k \geq 1$) associe l'entier $2^{i_1-1} + \dots + 2^{i_k-1}$ et telle que $C_1(1)=0$. Montrer que $C_1$ est une bijection de l'ensemble des monômes dans $[0,2^n-1]$ et en déduire une représentation $C_1$ des éléments de $\mathcal{AB}[E]$ sous la forme d'un tableau de booléens de taille $N+1$. Implémenter en OCaml la somme et le produit de deux éléments de $\mathcal{AB}[E]$ ainsi représentés.
+    \item À une partie $P$ non vide de $E$, on associe l'entier $C_2(P) = \sum_{p \in P}2^{p-1}$. Par convention, $C_2(\emptyset)=0$. Expliquer pourquoi $C_2$ est une bijection de $\mathcal{P}(E)$ dans $[0, 2^n-1]$. Montrer comment $C_2$ se \og prolonge \fg{} en une (autre) représentation $C_2$ de $\mathcal{AB}[E]$ sous la forme d'un tableau de booléens de taille $N+1$.\\
+    Implémenter en OCaml la somme et le produit de deux éléments de $\mathcal{AB}[E]$ ainsi représentés. Comparer les deux représentation du point de vue du coût des opérations dans $\mathcal{AB}[E]$.
+    \item Écrire une fonction OCaml qui permet de passer de $C_1(x)$ à $C_2(x)$ et qui implémente donc une fonction $\phi$ prenant en entrée un tableau de booléens de taille $N+1$ et renvoie un autre tableau de booléens de même taille. Implémenter aussi la réciproque de $\phi$.\\
+    Application numérique : calculer $\phi(x)$ et $\phi^{-1}(x)$ pour les valeurs de $x$ suivantes (on suppose $n=3$) : $\chi_1$, $\chi_1\chi_2$, $\chi_1\chi_2+\chi_2+\chi_3$. Que remarquez-vous ?
+\end{enumerate}
+
+\Partie{Résolution d'équations dans $\mathcal{AB}[E \cup E']$. Méthode de Boole.}
+
+Dans cette partie, pour améliorer la lisibilité, on notera $a=\chi_1$ et $b=\chi_2$.
+\medskip
+
+On considère ici une équation :
+\begin{equation}\label{eq:1}
+    f(x_1, ..., x_m) = 0
+\end{equation}
