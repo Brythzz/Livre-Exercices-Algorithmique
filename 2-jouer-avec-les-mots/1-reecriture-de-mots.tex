@@ -78,10 +78,10 @@ Remarquons que, de façon symétrique, bb et BB commutent également avec toutes
 Pour transformer $w$, on commence par bouger toutes les suites de deux lettres consécutives identiques et les mettre au début du mot, les aa et AA précédant les bb et BB, et par simplifier toutes les occurrences de aA, Aa, bB ou Bb. On se retrouve avec un mot commençant par des aa et AA, continuant avec des bb et BB, et se terminant avec un mot qui alterne des a ou A avec des b ou B. On remplace alors chaque A par AAa et chaque B par BBb, puis on ramène les AA et les BB plus au début : on se retrouve avec une suite de aa et de AA, suivie d'une suite de bb et de BB, suivie d'un mot de la forme de $z$. En simplifiant les aaAA, les AAaa, les bbBB et les BBbb, on obtient mot $xyz$ de la forme requise. Notons qu'il n'est pas demandé ici de montrer l'unicité de cette écriture.
 
 \Q
-On peut coder $x$ par un entier $i$, positif si x contient des aa et négatif s'il contient des AA, et de valeur absolue égale au nombre de lettres de $x$. De même, $y$ peut être codé par un entier $j$. On peut coder $z$ par un entier $k$, positif si $z$ commence par un a et négatif si $z$ commence par un b, et de valeur absolue égale au nombre de lettres de $z$.
+On peut coder $x$ par un entier $i$, positif si $x$ contient des aa et négatif s'il contient des AA, et de valeur absolue égale au nombre de lettres de $x$. De même, $y$ peut être codé par un entier $j$. On peut coder $z$ par un entier $k$, positif si $z$ commence par un a et négatif si $z$ commence par un b, et de valeur absolue égale au nombre de lettres de $z$.
 
 \Q
-Supposons la longueur de $w$ supérieure ou égale à 1. On regarde la première lettre de $w$, puis on teste si les suivantes alternes, en s'arrêtant dès qu'on trouve une erreur ou qu'on a parcouru tout le mot.
+Supposons la longueur de $w$ supérieure ou égale à 1. On regarde la première lettre de $w$, puis on teste si les suivantes alternent, en s'arrêtant dès qu'on trouve une erreur ou qu'on a parcouru tout le mot.
 
 \lstinputlisting[linerange={1-11}]{\SourceFile}
 \newpage

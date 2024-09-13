@@ -17,11 +17,11 @@ Choisissons déjà la structure de données. Définissons un type
 
 \lstinputlisting[linerange={1}]{\SourceFile}
 
-et donnons-nous une fonction \texttt{est\_valide (c : case) : bool} qui renvoie \texttt{true} si $c$ est bien une case de l'échiquier (i.e $0\leq \texttt{fst c}$, $\texttt{snd c} \leq 7$), et \texttt{false} sinon. Réalisons tout de suite que quel que soit le nombre de coups, on ne pourra jamais atteindre plus de 64 cases et définissons des tableaux
+et donnons-nous une fonction \texttt{est\_valide (c : case) : bool} qui renvoie \texttt{true} si \texttt{c} est bien une case de l'échiquier (i.e $0\leq \texttt{fst c}$, $\texttt{snd c} \leq 7$), et \texttt{false} sinon. Réalisons tout de suite que quel que soit le nombre de coups, on ne pourra jamais atteindre plus de 64 cases et définissons des tableaux
 
 \lstinputlisting[linerange={3-5}]{\SourceFile}
 
-tel que \texttt{coups[i,j]} désigne la $j$ème des cases atteignables en exactement $i$ coups et \texttt{ncases[i]} le nombre de cases atteignables en exactement $i$ coups - et non atteignables en moins de coups. La seule difficulté de la fonction et de penser à \og faire le ménage \fg en vérifiant, à chaque fois qu'on ajoute une case, si elle n'a pas déjà été atteinte. Il est à noter qu'il suffit de vérifier ceci pour des valeurs de $i$ (numéros des coups) de même parité que le numéro courant : si on part d'une case blanche, en un nombre par de coups, on sera forcément sur une case blanche, et en un nombre impair sur une case noire.
+tel que \texttt{coups[i,j]} désigne la $j$-ième des cases atteignables en exactement $i$ coups et \texttt{ncases[i]} le nombre de cases atteignables en exactement $i$ coups et non atteignables en moins de coups. La seule difficulté de la fonction et de penser à \og faire le ménage \fg en vérifiant, à chaque fois qu'on ajoute une case, si elle n'a pas déjà été atteinte. Il est à noter qu'il suffit de vérifier ceci pour des valeurs de $i$ (numéros des coups) de même parité que le numéro courant : si on part d'une case blanche, en un nombre pair de coups, on sera forcément sur une case blanche, et en un nombre impair sur une case noire.
 
 \lstinputlisting[firstline=10]{\SourceFile}
 

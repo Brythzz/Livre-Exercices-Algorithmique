@@ -2,7 +2,7 @@
 
 \section{Code correcteur de Hamming}
 
-Nous voulons transmettre des messages composés de 0 et de 1 (chiffres binaires). Comme une erreur peut se produire lors de la transmission, nous utilisons un code correcteur de Hamming$(n,m)$ où $n=2^r-1$ et $m=n-r$ qui encode tout mot $V$ de $m$ chiffres binaires en un mot de code $C$ composé de $n$ chiffres binaires. Soit $V=v_1v_2...v_m$, un mot du message et $C=c_1c_2...c_r$ le mot de code correspondant. $C$ est construit de la façon suivante :
+Nous voulons transmettre des messages composés de 0 et de 1 (chiffres binaires). Comme une erreur peut se produire lors de la transmission, nous utilisons un code correcteur de Hamming$(n,m)$ où $n=2^r-1$ et $m=n-r$ qui encode tout mot $V$ de $m$ chiffres binaires en un mot de code $C$ composé de $n$ chiffres binaires. Soit $V=v_1v_2...v_m$ un mot du message et $C=c_1c_2...c_r$ le mot de code correspondant. $C$ est construit de la façon suivante :
 \medskip
 
 Si $2^{k-1} < i < 2^{k}$, ($k > 0$) alors $c_i=v_{i-k}$\\
@@ -13,10 +13,10 @@ Pour simplifier, nous prendrons des tableaux d'entiers pour stocker $V$ et $C$.
 
 \Q
 Le passage du message $V$ au message encodé $C$ revient à un produit matrice-vecteur tel que : $C=AV$, où $A$ est une matrice $(n \times m)$. Écrire la matrice $A$ pour $n=31$ et $m=26$.\\
-Écrire une fonction OCaml \texttt{gen\_mat} qui, étant donnés deux nombres $n$ et $m$, génère la matrice génératrice $A$ du code de Hamming$(n,m)$.
+Écrire une fonction OCaml \texttt{gen\_mat} qui, étant donné deux nombres $n$ et $m$, génère la matrice génératrice $A$ du code de Hamming$(n,m)$.
 
 \Q
-Écrire une fonction OCaml qui, étant donnés un mot $V$ de $m$ chiffres binaires et une matrice $A$, renvoie le mot de code $C$ correspondant.
+Écrire une fonction OCaml qui, étant donné un mot $V$ de $m$ chiffres binaires et une matrice $A$, renvoie le mot de code $C$ correspondant.
 
 \Q
 À la réception du message encodé $C'$ ($C$ avec peut-être une erreur de transmission), nous désirons reconstituer le message $V$. Pour ceci, nous vérifions que le message $C'$ est un mot du code défini à la question précédente. Construire, pour $m=26$ et $n=31$, la matrice $(5 \times 31)$ de contrôle de parité $H$ telle que :
@@ -29,13 +29,13 @@ $H \times C' = S$ où $S$ est un vecteur de dimension 5 tel que :
 \end{itemize}
 \medskip
 
-Écrire une fonction OCaml \texttt{cont\_mat} qui, étant donnés deux nombres $n$ et $r$ génère la matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$.
+Écrire une fonction OCaml \texttt{cont\_mat} qui, étant donné deux nombres $n$ et $r$ génère la matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$.
 
 \Q
-Écrire une fonction OCaml \texttt{syndrome} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie l'indice de l'élément erroné de $C'$ ou $-1$ si $C'$ est sans erreur.
+Écrire une fonction OCaml \texttt{syndrome} qui, étant donné le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie l'indice de l'élément erroné de $C'$ ou $-1$ si $C'$ est sans erreur.
 \medskip
 
-Écrire une fonction OCaml \texttt{decode} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie le message original $V$ à partir de $C'$ après avoir au besoin corrigé l'erreur détectée.
+Écrire une fonction OCaml \texttt{decode} qui, étant donné le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie le message original $V$ à partir de $C'$ après avoir au besoin corrigé l'erreur détectée.
 
 \Corrige
 
@@ -60,12 +60,12 @@ La matrice $(5 \times 31)$ de contrôle de parité $H$ pour $m=26$ et $n=31$ est
 \lstinputlisting[linerange={33-37}]{2-jouer-avec-les-mots/src/2-7.txt}
 \medskip
 
-La fonction \texttt{cont\_mat} qui, étant donnés deux nombres $n$ et $r$ génère la matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$ peut s'écrire :
+La fonction \texttt{cont\_mat} qui, étant donné deux nombres $n$ et $r$ génère la matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$ peut s'écrire :
 
 \lstinputlisting[linerange={54-65}]{\SourceFile}
 
 \Q
-Nous présentons ici une fonction \textit{syndrome} qui, étant donnés le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie l'indice de l'élément erroné ou $-1$ si $C'$ est sans erreur.
+Nous présentons ici une fonction \textit{syndrome} qui, étant donné le mot de code $C'$ et une matrice de contrôle de parité $H$ du code de Hamming$(n,n-r)$, renvoie l'indice de l'élément erroné ou $-1$ si $C'$ est sans erreur.
 \medskip
 
 Nous avons là encore un simple produit matrice-vecteur :
