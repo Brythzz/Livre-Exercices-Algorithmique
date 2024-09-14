@@ -3,22 +3,22 @@
 \section{Arbre bicolore}
 
 \Q
-Un arbre binaire étiqueté est défini par une racine, des nœuds et des feuilles. Un nœud est défini par un père, un fils gauche, un fils droit, un étiquette (entier positif) et une couleur (noir ou rouge). La racine est un nœud sans père et une feuille est un nœud vide (autrement dit, fils vide d'un nœud interne).
+Un arbre binaire étiqueté est défini par une racine, des nœuds et des feuilles. Un nœud est défini par un père, un fils gauche, un fils droit, une étiquette (entier positif) et une couleur (noir ou rouge). La racine est un nœud sans père et une feuille est un nœud vide (autrement dit, fils vide d'un nœud interne).
 \medskip
 
-Expliquer quelle structure de donnée utiliser pour représenter un arbre binaire étiqueté en OCaml.
+Expliquer quelle structure de données utiliser pour représenter un arbre binaire étiqueté en OCaml.
 
 \Q
 Un arbre binaire est de recherche (ABR) si chaque nœud est tel que : tout nœud de sa sous arborescence droite ne contient que des valeurs d'étiquettes supérieures et tout nœud de sa sous-arborescence gauche des valeurs d'étiquettes inférieures.
 \medskip
 
-Donne une fonction permettant d'insérer une nouvelle valeur en conservant la structure d'ABR.
+Donner une fonction permettant d'insérer une nouvelle valeur en conservant la structure d'ABR.
 
 \Q
-Un arbre bicolore est un arbre binaire de recherche qui vérifie les propriétés suivantes : chaque nœud est soit noir, soit rouge, chaque feuille est considérée comme noire, si un nœud est rouge alors ses deux fils sont noirs et tous les chemins d'un nœud $(x)$ à une feuille de sa descendance contiennent le même nombre $\textbf{np}(x)$ de nœuds noirs (non-compris le nœud lui-même). Ce nombre est appelé la \textbf{noire-profondeur} du nœud.
+Un arbre bicolore est un arbre binaire de recherche qui vérifie les propriétés suivantes : chaque nœud est soit noir, soit rouge, chaque feuille est considérée comme noire, si un nœud est rouge alors ses deux fils sont noirs et tous les chemins d'un nœud $(x)$ à une feuille de sa descendance contiennent le même nombre $\textbf{pn}(x)$ de nœuds noirs (non-compris le nœud lui-même). Ce nombre est appelé la \textbf{profondeur noire} du nœud.
 \medskip
 
-Nous définissons la \textbf{noire-profondeur d'un arbre bicolore} comme étant la noire-profondeur de sa racine.
+Nous définissons la \textbf{profondeur noire d'un arbre bicolore} comme étant la profondeur noire de sa racine.
 \medskip
 
 Montrer que la profondeur (longueur de la plus longue branche, \textit{racine $\rightarrow$ feuille}) d'un arbre bicolore composé de $n$ nœuds internes (i.e qui ne sont pas des feuilles) est d'au plus $2\log_2(n+1)$.
@@ -60,7 +60,7 @@ Comment insérer un nouvel élément dans un arbre bicolore en conservant sa str
 \Q
 On représente un arbre bicolore avec le type récursif suivant :
 
-\lstinputlisting[linerange={1-2}]{\SourceFile}
+\lstinputlisting[linerange={1-4}]{\SourceFile}
 
 \Q
 Pour insérer un nouvel élément dans un arbre binaire de recherche en conservant la propriété fondamentale des ABR, nous parcourons l'arborescence en partant de la racine avec comme critère de choix pour le nœud suivant le fils droit si l'étiquette du nouvel élément est plus grande que celle du nœud courant et le fils gauche sinon.
@@ -68,25 +68,25 @@ Pour insérer un nouvel élément dans un arbre binaire de recherche en conserva
 
 En OCaml, on peut écrire :
 
-\lstinputlisting[linerange={4-8}]{\SourceFile}
+\lstinputlisting[linerange={6-13}]{\SourceFile}
 
 \Q
-L'arbre bicolore minimal pour une noire-profondeur $np$ donnée n'est composé que de nœuds noirs. Comme chaque branche partant de la racine a exactement $np$ nœuds noirs, nous avons un arbre complet équilibré de profondeur $np$. Chaque niveau $i$ de cet arbre avant tout binaire contient $2^i$ nœuds.
+L'arbre bicolore minimal pour une profondeur noire $pn$ donnée n'est composé que de nœuds noirs. Comme chaque branche partant de la racine a exactement $pn$ nœuds noirs, nous avons un arbre complet équilibré de profondeur $pn$. Chaque niveau $i$ de cet arbre avant tout binaire contient $2^i$ nœuds.
 \medskip
 
-Ainsi, un arbre bicolore de noire-profondeur $np$ est composé d'au moins $2^{np}-1$ nœuds noirs.
+Ainsi, un arbre bicolore de profondeur noire $pn$ est composé d'au moins $2^{pn}-1$ nœuds noirs.
 \medskip
 
-Si $n$ est le nombre de nœuds d'un arbre bicolore de noire-profondeur $np$, nous avons
+Si $n$ est le nombre de nœuds d'un arbre bicolore de profondeur noire $pn$, nous avons
 \[
-    n \geq 2^{np}-1
+    n \geq 2^{pn}-1
 \]
 autrement dit,
 \[
-    \log_2(n+1) \geq np
+    \log_2(n+1) \geq pn
 \]
 
-Si l'on tient compte du fait que, sur une branche, au plus un nœud sur deux est rouge, la profondeur d'un arbre bicolore de noire-profondeur $np$ est au plus $2np$ c'est à dire d'au plus $2\log_2(n+1)$.
+Si l'on tient compte du fait que, sur une branche, au plus un nœud sur deux est rouge, la profondeur d'un arbre bicolore de profondeur noire $pn$ est au plus $2pn$ c'est à dire d'au plus $2\log_2(n+1)$.
 
 \Q
 Pour alléger les fonctions et puisque la coloration n'apporte rien ici, on définit un type d'arbre binaire sans couleurs :
@@ -105,7 +105,7 @@ La fonction \texttt{rotate\_node\_right} s'écrit de manière analogue.
 \medskip
 
 La structure d'arbre binaire de recherche est conservée : $x$ et $y$ sont du même côté par rapport au père de $x$ et les étiquettes de la sous-arborescence gauche de $y$ sont supérieures à celle de $x$ et inférieures à celle de $y$, elle peut devenir la sous-arborescence droite de $x$ sans que l'arbre ne perde sa propriété d'arbre binaire de recherche.
-\newpage
+\medskip
 
 En revanche, la propriété d'arbre bicolore n'est pas forcément conservée. Si nous appliquons l'algorithme précédent à l'arbre ci-dessous où les nœuds noirs sont colorés en noir et les nœuds rouges sont représentés en blanc :
 \medskip

@@ -27,6 +27,7 @@
 \setlength{\parindent}{0pt}
 
 \usepackage{colortbl}
+\usepackage{needspace}
 
 
 %%% Style d'en-tête %%%
@@ -135,6 +136,7 @@
 \newcounter{question}[section] % Remis à 0 à chaque nouvelle section
 \newcommand{\Q}{
   \stepcounter{question}
+  \needspace{2\baselineskip}
   \vspace{.4cm}
   {\sffamily Question \arabic{question}}
   \vspace{.4cm}\\
@@ -143,6 +145,7 @@
 \newcounter{partie}[section] % Remis à 0 à chaque nouvelle section
 \newcommand{\Partie}[1]{
   \stepcounter{partie}
+  \Needspace{2\baselineskip}
   \vspace{.4cm}
   {\sffamily \Roman{partie}. #1}
   \smallbreak
@@ -150,6 +153,7 @@
 
 \newcommand{\Corrige}{
   \setcounter{question}{0}
+  \Needspace{2\baselineskip}
   \vspace{1cm}
   \centerline{\sffamily \rule[0.6ex]{2cm}{.1mm} CORRIGÉ \rule[0.6ex]{2cm}{.1mm}}
   \vspace{-.4cm}

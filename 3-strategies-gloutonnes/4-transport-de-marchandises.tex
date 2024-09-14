@@ -6,8 +6,8 @@ On dispose de divers modèles de camions (on considère tout d'abord que l'on di
 \begin{itemize}
     \item utiliser un camion de 5 tonnes et un camion de 1 tonne
     \item utiliser 3 camions de 2 tonnes
-    \item utiliser 2 camions de 2 tonnes et 2 camions d'1 tonne
-    \item utiliser 1 camion de 2 tonnes et 4 camions d'1 tonne
+    \item utiliser 2 camions de 2 tonnes et 2 camions de 1 tonne
+    \item utiliser 1 camion de 2 tonnes et 4 camions de 1 tonne
     \item utiliser 6 camions d'une tonne
 \end{itemize}
 
@@ -57,6 +57,8 @@ Si les valeurs des camions sont 1, $p$, $p^2$, ..., $p^k$, où $p$ est un entier
     \item il y a au plus $(p-1)$ camions de $p^{k-1}$ tonnes (sinon on pourrait remplacer $p$ camions de $p^{k-1}$ tonnes par un camion de $p^k$ tonnes) ;
     \item il y a au plus $(p-1)$ camions de $p^{k-2}$ tonnes...
 \end{itemize}
+\newpage
+
 Donc la charge totale des camions de charge strictement inférieure à $p^k$ est au plus $\sum_{i=0}^{k-1}(p-1)p^k=p^k-1$, donc le nombre de camions de charge $p^k$ doit être $\lfloor n/p^k \rfloor$, etc.
 \bigskip
 
