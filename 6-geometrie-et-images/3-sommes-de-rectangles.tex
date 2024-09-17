@@ -95,8 +95,10 @@ La condition est : pour tout $x$ de $\mathbb{R}$, la somme des poids des points 
 
 \Q
 On va utiliser l'algorithme esquissé dans la question 3. On représente les points à l'aide d'un tableau de 2-tuples tel que le premier élément de chaque tuple donne les coordonnées $(x,y)$ du point et le second son poids. Chaque rectangle doit être donné par deux abscisses et deux ordonnées : on représentera donc un rectangle par un tuple de deux points correspondant aux points de poids 1 du rectangle. Chaque rectangle posé ajoute deux nouveaux points sur la ligne d'ordonnée $y_0$, et on doit vérifier à la fin que tous ces points s'annulent mutuellement : les coordonnées des points étant des flottants, on va utiliser une table de hachage afin d'associer à chaque ordonnée $x$ la somme des poids des points à cette ordonnée.
+\newpage
 
 \lstinputlisting[linerange={31-76}]{\SourceFile}
+\newpage
 
 On donne ici une représentation graphique de l'algorithme :
 
@@ -210,7 +212,7 @@ Par récurrence sur le nombre de points sur une ligne $y>y_0$ donnée, montrons 
 Initialisation : Soit donc une ligne d'ordonnée $y$ contenant deux uniques points $(x_1,y)$ et $(x_2,y)$. Tant que les deux points ont un poids non nul, l'algorithme fait strictement décroître leurs poids en valeur absolue puis ajoute un rectangle. Or, par hypothèse, on a $x_1+x_2=0 \implies |x_1|=|x_2|$ donc par le variant de boucle, l'algorithme ajoute exactement $|x_1|$ rectangles soit $\frac{1}{2}(|x_1|+|x_2|)$.
 \medskip
 
-Hérédité : Soit une ligne d'ordonnée $y$ contenant $n+1$ points d'abscisses $x_1 < x_2 < ... < x_{n+1}$ et de poids respectifs $p_1, p_2, ..., p_{n+1}$. Les points de même ordonnée étant triés par abscisse croissante, l'algorithme considère les points dans l'ordre. Par hypothèse de récurrence, il ajoute $\frac{1}{2} \sum_{i=1}^n|p_i|$ rectangles lorsqu'il considère les points 1 à $n$. Par l'existence d'une décomposition en rectangles, le poids du point $n$ après traitement des points 1 à $n$, noté $\tilde{p_n}$, vérifie nécessairement $|\tilde{p_n}|=|p_{n+1}|$. Par ce qui précède, l'algorithme ajoute donc $|p_{n+1}|$ rectangles à la dernière étape. D'où la propriété au rang $n+1$.
+Hérédité : Soit une ligne d'ordonnée $y$ contenant $n+1$ points numérotés de 1 à $n+1$ selon l'ordre dans lequel ils sont considérés par l'algorithme et de poids respectifs $p_1, p_2, ..., p_{n+1}$. Par hypothèse, l'algorithme ajoute $\frac{1}{2} \left(\sum_{i=1}^{n-1}|p_i|+|p_n|-|\tilde{p_n}|\right)$ rectangles lorsqu'il considère les points 1 à $n$, où $\tilde{p_n}$ correspond au nouveau poids du point $n$ après traitement des points de 1 à $n$. Par l'existence d'une décomposition en rectangles, $|\tilde{p_n}|$ vérifie nécessairement $|\tilde{p_n}|=|p_{n+1}|$. Par ce qui précède, l'algorithme ajoute donc $|\tilde{p_n}|$ rectangles à la dernière étape. D'où le nombre de rectangles $\frac{1}{2} \left(\sum_{i=1}^{n}|p_i|-|\tilde{p_n}|\right)+|\tilde{p_n}|=\frac{1}{2}\sum_{i=1}^{n+1}|p_i|$. D'où la propriété au rang $n+1$.
 \medskip
 
 Donc en sommant sur toutes les lignes : le nombre de rectangles renvoyés correspond donc à la demi-somme des valeurs absolues des poids de tous les points d'ordonnée strictement supérieure à $y_0$ :

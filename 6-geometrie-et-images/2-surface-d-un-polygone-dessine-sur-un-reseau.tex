@@ -18,13 +18,13 @@ Soit $P$ un polygone dont toutes les arêtes sont horizontales ou verticales et 
 \end{center}
 
 \Q
-Écrire une fonction qui test si le polygone est fermé, c'est à dire si le dernier point du contour coïncide avec le premier.
+Écrire une fonction qui test si le polygone est fermé, c'est-à-dire si le dernier point du contour coïncide avec le premier.
 
 \Q
 Écrire une fonction qui détermine les abscisses minimale et maximale $xmin$ et $xmax$ des points du polygone.
 
 \Q
-Soient $ymin$ et $ymax$ définis de façon similaire. On se donne une matrice d'entiers \texttt{t} de taille $n \times m$ initialement remplie par des 0. On veut \og dessiner \fg{} le polygone dans \texttt{t}, c'est à dire mettre des 0 et des 1 dans les entrées \texttt{t.(i).(j)} de façon que l'ensemble des entrées égales à 1 décrive le contour du polygone. Autrement dit, la matrice doit être comme une \og fenêtre \fg{} par laquelle on voit une portion de $\mathbb{Z}^2$. Écrire une fonction à cet effet.
+Soient $ymin$ et $ymax$ définis de façon similaire. On se donne une matrice d'entiers \texttt{t} de taille $n \times m$ initialement remplie par des 0. On veut \og dessiner \fg{} le polygone dans \texttt{t}, c'est-à-dire mettre des 0 et des 1 dans les entrées \texttt{t.(i).(j)} de façon que l'ensemble des entrées égales à 1 décrive le contour du polygone. Autrement dit, la matrice doit être comme une \og fenêtre \fg{} par laquelle on voit une portion de $\mathbb{Z}^2$. Écrire une fonction à cet effet.
 
 \Q
 Écrire une fonction pour calculer la surface du polygone.
@@ -59,7 +59,7 @@ Ainsi, $(0,0)$ a pour image \texttt{t.(ymax).(-xmin)}, et à chaque lettre lue o
 \og b \fg{} : \texttt{i} augmente de 1.\\
 D'où la fonction :
 
-\lstinputlisting[linerange={37-57}]{\SourceFile}
+\lstinputlisting[linerange={37-53}]{\SourceFile}
 
 \Q
 Le calcul de la surface $A$ peut sembler difficile, mais en fait il suffit d'utiliser la formule de Green-Riemann (cas particulier de la formule de Stokes) pour que la programmation devienne très simple. On a dans notre cas :
@@ -75,7 +75,7 @@ Si le polygone est dessiné sur le réseau triangulaire, son contour est décrit
 \medskip
 
 Si le polygone est dessiné sur le réseau régulier hexagonal, son contour est décrit par un mot où chaque lettre donne l'une des trois directions possibles, le sens étant déterminé par le sommet où on se trouve ; on peut encore une fois supposer que les sommets sont dans $\mathbb{Z}^2$, par exemple en prenant dans une direction des arêtes horizontales de longueur 1, dans la deuxième des arêtes diagonales de longueur $\sqrt{2}$, et dans la troisième, des arêtes de l'autre diagonale de longueur $\sqrt{2}$. Une fonction analogue à celle de la question 4 donne comme aire quatre fois le nombre d'hexagones dans la région considérée.
-\newpage
+\medskip
 
 Le lecteur pourra réfléchir à un algorithme qui teste si le polygone est simple, c'est-à-dire si le contour du polygone ne s'intersecte pas lui même.
 \bigskip

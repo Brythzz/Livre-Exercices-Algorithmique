@@ -36,7 +36,7 @@ Il suffit de changer les bornes des boucles \og for \fg{} et de vérifier qu'on 
 On peut bien sûr employer l'algorithme de la question 1 et mémoriser à chaque fois le nombre de camions mais cette approche est peu efficace car de complexité proportionnelle au nombre de possibilités.
 \medskip
 
-On utilise donc plutôt un algorithme glouton qui utilise le plus possible de camions de 10 tonnes (soit $\lfloor n/10 \rfloor$), puis le plus possible de camions de 5 tonnes (c'est à dire $\lfloor (n\ \textrm{mod}\,10)/5\rfloor$) et ainsi de suite.
+On utilise donc plutôt un algorithme glouton qui utilise le plus possible de camions de 10 tonnes (soit $\lfloor n/10 \rfloor$), puis le plus possible de camions de 5 tonnes (c'est-à-dire $\lfloor (n\ \textrm{mod}\,10)/5\rfloor$) et ainsi de suite.
 
 \lstinputlisting[firstline=31]{\SourceFile}
 

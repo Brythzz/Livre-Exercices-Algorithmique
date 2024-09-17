@@ -2,7 +2,7 @@
 
 \section{Ordonnancement}
 
-Un système de tâches $(T,<<)$ est un ensemble de $n$ tâches $T=\{t_1,t_2,...,t_n\}$. Ces tâches sont liées par des contraintes de précédence : on note $t_i << t_j$ pour dire que la tâche $t_i$ doit être terminée avant que la tâche $t_j$ ne puisse commence (on dit que $t_j$ est un successeur de $t_i$, et que $t_i$ est un prédécesseur de $t_j$). Ci-dessous, on représente graphiquement un ensemble de 7 tâches, avec 8 contraintes de précédence ($t_1<<t_2$, $t_1<<t_4$, $t_2<<t_4$, $t_7<<t_2$, ...) matérialisées sous forme de flèches :
+Un système de tâches $(T,<<)$ est un ensemble de $n$ tâches $T=\{t_1,t_2,...,t_n\}$. Ces tâches sont liées par des contraintes de précédence : on note $t_i << t_j$ pour dire que la tâche $t_i$ doit être terminée avant que la tâche $t_j$ ne puisse commencer (on dit que $t_j$ est un successeur de $t_i$, et que $t_i$ est un prédécesseur de $t_j$). Ci-dessous, on représente graphiquement un ensemble de 7 tâches, avec 8 contraintes de précédence ($t_1<<t_2$, $t_1<<t_4$, $t_2<<t_4$, $t_7<<t_2$, ...) matérialisées sous forme de flèches :
 \medskip
 
 \begin{tikzpicture}[every node/.style={
@@ -26,7 +26,7 @@ Un système de tâches $(T,<<)$ est un ensemble de $n$ tâches $T=\{t_1,t_2,...,
 \end{tikzpicture}
 \medskip
 
-Chaque tâche a une durée entière positive $dur(t_i)$. On dispose d'une ou plusieurs machines identiques pour exécuter les tâches. Ordonnancer le système de tâches $(T,<<)$ revient à trouver un date de début d'exécution $deb(t_i)$ pour chaque tâche $t_i$. Le but est de minimiser le temps total d'exécution tout en respectant les contraintes de dépendance : si $t_i << t_j$, on doit avoir $deb(t_i) + dur(t_i) \leq deb(t_j)$.
+Chaque tâche a une durée entière positive $dur(t_i)$. On dispose d'une ou plusieurs machines identiques pour exécuter les tâches. Ordonnancer le système de tâches $(T,<<)$ revient à trouver une date de début d'exécution $deb(t_i)$ pour chaque tâche $t_i$. Le but est de minimiser le temps total d'exécution tout en respectant les contraintes de dépendance : si $t_i << t_j$, on doit avoir $deb(t_i) + dur(t_i) \leq deb(t_j)$.
 
 \Q
 Proposer une structure de données pour un système de tâches et formaliser le problème. Écrire une fonction OCaml qui pour calcule pour chaque tâche le nombre et les numéros de ses successeurs et de ses prédécesseurs.

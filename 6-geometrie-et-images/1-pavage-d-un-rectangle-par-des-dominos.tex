@@ -70,7 +70,7 @@ On a maintenant un rectangle de largeur 3. Soit $w_n$ le nombre de pavages de la
     \draw[-latex, thick] (H) -- +(0,-1);
 \end{tikzpicture}
 
-Pour calculer $u_n$, on regarde les dominos recouvrant les trois cases les plus à droite du rectangle. Soit ce sont trois dominos horizontaux, auquel cas il reste un pavage du rectangle de taille $n-2$, soit ce sont un domino horizontal et un domino vertical, disposés de deux façons possibles, auquel cas il reste une region du type ci-dessus, c'est à dire un rectangle de taille $n-1$ auquel il manque un coin (par symétrie, que le coin soit en haut à gauche ou en haut à droite, le nombre de pavages est le même). On a donc la récurrence :
+Pour calculer $u_n$, on regarde les dominos recouvrant les trois cases les plus à droite du rectangle. Soit ce sont trois dominos horizontaux, auquel cas il reste un pavage du rectangle de taille $n-2$, soit ce sont un domino horizontal et un domino vertical, disposés de deux façons possibles, auquel cas il reste une region du type ci-dessus, c'est-à-dire un rectangle de taille $n-1$ auquel il manque un coin (par symétrie, que le coin soit en haut à gauche ou en haut à droite, le nombre de pavages est le même). On a donc la récurrence :
 \[
     u_n = 2w_{n-1} + u_{n-2},
 \]
@@ -82,7 +82,7 @@ De plus, $u_n=0$ si $n$ est impair et $w_n=0$ si $n$ est pair (car la surface do
 
 \lstinputlisting[firstline=19]{\SourceFile}
 
-Ici encore, on peut résoudre explicitement le système et se ramener à une formule qui peut être évaluée en $O(\log_2n)$ multiplication de réels.
+Ici encore, on peut résoudre explicitement le système et se ramener à une formule qui peut être évaluée en $O(\log_2n)$ multiplications de réels.
 
 \Q
 Tout d'abord, par parité, le nombre de pavages est 0 si $n$ est impair. Si $n$ est pair, soit $u_n$ le nombre de pavages. On sait que chaque carré $2 \times 2$ peut être pavé de deux manières par des dominos. Donc en partitionnant un carré $n \times n$ en $n/2 \times n/2$ petits carrés $2 \times 2$, on obtient la borne inférieure :

@@ -18,7 +18,7 @@ Soient $g$ et $d$ deux entiers, $1\leq g\leq d \leq n$. Posons $\alpha=A[g]$. On
     \item les éléments de $A$ d'indice strictement inférieur à $g$ ou strictement supérieur à $d$ restent inchangés.
 \end{itemize}
 
-Par exemple, si $n=6$, si les éléments de $A$ sont 5, 8, 7, 3, 9, 15, si $g=1$ et $d=5$, les éléments de $A$ après la permutation seront 5, 3, 7, 8, 9, 15 ou 5, 7, 3, 8, 15, 9, ou... (il n'y a pas unicité des permutations possibles), et \textit{pivot} sera égal à 3. Écrire une fonction OCaml qui effectue la permutation et donne la valeur de \textit{pivot} sans utiliser un autre tableau que $A$. Combien d'affectations (c'est à dire d'instructions \og \texttt{<-} \fg) et de tests nécessite-t-elle?
+Par exemple, si $n=6$, si les éléments de $A$ sont 5, 8, 7, 3, 9, 15, si $g=1$ et $d=5$, les éléments de $A$ après la permutation seront 5, 3, 7, 8, 9, 15 ou 5, 7, 3, 8, 15, 9, ou... (il n'y a pas unicité des permutations possibles), et \textit{pivot} sera égal à 3. Écrire une fonction OCaml qui effectue la permutation et donne la valeur de \textit{pivot} sans utiliser un autre tableau que $A$. Combien d'affectations (c'est-à-dire d'instructions \og \texttt{<-} \fg) et de tests nécessite-t-elle?
 
 \Q
 On appelle \textit{médiane} de $A$ un couple $(i,\alpha)$ tel que $1\leq i\leq n$, $A[i]=\alpha$, et $E(n/2)$ éléments de $A$ sont inférieurs strictement à $\alpha$ ($E(x)$ est la partie entière de $x$). Proposer une fonction de calcul de la médiane de $A$ utilisant la fonction de la question 2.

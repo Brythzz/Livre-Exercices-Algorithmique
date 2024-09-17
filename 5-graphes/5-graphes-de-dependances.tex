@@ -6,7 +6,7 @@ On considère l'ensemble $X=\{a,b,c,d\}$. Chaque élément de $X$ représente un
 \[
     (etiq(s),etiq(s')) \in D \textrm{ si et seulement si } [s=s' \textrm{ ou } (s,s') \in A \textrm{ ou } (s',s) \in A].
 \]
-Ainsi,, il y a une arête entre $s$ et $s'$ distinct si et seulement si les actions correspondant aux étiquettes de $s$ et $s'$ ne peuvent être exécutées simultanément.
+Ainsi, il y a une arête entre $s$ et $s'$ distinct si et seulement si les actions correspondant aux étiquettes de $s$ et $s'$ ne peuvent être exécutées simultanément.
 
 \Q
 Modéliser la notion de graphe orienté étiqueté décrite ci-dessus (pour un tel graphe $G=(S,A,etiq)$, on pourra supposer pour simplifier que les sommets de $S$ sont des entiers et séparer les modélisations de $(S,A)$ d'une part et $etiq$ d'autre part). Écrire un algorithme qui, étant donné un tel graphe, vérifie si c'est ou non un graphe de dépendance.
@@ -37,7 +37,7 @@ On a donc la fonction :
 \lstinputlisting[linerange={26-42}]{\SourceFile}
 
 \Q
-Par définition, une linéarisation commence par l'étiquette d'un sommet $s$ sans prédécesseur, c'est à dire tel qu'il n'existe pas d'arête de la forme $(s',s)$. Pour obtenir une bijection fiable, il faut donc trouver un sommet sans prédécesseur (il en existe puisque le graphe est acyclique), effacer toutes ses arêtes sortantes puis recommencer. Notons que le graphe privé de $s$ reste acyclique donc il existe toujours un sommet sans prédécesseur jusqu'à ce que tous les sommets aient été considérés.
+Par définition, une linéarisation commence par l'étiquette d'un sommet $s$ sans prédécesseur, c'est-à-dire tel qu'il n'existe pas d'arête de la forme $(s',s)$. Pour obtenir une bijection fiable, il faut donc trouver un sommet sans prédécesseur (il en existe puisque le graphe est acyclique), effacer toutes ses arêtes sortantes puis recommencer. Notons que le graphe privé de $s$ reste acyclique donc il existe toujours un sommet sans prédécesseur jusqu'à ce que tous les sommets aient été considérés.
 
 \lstinputlisting[firstline=44]{\SourceFile}
 
