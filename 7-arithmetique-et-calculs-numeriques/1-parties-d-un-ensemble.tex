@@ -5,13 +5,13 @@
 On considère un ensemble $E=\{0,...,N-1\}$. On représente une partie de $E$ par un tableau \texttt{p} d'entiers de $\{0,1\}$ de taille $N$ tel que \texttt{p.(i)=1} si et seulement si l'élément $i$ est dans la partie représentée par \texttt{p}. On associe à chaque partie \texttt{p} son numéro défini par $\textrm{numéro}(\texttt{p})=\sum_{i=0}^{N-1}\texttt{p.(i)}2^i$.
 
 \Q
-Écrire un algorithme qui, étant donnée une variable \texttt{p} représentant une partie, calcule $\textrm{numero}(\texttt{p})$. Quel est le nombre de multiplications par 2 effectuées par votre algorithme ? Pouvez-vous diminuer ce nombre ?
+Écrire un algorithme qui, étant donné une variable \texttt{p} représentant une partie, calcule $\textrm{numero}(\texttt{p})$. Quel est le nombre de multiplications par 2 effectuées par votre algorithme ? Pouvez-vous diminuer ce nombre ?
 
 \Q
 Étant donné un entier positif ou nul $k$, montrer qu'il existe au plus une partie de \texttt{p} telle que $\textrm{numero}(\texttt{p})=k$. Écrire un algorithme qui donne cette partie \texttt{p} lorsqu'elle existe. On pourra utiliser la fonction OCaml \texttt{mod} (si \texttt{a} et \texttt{b} sont deux entiers positifs, \texttt{a mod b} est le reste de la division euclidienne de \texttt{a} par \texttt{b}).
 
 \Q
-Écrire un algorithme qui, étant donnée une partie \texttt{p}, calcule la partie \texttt{q} (lorsqu'elle existe) telle que $\textrm{numero}(\texttt{q})=\textrm{numero}(\texttt{p})+1$.
+Écrire un algorithme qui, étant donné une partie \texttt{p}, calcule la partie \texttt{q} (lorsqu'elle existe) telle que $\textrm{numero}(\texttt{q})=\textrm{numero}(\texttt{p})+1$.
 
 \Q
 Écrire un algorithme qui énumère toutes les parties de $E$.

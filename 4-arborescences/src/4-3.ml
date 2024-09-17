@@ -57,7 +57,7 @@ let string_to_int (message:string) : int =
   for i=0 to n-1 do
     if message.[i] = '1' then s := !s + !k;
     k := !k /2
-  done;!s
+  done; !s
 let compact (message:string) : int list =
   let n = String.length message in
 

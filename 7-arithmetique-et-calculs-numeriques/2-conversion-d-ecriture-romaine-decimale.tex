@@ -42,9 +42,9 @@ Le nombre le plus long doit aussi avoir trois M correspondant au chiffre des mil
 \Q
 Notons que chaque symbole correspond à une quantité précise qui doit être soit ajoutée, soit retranchée du total, suivant le symbole qui suit. On peut par exemple commencer par convertir chaque symbole en la quantité correspondante, puis calculer l'entier représenté en faisant une suite d'additions et de soustractions, puis convertir cet entier en tableau de chiffres.
 
-\lstinputlisting[linerange={1-40}]{\SourceFile}
+\lstinputlisting[linerange={1-34}]{\SourceFile}
 
-Notons que les instructions de conversion d'entier en tableau de chiffres et d'inversion de l'ordre d'un tableau sont des exercices standards qui doivent être maîtrisés par les candidats. Une autre solution aurait consisté à lire le tableau de caractères romains, en séparant les parties utilisées pour le chiffre des milliers, celui des centaines, celui des dizaines et celui des unités. Les milliers sont faciles à convertir (il suffit de compter le nombre de M). Pour les autres chiffres, une même fonction peut être appliquée pour convertir les centaines, les dizaines ou les unités, en remplaçant M, D et C respectivement par C, L et X pour les dizaines et par X, V et I pour les unités. On obtiendrait ainsi une fonction de traduction directe sans passer par l'évaluation du nombre.
+Notons que la conversion d'un entier en tableau de chiffres est un exercice standard qui doit être maîtrisé par les candidats. Une autre solution aurait consisté à lire le tableau de caractères romains, en séparant les parties utilisées pour le chiffre des milliers, celui des centaines, celui des dizaines et celui des unités. Les milliers sont faciles à convertir (il suffit de compter le nombre de M). Pour les autres chiffres, une même fonction peut être appliquée pour convertir les centaines, les dizaines ou les unités, en remplaçant M, D et C respectivement par C, L et X pour les dizaines et par X, V et I pour les unités. On obtiendrait ainsi une fonction de traduction directe sans passer par l'évaluation du nombre.
 
 \Q
 L'algorithme naturel consiste à lire chaque décimale et à écrire la suite de caractères correspondante. On peut appeler une fonction auxiliaire \texttt{chiffre} qui fera le même travail pour les centaines, les dizaines et les unités, en remplaçant les symboles adéquatement. Soit $k$ le chiffre à convertir, et $j$ la première case libre du tableau.
@@ -52,19 +52,19 @@ L'algorithme naturel consiste à lire chaque décimale et à écrire la suite de
 
 On suppose que le nombre ici que le nombre à coder est inférieur à 3999 et donc qu'on peut prendre $|\texttt{d}| = 4$.
 
-\lstinputlisting[linerange={42-65}]{\SourceFile}
+\lstinputlisting[linerange={36-59}]{\SourceFile}
 
 \Q
 Il n'existe en fait pas de méthode plus facile que de d'abord faire la conversion en entier. On va donc simplement utiliser les fonctions précédentes. On commence par définir une fonction \texttt{tab\_to\_int} qui permet de calculer la valeur d'un entier écrit en décimal :
 
-\lstinputlisting[linerange={67-73}]{\SourceFile}
+\lstinputlisting[linerange={61-67}]{\SourceFile}
 
 Puis on obtient :
 
-\lstinputlisting[firstline=75]{\SourceFile}
+\lstinputlisting[firstline=69]{\SourceFile}
 
 \Q
-Calculons la longueur moyenne d'un nombre compris entre 0 et 3999 quand il est écrit en romain.
+Calculons la longueur moyenne d'un nombre compris entre 0 et 3999 quand il est écrit en chiffres romains.
 \medskip
 
 Le chiffre des milliers prend 0, 1, 2 ou 3 caractères donc la longueur de sa traduction est : 0 pour les 1000 premiers nombres, 1 pour les 1000 suivants, 2 pour les 1000 suivants et 3 pour les 1000 suivants, soit en moyenne 2,5.

@@ -5,7 +5,7 @@
 Nous considérons des images en niveaux de gris données sous la forme de matrices d'entiers compris entre 0 et 255. Le format JPEG permet de stocker ces images en occupant moins de place. Ce format est basé sur la transformée en cosinus discrète qui transforme un bloc image en un bloc de fréquences que l'on filtre afin d'obtenir une matrice creuse (beaucoup de coefficients nuls).
 \medskip
 
-Chaque image est découpée en blocs $8 \times 8$ (ce qui sous-entend que le nombre de colonnes et que le nombres de lignes sont des multiples de 8) et on applique une transformée en cosinus discrète sur chacun de ces blocs $8 \times 8$. Un bloc $8 \times 8$ dont les pixels sont repérés par $\textrm{pix}(x,y)$ avec $x$ et $y$ deux entiers compris entre 0 et 7 (inclus) est transformé en un bloc de fréquences $\textrm{dct}(i,j)$ avec $i$ et $j$ deux entiers compris entre 0 et 7 (inclus). Nous avons la relation suivante :
+Chaque image est découpée en blocs $8 \times 8$ (ce qui sous-entend que le nombre de colonnes et que le nombre de lignes sont des multiples de 8) et on applique une transformée en cosinus discrète sur chacun de ces blocs $8 \times 8$. Un bloc $8 \times 8$ dont les pixels sont repérés par $\textrm{pix}(x,y)$ avec $x$ et $y$ deux entiers compris entre 0 et 7 (inclus) est transformé en un bloc de fréquences $\textrm{dct}(i,j)$ avec $i$ et $j$ deux entiers compris entre 0 et 7 (inclus). Nous avons la relation suivante :
 \[
     \textrm{dct}(i,j) = \frac{1}{4}C(i)C(j)\sum_{x=0}^7\sum_{y=0}^7\textrm{pix}(x,y)\cos\frac{(2x+1)i\pi}{16}\cos\frac{(2y+1)j\pi}{16}
 \]

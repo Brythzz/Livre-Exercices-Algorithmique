@@ -48,7 +48,10 @@ Que peut-on conclure ?
 \Q
 Nous proposons un algorithme exhaustif où tous les couples de points sont examinés.
 
-\lstinputlisting[linerange={1-21}]{\SourceFile}
+\lstinputlisting[linerange={1-5}]{\SourceFile}
+\bigskip
+
+\lstinputlisting[linerange={7-22}]{\SourceFile}
 
 Dans la boucle $i$ : \texttt{p1}, \texttt{p2} est le couple de points les plus proches avec \texttt{p1} pris parmi les $i$ premiers points de \texttt{tab}.\\
 Dans la boucle $j$ : \texttt{p1}, \texttt{p2} est le couple de points les plus proches avec \texttt{p1} pris parmi les $i-1$ premiers points de \texttt{tab} avec \texttt{p1=tab.(i)} et \texttt{p2} pris parmi les $j$ premiers points de \texttt{tab}.
@@ -59,7 +62,7 @@ Le nombre d'additions est $3 \times (n-1)n/2$, de multiplications $(n-1)n$, où 
 \Q
 Il s'agit simplement de transcrire ce qui est proposé dans l'énoncé :
 
-\lstinputlisting[linerange={23-37}]{\SourceFile}
+\lstinputlisting[linerange={24-38}]{\SourceFile}
 
 Le nombre de transferts est de l'ordre du nombre d'éléments de \texttt{x}.
 
@@ -75,7 +78,7 @@ Supposons que nous ayons comparé les deux distances et gardé le couple donnant
 
 Nous reprenons la même terminologie pour les variables.
 
-\lstinputlisting[linerange={39-70}]{\SourceFile}
+\lstinputlisting[linerange={40-71}]{\SourceFile}
 \newpage
 
 On ne considère que les points contenus dans le rectangle en pointillés, en partant du point le plus bas.

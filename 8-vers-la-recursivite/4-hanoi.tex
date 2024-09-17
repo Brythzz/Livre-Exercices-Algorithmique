@@ -128,13 +128,13 @@ Tous les coups impairs, le disque $d_0$ se déplace de la colonne $x$ vers la co
 Comme on ne peut rien mettre sur le disque $d_0$, le seul choix possible est de déplacer le plus petit des disques situés sur les deux autres colonnes. Maintenant, seul le disque $d_0$ est déplaçable sinon il y a retour à la situation précédente. Nous vérifions ainsi que $d_0$ est à déplacer un coup sur deux.
 
 \Q
-En fait, le disque $d_1$ se déplace comme s'il était le disque 0 des $n-1$ disques restants en ne prenant en compte que les coups pairs. Ce qui revient à un déplacement tous les coups pairs (multiple de deux) non multiples de quatre.
+En fait, le disque $d_1$ se déplace comme s'il était le disque 0 des $n-1$ disques restants en ne prenant en compte que les coups pairs. Ce qui revient à un déplacement tous les coups pairs (multiples de deux) non multiples de quatre.
 \medskip
 
 Ainsi, le disque $d_i$ se déplace de $(-1)^{n-1}$ tous les coups multiples de $2^i$ non multiples de $2^{i+1}$.
 \medskip
 
-Ainsi, le disque $d_{n-1}$ se déplace au coup $2^{n-1}$ lorsque tous les autres disques sont sur la colonne 1. Le temps de les replacer sur la colonne 2 est le même que celui pour les placer sur 1, c'est-à-dire $2^{n-1}-1$.
+Ainsi, le disque $d_{n-1}$ se déplace au coup $2^{n-1}$ lorsque tous les autres disques sont sur la colonne 1. Le temps de les replacer sur la colonne 2 est le même que celui pour les placer sur la colonne 1, c'est-à-dire $2^{n-1}-1$.
 \medskip
 
 D'où le temps total pour $n$ disques : $2^n-1$. On peut maintenant le montrer par récurrence.
@@ -147,11 +147,11 @@ Est-il optimal ? Oui, car pour déplacer le plus grand des disques, il faut avoi
 Nous obtenons $T(n)=2^n-1$.
 \medskip
 
-Voici un exemple de programme où :
+Voici un exemple de programme indiquant les coups à jouer :
 
 \lstinputlisting{\SourceFile}
 
-La complexité en termes déplacement est optimale. On peut calculer le nombre de comparaisons de la façon suivante (les seules comparaisons effectuées sont dans la condition de la boucle \texttt{while}) :
+La complexité en termes de déplacements est optimale. On peut calculer le nombre de comparaisons de la façon suivante (les seules comparaisons effectuées sont dans la condition de la boucle \texttt{while}) :
 \begin{itemize}
     \item La moitié des nombres binaires se terminent par un 1. Dans ce cas, on effectue une comparaison.
     \item Parmi ceux se terminant par un 0, la moitié possède un 1 en deuxième position. Dans ce cas, on effectue 2 comparaisons.

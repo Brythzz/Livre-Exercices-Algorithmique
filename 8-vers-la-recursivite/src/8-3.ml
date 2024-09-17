@@ -3,6 +3,7 @@ type point = int * int
 let dist_sq (p1:point) (p2:point) : int =
   let x1, y1 = p1 and x2, y2 = p2 in
   (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)
+
 let couple (tab:point array) : (point * point) =
   let n = Array.length tab in
   let min_dist = ref max_int in
@@ -69,7 +70,6 @@ let termine (x:point array) (y:point array) (deb:int) (fin:int)
   done;
   (!p1, !p2), !dist
 
-
 let cherche (x:point array) (y:point array) : point * point =
   let n = Array.length x in
   let y' = Array.copy y in
@@ -88,7 +88,7 @@ let cherche (x:point array) (y:point array) : point * point =
       termine x y deb fin p1 p2
     )
   in let (p1, p2), d = cherche_aux 0 (n-1) in
-  p1, p2
+  (p1, p2)
 
 let _ =
   (* Exemple avec le minimum dans une seule des deux plus grandes zones *)

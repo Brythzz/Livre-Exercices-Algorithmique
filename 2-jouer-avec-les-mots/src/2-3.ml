@@ -46,4 +46,4 @@ let afficher_sous_suite (a:int array) : unit =
   for i=1 to !longueur-1 do
     pmax := precedent.(!pmax);
     Printf.printf " %d" a.(!pmax);
-  done;
+  done

@@ -29,7 +29,7 @@ Repérons tout d'abord la station où l'essence est la moins chère, et faisons 
     \item Toujours à cette station, il doit prendre juste ce qu'il faut d'essence pour aller jusqu'au bout si la capacité de son réservoir le permet, soit remplir complètement son réservoir.
 \end{itemize}
 
-On recommence pour les deux sous-problèmes consistant à aller du début à cette station-service et de cette station service à la fin. Pas besoin de récursivité, la stratégie qui s'en déduit est la suivante. À chaque fois que l'on passe devant une station service :
+On recommence pour les deux sous-problèmes consistant à aller du début à cette station-service et de cette station-service à la fin. Pas besoin de récursivité, la stratégie qui s'en déduit est la suivante. À chaque fois que l'on passe devant une station service :
 \begin{itemize}
     \item Soit il existe dans le rayon d'action que peut atteindre la voiture avec un plein des stations moins chères, dans ce cas, on prend le minimum d'essence (éventuellement pas du tout) permettant d'aller à la première station moins chère que celle où l'on se trouve (attention : la première, c'est-à-dire pas nécessairement la moins chère des stations accessibles).
     \item Soit toutes les stations que l'on peut atteindre sont plus chères, dans ce cas on remplit complètement le réservoir, sauf si on peut atteindre l'arrivée, dans quel cas on prend juste ce qu'il faut pour y aller.
