@@ -5,7 +5,7 @@
 Un mot $u$ est une suite $(u_1, u_2, ..., u_n)$ de lettres, l'entier $n$ est la longueur du mot $u$. La suite vide correspond au mot vide, noté $\varepsilon$, de longueur 0. La concaténation de deux mots $u=(u_1, u_2, ..., u_n)$ et $v=(v_1, v_2, ..., v_k)$, notée $uv$, est simplement le mot $(u_1, u_2, ..., u_n, v_1, v_2, ..., v_k)$. Il est facile de vérifier que la concaténation est une opération associative pour laquelle le mot vide est élément neutre à gauche et à droite. Le mot $v$ est dit facteur ou motif d'un mot $u$ s'il existe des mots $g$ et $d$ tels que $u=gvd$. Si le mot $g$ (resp. $d$) est la suite vide, on dit que $v$ est un préfixe (resp. suffixe) de $u$.
 
 \Q
-Modéliser la situation décrite. Écrire un algorithme qui,  deux mots $u$ et $v$, vérifie si $v$ est un facteur de $u$. Quel est le nombre maximum de comparaisons effectuées par votre algorithme ?
+Modéliser la situation décrite. Écrire un algorithme qui, étant donné deux mots $u$ et $v$, vérifie si $v$ est un facteur de $u$. Quel est le nombre maximum de comparaisons effectuées par votre algorithme ?
 
 \Q
 Si $v$ n'est pas le mot vide, on note $Bord(v)$ le plus grand mot distinct de $v$ qui soit à la fois préfixe et suffixe de $v$. Par exemple, si $v=abacaba$, $Bord(v)=aba$. Soit $v=(v_1, v_2, ..., v_k)$. Pour tout $i$ entre 1 et $k$, on définit $B(i)$ comme étant la longueur de $Bord(v_1 ... v_k)$.
